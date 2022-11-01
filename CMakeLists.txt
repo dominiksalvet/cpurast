@@ -1,3 +1,5 @@
+# https://github.com/dominiksalvet/swrast
+
 cmake_minimum_required(VERSION 3.0.0)
 project(swrast CXX)
 
