@@ -2,4 +2,7 @@
 
 #pragma once
 
-void test();
+namespace swr
+{
+    void test();
+}
