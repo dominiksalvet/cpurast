@@ -11,7 +11,7 @@ namespace sc = std::chrono;
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
-const int FRAMERATE = 600;
+const int FRAMERATE = 60;
 const sc::nanoseconds FRAMETIME(sc::duration_cast<sc::nanoseconds>(sc::seconds(1)) / FRAMERATE);
 
 int main(int argc, char* argv[])
