@@ -7,5 +7,9 @@ using namespace swr;
 
 void swr::test()
 {
-    std::cout << "hello from test()" << std::endl;
+    std::cout << "hello from test(), int(5)=" << inc(5) << std::endl;
+}
+
+int swr::inc(int value) {
+    return ++value;
 }

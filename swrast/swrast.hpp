@@ -5,4 +5,5 @@
 namespace swr
 {
     void test();
+    int inc(int value);
 }
