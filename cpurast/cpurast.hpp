@@ -1,4 +1,4 @@
-// https://github.com/dominiksalvet/swrast
+// https://github.com/dominiksalvet/cpurast
 
 #pragma once
 

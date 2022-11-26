@@ -1,6 +1,6 @@
-// https://github.com/dominiksalvet/swrast
+// https://github.com/dominiksalvet/cpurast
 
-#include "swrast.hpp"
+#include "cpurast.hpp"
 #include <iostream>
 
 using namespace swr;

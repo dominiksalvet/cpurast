@@ -1,6 +1,6 @@
-# Software Rasterizer
+# CPU Rasterizer
 
-Requirements to compile:
+Requirements to compile examples:
 
 * SDL2
 

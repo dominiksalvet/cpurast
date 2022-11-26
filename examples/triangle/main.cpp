@@ -1,6 +1,6 @@
-// https://github.com/dominiksalvet/swrast
+// https://github.com/dominiksalvet/cpurast
 
-#include "swrast.hpp"
+#include "cpurast.hpp"
 #include "SDL.h"
 #include <iostream>
 #include <cstring>
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    window = SDL_CreateWindow("swrast - triangle",
+    window = SDL_CreateWindow("cpurast - triangle",
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH, WINDOW_HEIGHT,
                               SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
