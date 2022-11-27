@@ -3,13 +3,21 @@
 Requirements to compile examples:
 
 * SDL2
+* CMake
+* C++ compiler
 
-Steps to build:
+Building examples that use **cpurast**:
 
 ```
 mkdir build
 cd build
 cmake ..
 make
-./example
+```
+
+Running a **triangle** example after building:
+
+```
+cd build
+./examples/triangle/triangle
 ```
