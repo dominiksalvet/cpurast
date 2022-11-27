@@ -1,7 +1,7 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include "cpurast.hpp"
 #include "SDL.h"
+#include "cpurast.hpp"
 #include <iostream>
 #include <cstring>
 #include <chrono>
@@ -29,10 +29,10 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    window = SDL_CreateWindow("cpurast - triangle",
+    window = SDL_CreateWindow("cpurast - triangle example",
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH, WINDOW_HEIGHT,
-                              SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                              SDL_WINDOW_RESIZABLE);
     if (!window)
     {
         std::cerr << "Failed to create SDL2 window!" << std::endl;
@@ -124,7 +124,6 @@ int main(int argc, char* argv[])
         }
     }
 
-    swr::test();
     SDL_DestroyWindow(window);
     SDL_Quit();
 }

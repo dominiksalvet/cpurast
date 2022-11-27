@@ -2,8 +2,9 @@
 
 #pragma once
 
-namespace swr
+#include "context.hpp"
+
+namespace cr
 {
-    void test();
-    int inc(int value);
+
 }

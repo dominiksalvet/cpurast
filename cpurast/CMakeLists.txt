@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(cpurast CXX)
 
 add_library(cpurast
-    cpurast.cpp
+    context.cpp
 )
 
 target_include_directories(cpurast PUBLIC .)
