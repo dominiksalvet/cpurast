@@ -21,8 +21,8 @@ namespace cr
         void resize(size_t width, size_t height);
         void enable_depth_test();
         void clear(bool clear_color_buf, bool clear_depth_buf);
-        // if depth test is disabled, depth value is ingored
-        void write_pixel(size_t x, size_t y, int16_t depth, color color);
+        // if depth test is disabled, depth value is ignored
+        void write(size_t x, size_t y, int16_t depth, color color);
 
         size_t get_width();
         size_t get_height();

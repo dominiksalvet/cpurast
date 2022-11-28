@@ -65,7 +65,7 @@ namespace cr
         }
     }
 
-    void framebuf::write_pixel(size_t x, size_t y, int16_t depth, color color)
+    void framebuf::write(size_t x, size_t y, int16_t depth, color color)
     {
         if (test_depth) {
             if (depth_buf[y][x] < depth)
