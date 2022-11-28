@@ -3,6 +3,7 @@
 #pragma once
 
 #include <vector>
+#include <cstddef>
 #include "color.hpp"
 
 using std::vector;

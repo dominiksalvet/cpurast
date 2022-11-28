@@ -5,6 +5,7 @@ project(cpurast CXX)
 
 add_library(cpurast
     context.cpp
+    framebuf.cpp
 )
 
 target_include_directories(cpurast PUBLIC .)

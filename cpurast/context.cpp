@@ -1,5 +1,13 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include "cpurast.hpp"
+#include "context.hpp"
+#include <memory>
 
-using namespace cr;
+namespace cr
+{
+    context::context(size_t framebuf_width, size_t framebuf_height)
+    {
+        framebufs.emplace_back(new framebuf(framebuf_width, framebuf_height));
+        active_framebuf = framebufs[DEFAULT_FRAMEBUF];
+    }
+}

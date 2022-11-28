@@ -21,3 +21,7 @@ Running a **triangle** example after building:
 cd build
 ./examples/triangle/triangle
 ```
+
+## Features
+
+* Z-buffering support
