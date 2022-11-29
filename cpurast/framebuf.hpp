@@ -28,7 +28,7 @@ namespace cr
 
     private:
         template <typename T>
-        void resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height);
+        void resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height) const;
     
     public:
         color clear_color;

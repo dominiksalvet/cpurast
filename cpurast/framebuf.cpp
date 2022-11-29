@@ -76,7 +76,7 @@ namespace cr
     }
 
     template <typename T>
-    void framebuf::resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height)
+    void framebuf::resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height) const
     {
         buf.resize(new_height);
         for (size_t y = 0; y < new_height; y++) {

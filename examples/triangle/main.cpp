@@ -56,6 +56,7 @@ int main(int argc, char* argv[])
         {
             if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    // todo: test SDL_SetSurfaceRLE
                     surface = SDL_GetWindowSurface(window);
                 }
             }
