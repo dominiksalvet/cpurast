@@ -1,11 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "framebuf.hpp"
-#include <cstddef>
-#include <vector>
-#include <limits>
-
-using std::vector;
 
 namespace cr
 {

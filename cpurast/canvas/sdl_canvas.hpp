@@ -7,7 +7,7 @@
 
 namespace cr
 {
-    // SDL2 canvas used for screen rendering
+    // SDL canvas used for screen rendering
     class sdl_canvas : public canvas
     {
     public:
