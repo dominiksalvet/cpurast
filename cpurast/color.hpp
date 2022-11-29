@@ -2,21 +2,20 @@
 
 #pragma once
 
-#include <cstdint>
-
 namespace cr
 {
-    // using additive color model
+    // using additive model for color representation
+    // each color component has value of interval [0, 1]
     struct color
     {
-        uint8_t r; // red
-        uint8_t g; // green
-        uint8_t b; // blue
+        float r; // red
+        float g; // green
+        float b; // blue
     };
 
-    constexpr color BLACK_COLOR = {0,     0,   0};
-    constexpr color WHITE_COLOR = {255, 255, 255};
-    constexpr color RED_COLOR   = {255,   0,   0};
-    constexpr color GREEN_COLOR = {0,   255,   0};
-    constexpr color BLUE_COLOR  = {0,     0, 255};
+    constexpr color BLACK_COLOR = { 0.f, 0.f, 0.f };
+    constexpr color WHITE_COLOR = { 1.f, 1.f, 1.f };
+    constexpr color RED_COLOR   = { 1.f, 0.f, 0.f };
+    constexpr color GREEN_COLOR = { 0.f, 1.f, 0.f };
+    constexpr color BLUE_COLOR  = { 0.f, 0.f, 1.f };
 }

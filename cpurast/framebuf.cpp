@@ -16,35 +16,32 @@ namespace cr
         color_buf(height),
         test_depth(false)
     {
-        for (size_t y; y < height; y++) {
+        for (size_t y = 0; y < height; y++) {
             color_buf[y] = vector<color>(width);
         }
     }
 
-    void framebuf::resize(size_t width, size_t height)
+    void framebuf::resize(size_t new_width, size_t new_height)
     {
-        this->width = width;
-        this->height = height;
+        resize_buf(color_buf, new_width, new_height);
 
-        color_buf.resize(height);
-        for (size_t y; y < height; y++) {
-            color_buf[y].resize(width);
+        if (test_depth) {
+            resize_buf(depth_buf, new_width, new_height);
         }
 
-        if (test_depth)
-        {
-            depth_buf.resize(height);
-            for (size_t y; y < height; y++) {
-                depth_buf[y].resize(width);
-            }
-        }
+        width = new_width;
+        height = new_height;
     }
 
     void framebuf::enable_depth_test()
     {
+        if (test_depth) {
+            return;
+        }
+
         depth_buf = depth_buf_t(height);
-        for (size_t y; y < height; y++) {
-            depth_buf[y] = vector<int16_t>(width);
+        for (size_t y = 0; y < height; y++) {
+            depth_buf[y] = vector<float>(width);
         }
 
         test_depth = true;
@@ -59,16 +56,16 @@ namespace cr
                     color_buf[y][x] = clear_color;
                 }
                 if (test_depth && clear_depth_buf) {
-                    depth_buf[y][x] = std::numeric_limits<int16_t>::min();
+                    depth_buf[y][x] = 1.f;
                 }
             }
         }
     }
 
-    void framebuf::write(size_t x, size_t y, int16_t depth, color color)
+    void framebuf::write(size_t x, size_t y, color color, float depth)
     {
         if (test_depth) {
-            if (depth_buf[y][x] < depth)
+            if (depth < depth_buf[y][x])
             {
                 color_buf[y][x] = color;
                 depth_buf[y][x] = depth;
@@ -78,15 +75,16 @@ namespace cr
         }
     }
 
-    size_t framebuf::get_width() {
-        return this->width;
-    }
-
-    size_t framebuf::get_height() {
-        return this->height;
-    }
-    
-    const color_buf_t& framebuf::get_color_buf() {
-        return color_buf;
+    template <typename T>
+    void framebuf::resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height)
+    {
+        buf.resize(new_height);
+        for (size_t y = 0; y < new_height; y++) {
+            if (y < height) {
+                buf[y].resize(new_width); // resize existing vectors
+            } else {
+                buf[y] = vector<T>(new_width); // create new vectors
+            }
+        }
     }
 }

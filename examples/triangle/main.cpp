@@ -1,6 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include "SDL.h"
+#include <SDL.h>
 #include "cpurast.hpp"
 #include <iostream>
 #include <chrono>

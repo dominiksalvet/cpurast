@@ -10,33 +10,36 @@ using std::vector;
 
 namespace cr
 {
-    // color and depth buffer reprezentation [y][x]
-    typedef vector<vector<color>> color_buf_t;
-    typedef vector<vector<int16_t>> depth_buf_t;
+    // color buffer representation [y][x]
+    using color_buf_t = vector<vector<color>>;
+    // depth buffer of values [-1, 1]
+    using depth_buf_t = vector<vector<float>>;
 
     class framebuf
     {
     public:
         framebuf(size_t width, size_t height);
-        void resize(size_t width, size_t height);
+        void resize(size_t new_width, size_t new_height);
         void enable_depth_test();
         void clear(bool clear_color_buf, bool clear_depth_buf);
         // if depth test is disabled, depth value is ignored
-        void write(size_t x, size_t y, int16_t depth, color color);
+        // lower depth means it is closer to the viewport
+        void write(size_t x, size_t y, color color, float depth);
 
-        size_t get_width();
-        size_t get_height();
-        const color_buf_t& get_color_buf();
-
-        color clear_color;
+    private:
+        template <typename T>
+        void resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height);
     
+    public:
+        color clear_color;
+
     private:
         size_t width;
         size_t height;
 
         color_buf_t color_buf;
 
-        bool test_depth; // enable/disable depth test
+        bool test_depth; // depth test enable flag
         depth_buf_t depth_buf;
     };
 }
