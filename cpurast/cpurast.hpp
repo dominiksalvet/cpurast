@@ -4,7 +4,7 @@
 
 #include "context.hpp"
 #include "color.hpp"
-#include "framebuf.hpp"
+#include "canvas.hpp"
 
 namespace cr
 {

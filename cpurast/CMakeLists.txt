@@ -8,4 +8,4 @@ add_library(cpurast
     framebuf.cpp
 )
 
-target_include_directories(cpurast PUBLIC .)
+target_include_directories(cpurast PUBLIC . canvas)
