@@ -3,6 +3,7 @@
 #include "sdl_canvas.hpp"
 #include <cassert>
 #include <limits>
+#include <stdexcept>
 
 namespace cr
 {
@@ -11,12 +12,12 @@ namespace cr
     {
         // SDL pixels must be accessible as Uint32 values
         if (surface->format->BytesPerPixel != sizeof(Uint32)) {
-            throw bad_canvas("Unsupported number of bytes per SDL pixel!");
+            throw std::runtime_error("Unsupported number of bytes per SDL pixel!");
         }
 
         // SDL pixels must be stored in linear array without gaps
         if (surface->pitch != sizeof(Uint32) * surface->w) {
-            throw bad_canvas("Unsupported SDL pixels row width!");
+            throw std::runtime_error("Unsupported SDL pixels row width!");
         }
     }
 

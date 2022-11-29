@@ -3,8 +3,6 @@
 #pragma once
 
 #include "framebuf.hpp"
-#include <exception>
-#include <string>
 
 namespace cr
 {
@@ -15,19 +13,5 @@ namespace cr
         virtual ~canvas() = default;
         // canvas resolution and color buffer resolution must be the same
         virtual void draw(const color_buf_t& color_buf, size_t width, size_t height) = 0;
-    };
-
-    // bad canvas to draw on exception (should be used in canvas constructors)
-    class bad_canvas : public std::exception
-    {
-    public:
-        bad_canvas(const std::string& msg) : msg(msg) {}
-
-        virtual const char* what() const throw() override {
-            return msg.c_str();
-        }
-
-    private:
-        const std::string msg;
     };
 }
