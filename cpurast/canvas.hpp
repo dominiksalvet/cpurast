@@ -6,7 +6,7 @@
 
 namespace cr
 {
-    // abstract class for displaying graphics on a canvas (e.g., content of window)
+    // interface for displaying graphics on a canvas (e.g., content of window)
     class canvas
     {
     public:

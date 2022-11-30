@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "context.hpp"
-#include "canvas.hpp"
+#include "sdl_canvas.hpp"
 
 namespace cr
 {
