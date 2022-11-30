@@ -1,55 +1,72 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include <SDL.h>
-#include "cpurast.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <stdexcept>
+#include <memory>
+#include "cpurast.hpp" // cpurast core
+#include "cpurast_sdl.hpp" // cpurast SDL canvas
 
-namespace sc = std::chrono;
+using namespace std::chrono; // timer
 
-const int WINDOW_WIDTH = 640;
-const int WINDOW_HEIGHT = 480;
-const int FRAMERATE = 60;
-const sc::nanoseconds FRAMETIME(sc::duration_cast<sc::nanoseconds>(sc::seconds(1)) / FRAMERATE);
+constexpr int WINDOW_WIDTH = 640;
+constexpr int WINDOW_HEIGHT = 480;
+constexpr int FRAMERATE = 60;
+constexpr nanoseconds FRAMETIME(duration_cast<nanoseconds>(seconds(1)) / FRAMERATE);
+
+void prepare_sdl(SDL_Window** window, SDL_Surface** surface, const char* window_title)
+{
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        throw std::runtime_error("Failed to initialize SDL!");
+    }
+
+    *window = SDL_CreateWindow(window_title,
+                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                               WINDOW_WIDTH, WINDOW_HEIGHT,
+                               SDL_WINDOW_RESIZABLE);
+    if (!*window)
+    {
+        SDL_Quit();
+        throw std::runtime_error("Failed to create SDL window!");
+    }
+
+    *surface = SDL_GetWindowSurface(*window);
+    if (!*surface)
+    {
+        SDL_DestroyWindow(*window);
+        SDL_Quit();
+        throw std::runtime_error("Failed to obtain SDL window surface!");
+    }
+}
 
 int main(int argc, char* argv[])
 {
-    using clock = sc::high_resolution_clock;
-
     SDL_Window* window;
     SDL_Surface* surface;
-    bool shouldExit = false;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cerr << "Failed to initialize SDL2!" << std::endl;
+    std::unique_ptr<cr::canvas> cr_canvas;
+    try {
+        // initialize SDL library and create window
+        prepare_sdl(&window, &surface, "cpurast example - triangle");
+
+        // initialize cpurast SDL canvas
+        cr_canvas = std::make_unique<cr::sdl_canvas>(surface);
+    } catch (const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
         return -1;
     }
 
-    window = SDL_CreateWindow("cpurast - triangle example",
-                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              WINDOW_WIDTH, WINDOW_HEIGHT,
-                              SDL_WINDOW_RESIZABLE);
-    if (!window)
-    {
-        std::cerr << "Failed to create SDL2 window!" << std::endl;
-        SDL_Quit(); return -1;
-    }
+    // create cpurast context
+    // todo: reference to value in unique pointer??
+    cr::context cr_context = cr::context(*cr_canvas);
 
-    surface = SDL_GetWindowSurface(window);
-    if (!surface)
-    {
-        std::cerr << "Failed to obtain SDL2 window surface!" << std::endl;
-        SDL_Quit(); return -1;
-    }
-
-    // initialize cpurast rasterizer
-    cr::context cr_context = cr::context(WINDOW_WIDTH, WINDOW_HEIGHT);
-
+    bool shouldExit = false;
     while (!shouldExit)
     {
-        auto time_start = clock::now();
+        // todo: improve timer precision
+        auto time_start = high_resolution_clock::now();
 
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -57,6 +74,7 @@ int main(int argc, char* argv[])
             if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     // todo: test SDL_SetSurfaceRLE
+                    // todo: update context framebuffer size
                     surface = SDL_GetWindowSurface(window);
                 }
             }
@@ -74,7 +92,7 @@ int main(int argc, char* argv[])
 
         SDL_UpdateWindowSurface(window);
 
-        sc::nanoseconds cur_frametime = clock::now() - time_start;
+        nanoseconds cur_frametime = high_resolution_clock::now() - time_start;
         if (cur_frametime < FRAMETIME) {
             std::this_thread::sleep_for(FRAMETIME - cur_frametime);
         }
