@@ -70,6 +70,14 @@ namespace cr
         }
     }
 
+    size_t framebuf::get_width() {
+        return width;
+    }
+
+    size_t framebuf::get_height() {
+        return height;
+    }
+
     template <typename T>
     void framebuf::resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height) const
     {

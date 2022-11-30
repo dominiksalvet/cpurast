@@ -7,12 +7,16 @@
 
 namespace cr
 {
-    // SDL canvas used for screen rendering
+    // SDL canvas used for surface rendering (e.g., window surface)
     class sdl_canvas : public canvas
     {
     public:
         sdl_canvas(SDL_Surface* const surface);
+
         void draw(const color_buf_t& color_buf, size_t width, size_t height) override;
+
+        size_t get_width() override;
+        size_t get_height() override;
 
     private:
         SDL_Surface* const surface;

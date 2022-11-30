@@ -23,7 +23,7 @@ namespace cr
 
     void sdl_canvas::draw(const color_buf_t& color_buf, size_t width, size_t height)
     {
-        assert(surface->w == width && surface->h == height);
+        assert(get_width() == width && get_height() == height);
 
         bool surface_locking = SDL_MUSTLOCK(surface);
         if (surface_locking) {
@@ -56,5 +56,13 @@ namespace cr
         if (surface_locking) {
             SDL_UnlockSurface(surface);
         }
+    }
+
+    size_t sdl_canvas::get_width() {
+        return surface->w;
+    }
+    
+    size_t sdl_canvas::get_height() {
+        return surface->h;
     }
 }
