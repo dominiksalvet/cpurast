@@ -4,6 +4,7 @@
 
 namespace cr
 {
-    context::context(size_t framebuf_width, size_t framebuf_height) :
-        framebuf(framebuf_width, framebuf_height) {}
+    context::context(cr::canvas& canvas) :
+        canvas(canvas),
+        framebuf(canvas.get_width(), canvas.get_height()) {}
 }

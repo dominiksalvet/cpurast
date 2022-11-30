@@ -3,15 +3,17 @@
 #pragma once
 
 #include "framebuf.hpp"
+#include "canvas.hpp"
 
 namespace cr
 {
     class context
     {
     public:
-        context(size_t framebuf_width, size_t framebuf_height);
+        context(cr::canvas& canvas);
 
     private:
-        cr::framebuf framebuf;
+        cr::canvas& canvas; // canvas for drawing pixels
+        cr::framebuf framebuf; // framebuffer for rendering
     };
 }
