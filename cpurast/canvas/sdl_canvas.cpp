@@ -59,10 +59,14 @@ namespace cr
     }
 
     size_t sdl_canvas::get_width() {
+        assert(surface->w >= 0);
+
         return surface->w;
     }
     
     size_t sdl_canvas::get_height() {
+        assert(surface->h >= 0);
+
         return surface->h;
     }
 }

@@ -11,6 +11,7 @@ namespace cr
     class sdl_canvas : public canvas
     {
     public:
+        // todo: use reference instead of pointer
         sdl_canvas(SDL_Surface* const surface);
 
         void draw(const color_buf_t& color_buf, size_t width, size_t height) override;
