@@ -65,7 +65,6 @@ int main(int argc, char* argv[])
     bool shouldExit = false;
     while (!shouldExit)
     {
-        // todo: improve timer precision
         auto time_start = high_resolution_clock::now();
 
         SDL_Event event;
@@ -92,6 +91,7 @@ int main(int argc, char* argv[])
 
         SDL_UpdateWindowSurface(window);
 
+        // simple timer mechanism (may not be very accurate)
         nanoseconds cur_frametime = high_resolution_clock::now() - time_start;
         if (cur_frametime < FRAMETIME) {
             std::this_thread::sleep_for(FRAMETIME - cur_frametime);
