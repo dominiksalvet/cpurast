@@ -12,6 +12,8 @@ namespace cr
     public:
         context(cr::canvas& canvas);
 
+        void set_canvas(cr::canvas& canvas);
+
     private:
         cr::canvas& canvas; // canvas for drawing pixels
         cr::framebuf framebuf; // framebuffer for rendering

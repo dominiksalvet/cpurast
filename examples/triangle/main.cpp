@@ -47,19 +47,21 @@ int main(int argc, char* argv[])
     SDL_Surface* surface;
 
     std::unique_ptr<cr::canvas> cr_canvas;
-    try {
+    try
+    {
         // initialize SDL library and create window
         prepare_sdl(&window, &surface, "cpurast example - triangle");
 
         // initialize cpurast SDL canvas
         cr_canvas = std::make_unique<cr::sdl_canvas>(surface);
-    } catch (const std::runtime_error& e) {
+    }
+    catch (const std::runtime_error& e)
+    {
         std::cerr << e.what() << std::endl;
         return -1;
     }
 
     // create cpurast context
-    // todo: reference to value in unique pointer??
     cr::context cr_context = cr::context(*cr_canvas);
 
     bool shouldExit = false;
@@ -71,10 +73,12 @@ int main(int argc, char* argv[])
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_WINDOWEVENT) {
-                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                {
                     // todo: test SDL_SetSurfaceRLE
-                    // todo: update context framebuffer size
-                    surface = SDL_GetWindowSurface(window);
+                    surface = SDL_GetWindowSurface(window); // get new SDL surface
+                    cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
+                    cr_context.set_canvas(*cr_canvas); // change canvas in cpurast context
                 }
             }
 
