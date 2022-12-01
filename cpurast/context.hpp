@@ -13,6 +13,7 @@ namespace cr
         context(cr::canvas& canvas);
 
         void set_canvas(cr::canvas& canvas);
+        void enable_depth_test();
 
     private:
         cr::canvas& canvas; // canvas for drawing pixels

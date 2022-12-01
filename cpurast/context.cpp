@@ -13,4 +13,8 @@ namespace cr
         this->canvas = canvas;
         framebuf.resize(canvas.get_width(), canvas.get_height());
     }
+
+    void context::enable_depth_test() {
+        framebuf.enable_depth_test();
+    }
 }

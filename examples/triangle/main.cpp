@@ -63,6 +63,7 @@ int main(int argc, char* argv[])
 
     // create cpurast context
     cr::context cr_context = cr::context(*cr_canvas);
+    cr_context.enable_depth_test();
 
     bool shouldExit = false;
     while (!shouldExit)
