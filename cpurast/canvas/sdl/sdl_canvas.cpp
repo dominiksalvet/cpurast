@@ -23,6 +23,7 @@ namespace cr
 
     void sdl_canvas::draw(const color_buf_t& color_buf, size_t width, size_t height)
     {
+        // todo: learn how to ignore all asserts when compiling to production
         assert(get_width() == width && get_height() == height);
 
         bool surface_locking = SDL_MUSTLOCK(surface);

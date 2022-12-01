@@ -1,6 +1,7 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "framebuf.hpp"
+#include <cassert>
 
 namespace cr
 {
@@ -44,6 +45,7 @@ namespace cr
 
     void framebuf::clear(bool clear_color_buf, bool clear_depth_buf)
     {
+        // todo: accelerate this and similar loops using openMP/similar
         for (size_t y = 0; y < height; y++) {
             for (size_t x = 0; x < width; x++)
             {
@@ -57,7 +59,7 @@ namespace cr
         }
     }
 
-    void framebuf::write(size_t x, size_t y, color color, float depth)
+    void framebuf::write(size_t x, size_t y, cr::color color, float depth)
     {
         if (test_depth) {
             if (depth < depth_buf[y][x])
@@ -76,6 +78,19 @@ namespace cr
 
     size_t framebuf::get_height() {
         return height;
+    }
+
+    void framebuf::set_clear_color(color clear_color)
+    {
+        assert(clear_color.r >= 0.f && clear_color.r <= 1.f);
+        assert(clear_color.g >= 0.f && clear_color.g <= 1.f);
+        assert(clear_color.b >= 0.f && clear_color.b <= 1.f);
+
+        this->clear_color = clear_color;
+    }
+
+    const color_buf_t& framebuf::get_color_buf() {
+        return color_buf;
     }
 
     template <typename T>

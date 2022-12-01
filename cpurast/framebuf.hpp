@@ -18,6 +18,7 @@ namespace cr
     class framebuf
     {
     public:
+    // return sizes of canvas in number of pixels
         framebuf(size_t width, size_t height);
 
         void resize(size_t new_width, size_t new_height);
@@ -25,22 +26,21 @@ namespace cr
         void clear(bool clear_color_buf, bool clear_depth_buf);
         // if depth test is disabled, depth value is ignored
         // lower depth means it is closer to the viewport
-        void write(size_t x, size_t y, color color, float depth);
+        void write(size_t x, size_t y, cr::color color, float depth);
 
         size_t get_width();
         size_t get_height();
+        void set_clear_color(color clear_color);
+        const color_buf_t& get_color_buf();
 
     private:
         template <typename T>
         void resize_buf(vector<vector<T>>& buf, size_t new_width, size_t new_height) const;
     
-    public:
-        color clear_color;
-
-    private:
         size_t width;
         size_t height;
 
+        color clear_color;
         color_buf_t color_buf;
 
         bool test_depth; // depth test enable flag

@@ -13,7 +13,7 @@ using namespace std::chrono; // timer
 
 constexpr int WINDOW_WIDTH = 640;
 constexpr int WINDOW_HEIGHT = 480;
-constexpr int FRAMERATE = 60;
+constexpr int FRAMERATE = 30;
 constexpr nanoseconds FRAMETIME(duration_cast<nanoseconds>(seconds(1)) / FRAMERATE);
 
 void prepare_sdl(SDL_Window** window, SDL_Surface** surface, const char* window_title)
@@ -62,8 +62,9 @@ int main(int argc, char* argv[])
     }
 
     // create cpurast context
-    cr::context cr_context = cr::context(*cr_canvas);
-    cr_context.enable_depth_test();
+    cr::context cr_context = cr::context(cr_canvas.get());
+    // set up context properties
+    cr_context.set_clear_color({.3f, .5f, .7f});
 
     bool shouldExit = false;
     while (!shouldExit)
@@ -76,10 +77,10 @@ int main(int argc, char* argv[])
             if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                 {
-                    // todo: test SDL_SetSurfaceRLE
+                    // todo: test SDL_SetSurfaceRLE and other possible accellerations
                     surface = SDL_GetWindowSurface(window); // get new SDL surface
                     cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
-                    cr_context.set_canvas(*cr_canvas); // change canvas in cpurast context
+                    cr_context.set_canvas(cr_canvas.get()); // change canvas in cpurast context
                 }
             }
 
@@ -94,6 +95,8 @@ int main(int argc, char* argv[])
             }
         }
 
+        cr_context.clear_framebuf(true, false);
+        cr_context.update_canvas();
         SDL_UpdateWindowSurface(window);
 
         // simple timer mechanism (may not be very accurate)
