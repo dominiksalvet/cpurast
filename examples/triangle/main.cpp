@@ -76,7 +76,6 @@ int main(int argc, char* argv[])
             if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                 {
-                    // todo: test SDL_SetSurfaceRLE and other possible accellerations
                     surface = SDL_GetWindowSurface(window); // get new SDL surface
                     cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
                     cr_context.set_canvas(cr_canvas.get()); // change canvas in cpurast context

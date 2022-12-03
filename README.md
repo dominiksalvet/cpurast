@@ -76,3 +76,21 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 ## Features
 
 * Z-buffering support
+* Cross platform
+
+## Todo
+
+* Use OpenMP or similar (e.g., for loops)
+* Enable ignoring asserts for final compilation
+* Try to use some SDL surface accelerations (e.g., SDL_SetSurfaceRLE)
+* Use multiple threads
+* Add support for texturing
+* Add support for lighting
+* Add support for vextex attributes
+* Draw point, line, triangle
+* Add support for shadows
+* Add support for vertex and fragment shader
+* Add support for various culling
+* Optimize framebuffer operations (e.g., no write when not changed...)
+* Viewport rendering
+* Multiple framebuffer/VAO support

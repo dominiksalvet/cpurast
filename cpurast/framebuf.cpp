@@ -45,7 +45,6 @@ namespace cr
 
     void framebuf::clear(bool clear_color_buf, bool clear_depth_buf)
     {
-        // todo: accelerate this and similar loops using openMP/similar
         for (size_t y = 0; y < height; y++) {
             for (size_t x = 0; x < width; x++)
             {
