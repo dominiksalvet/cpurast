@@ -1,6 +1,5 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include <SDL.h>
 #include <iostream>
 #include <chrono>
 #include <thread>
