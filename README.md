@@ -76,7 +76,8 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 ## Features
 
 * Z-buffering support
-* Cross platform
+* Uses normalized device coordinates
+* Cross platform, no dependencies
 
 ## Todo
 
@@ -94,3 +95,4 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Optimize framebuffer operations (e.g., no write when not changed...)
 * Viewport rendering
 * Multiple framebuffer/VAO support
+* Add more examples
