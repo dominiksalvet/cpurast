@@ -1,6 +1,6 @@
 # CPU Rasterizer
 
-## How to Run
+## How to Run Examples
 
 Requirements to run examples:
 
@@ -24,7 +24,7 @@ cd build/examples/triangle
 ./triangle
 ```
 
-## How to Use
+## How to Use as a Library
 
 Minimum requirements to use the library:
 
@@ -35,7 +35,7 @@ What may be useful:
 * Delivered CMake build system
 * Delivered examples of use
 
-> It is suggested to start with an existing example, copy it to a new example directory, and start customizing it. Later, after some experience with cpurast, it may be used as the foundation of a new project.
+> It is suggested to start with an existing example, copy it to a new example directory, and start customizing it. Later, after some experience with using and building cpurast, the created program may be used as the foundation of a new project.
 
 ## Custom Canvas
 
