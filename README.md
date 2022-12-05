@@ -96,3 +96,5 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Viewport rendering
 * Multiple framebuffer/VAO support
 * Add more examples
+* Use only one vector for buffers in framebuffer
+* Create bool for locking surface in SDL canvas constructor
