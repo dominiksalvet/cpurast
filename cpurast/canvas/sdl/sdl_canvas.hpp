@@ -11,6 +11,7 @@ namespace cr
     class sdl_canvas : public canvas
     {
     public:
+        // should the SDL surface change, recreate the instance of this class
         sdl_canvas(SDL_Surface* const surface);
 
         void draw(const color_buf_t& color_buf, size_t width, size_t height) override;
@@ -20,5 +21,6 @@ namespace cr
 
     private:
         SDL_Surface* const surface;
+        const bool surface_locking; // surface should be locked before write
     };
 }

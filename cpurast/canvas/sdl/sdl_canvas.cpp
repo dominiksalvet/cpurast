@@ -8,7 +8,8 @@
 namespace cr
 {
     sdl_canvas::sdl_canvas(SDL_Surface* const surface) :
-        surface(surface)
+        surface(surface),
+        surface_locking(SDL_MUSTLOCK(surface))
     {
         // SDL pixels must be accessible as Uint32 values
         if (surface->format->BytesPerPixel != sizeof(Uint32)) {
@@ -25,7 +26,6 @@ namespace cr
     {
         assert(get_width() == width && get_height() == height);
 
-        bool surface_locking = SDL_MUSTLOCK(surface);
         if (surface_locking) {
             SDL_LockSurface(surface);
         }
