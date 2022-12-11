@@ -13,7 +13,7 @@ Building examples that use **cpurast**:
 ```
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE="Release" ..
 make
 ```
 
@@ -82,7 +82,6 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 ## Todo
 
 * Use OpenMP or similar (e.g., for loops)
-* Enable ignoring asserts for final compilation
 * Try to use some SDL surface accelerations (e.g., SDL_SetSurfaceRLE)
 * Use multiple threads
 * Add support for texturing
@@ -96,3 +95,4 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Viewport rendering
 * Multiple framebuffer/VAO support
 * Add more examples
+* Compiler flags for performance
