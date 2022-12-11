@@ -5,6 +5,9 @@
 #include <limits>
 #include <stdexcept>
 
+using std::runtime_error;
+using std::numeric_limits;
+
 namespace cr
 {
     sdl_canvas::sdl_canvas(SDL_Surface* const surface) :
@@ -13,16 +16,16 @@ namespace cr
     {
         // SDL pixels must be accessible as Uint32 values
         if (surface->format->BytesPerPixel != sizeof(Uint32)) {
-            throw std::runtime_error("Unsupported number of bytes per SDL pixel!");
+            throw runtime_error("Unsupported number of bytes per SDL pixel!");
         }
 
         // SDL pixels must be stored in linear array without gaps
         if (surface->pitch != sizeof(Uint32) * surface->w) {
-            throw std::runtime_error("Unsupported SDL pixels row width!");
+            throw runtime_error("Unsupported SDL pixels row width!");
         }
     }
 
-    void sdl_canvas::draw(const color_buf_t& color_buf, size_t width, size_t height)
+    void sdl_canvas::draw(const vector<color>& color_buf, size_t width, size_t height)
     {
         assert(get_width() == width && get_height() == height);
 
@@ -31,26 +34,27 @@ namespace cr
         }
         
         Uint32* const pixels = static_cast<Uint32*>(surface->pixels);
-        for (size_t y = 0; y < height; y++) {
-            for (size_t x = 0; x < width; x++)
-            {
-                color cur_color = color_buf[y][x];
+        const size_t total_size = width * height;
 
-                assert(cur_color.r >= 0.f && cur_color.r <= 1.f);
-                assert(cur_color.g >= 0.f && cur_color.g <= 1.f);
-                assert(cur_color.b >= 0.f && cur_color.b <= 1.f);
+        // we can perform linear for-loop because of restrictions in constructor
+        for (size_t i = 0; i < total_size; i++)
+        {
+            color cur_color = color_buf[i];
 
-                // float to 8-bit for each of RGB components
-                Uint8 r = cur_color.r * std::numeric_limits<Uint8>::max();
-                Uint8 g = cur_color.g * std::numeric_limits<Uint8>::max();
-                Uint8 b = cur_color.b * std::numeric_limits<Uint8>::max();
+            assert(cur_color.r >= 0.f && cur_color.r <= 1.f);
+            assert(cur_color.g >= 0.f && cur_color.g <= 1.f);
+            assert(cur_color.b >= 0.f && cur_color.b <= 1.f);
 
-                // 8-bit RGB components to current SDL pixel format
-                Uint32 pixel = SDL_MapRGB(surface->format, r, g ,b);
+            // float to 8-bit for each of RGB components
+            Uint8 r = cur_color.r * numeric_limits<Uint8>::max();
+            Uint8 g = cur_color.g * numeric_limits<Uint8>::max();
+            Uint8 b = cur_color.b * numeric_limits<Uint8>::max();
 
-                // drawing one pixel
-                pixels[y * surface->w + x] = pixel;
-            }
+            // 8-bit RGB components to current SDL pixel format
+            Uint32 pixel = SDL_MapRGB(surface->format, r, g ,b);
+
+            // drawing one pixel
+            pixels[i] = pixel;
         }
 
         if (surface_locking) {
@@ -59,14 +63,10 @@ namespace cr
     }
 
     size_t sdl_canvas::get_width() {
-        assert(surface->w >= 0);
-
         return surface->w;
     }
     
     size_t sdl_canvas::get_height() {
-        assert(surface->h >= 0);
-
         return surface->h;
     }
 }

@@ -8,7 +8,11 @@
 #include "cpurast.hpp" // cpurast core
 #include "cpurast_sdl.hpp" // cpurast SDL canvas
 
-using namespace std::chrono; // timer
+// timer stuff
+using std::chrono::nanoseconds;
+using std::chrono::seconds;
+using std::chrono::duration_cast;
+using std::chrono::high_resolution_clock;
 
 constexpr int WINDOW_WIDTH = 640;
 constexpr int WINDOW_HEIGHT = 480;
