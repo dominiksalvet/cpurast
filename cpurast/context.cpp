@@ -1,12 +1,17 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "context.hpp"
+#include <stdexcept>
 
 namespace cr
 {
     context::context(cr::canvas* canvas) :
         canvas(canvas),
-        framebuf(canvas->get_width(), canvas->get_height()) {}
+        framebuf(canvas->get_width(), canvas->get_height()),
+        viewp_x(0),
+        viewp_y(0),
+        viewp_width(canvas->get_width()),
+        viewp_height(canvas->get_height()) {}
 
     void context::enable_depth_test() {
         framebuf.enable_depth_test();
@@ -28,5 +33,17 @@ namespace cr
     {
         this->canvas = canvas;
         framebuf.resize(canvas->get_width(), canvas->get_height());
+    }
+    
+    void context::set_viewport(size_t x, size_t y, size_t width, size_t height)
+    {
+        if (x + width > framebuf.get_width() || y + height > framebuf.get_height()) {
+            throw std::runtime_error("Viewport outside of the framebuffer!");
+        }
+
+        viewp_x = x;
+        viewp_y = y;
+        viewp_width = width;
+        viewp_height = height;
     }
 }
