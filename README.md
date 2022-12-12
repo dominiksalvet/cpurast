@@ -81,9 +81,8 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 
 ## Todo
 
-* Use OpenMP or similar (e.g., for loops)
-* Try to use some SDL surface accelerations (e.g., SDL_SetSurfaceRLE)
 * Use multiple threads
+* use two drawing framebuffers
 * Add support for texturing
 * Add support for lighting
 * Add support for vextex attributes
@@ -91,8 +90,6 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Add support for shadows
 * Add support for vertex and fragment shader
 * Add support for various culling
-* Optimize framebuffer operations (e.g., no write when not changed...)
 * Viewport rendering
 * Multiple framebuffer/VAO support
 * Add more examples
-* Compiler flags for performance
