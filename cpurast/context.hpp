@@ -13,12 +13,17 @@ namespace cr
     public:
         context(cr::canvas* canvas);
 
-        void enable_depth_test();
+        // canvas
         void update_canvas();
+        void set_canvas(cr::canvas* canvas);
+
+        // framebuffer
+        void enable_depth_test();
         void set_clear_color(float r, float g, float b);
         void clear_framebuf(bool clear_color, bool clear_depth);
+
+        // viewport
         void set_viewport(size_t x, size_t y, size_t width, size_t height);
-        void set_canvas(cr::canvas* canvas);
 
     private:
         cr::canvas* canvas; // canvas for drawing pixels
