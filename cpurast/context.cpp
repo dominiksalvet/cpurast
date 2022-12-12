@@ -1,7 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "context.hpp"
-#include <stdexcept>
 #include <cassert>
 
 namespace cr
@@ -40,9 +39,7 @@ namespace cr
     
     void context::set_viewport(size_t x, size_t y, size_t width, size_t height)
     {
-        if (x + width > framebuf.get_width() || y + height > framebuf.get_height()) {
-            throw std::runtime_error("Viewport outside of the framebuffer!");
-        }
+        assert(x + width > framebuf.get_width() && y + height > framebuf.get_height());
 
         viewport = {x, y, width, height};
     }
