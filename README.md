@@ -89,6 +89,7 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Add support for vextex attributes
 * Draw point, line, triangle
 * Add support for shadows
+* Add support for reflections
 * Add support for vertex and fragment shader
 * Add support for various culling
 * Multiple VAO support

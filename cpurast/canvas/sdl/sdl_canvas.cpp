@@ -40,10 +40,6 @@ namespace cr
         {
             color cur_color = color_buf[i];
 
-            assert(cur_color.r >= 0.f && cur_color.r <= 1.f);
-            assert(cur_color.g >= 0.f && cur_color.g <= 1.f);
-            assert(cur_color.b >= 0.f && cur_color.b <= 1.f);
-
             // float to 8-bit for each of RGB components
             Uint8 r = cur_color.r * numeric_limits<Uint8>::max();
             Uint8 g = cur_color.g * numeric_limits<Uint8>::max();

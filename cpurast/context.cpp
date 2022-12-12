@@ -2,16 +2,14 @@
 
 #include "context.hpp"
 #include <stdexcept>
+#include <cassert>
 
 namespace cr
 {
     context::context(cr::canvas* canvas) :
         canvas(canvas),
         framebuf(canvas->get_width(), canvas->get_height()),
-        viewp_x(0),
-        viewp_y(0),
-        viewp_width(canvas->get_width()),
-        viewp_height(canvas->get_height()) {}
+        viewport{0, 0, canvas->get_width(), canvas->get_height()} {}
 
     void context::enable_depth_test() {
         framebuf.enable_depth_test();
@@ -21,18 +19,17 @@ namespace cr
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
     }
 
-    void context::set_clear_color(color clear_color) {
-        framebuf.set_clear_color(clear_color);
+    void context::set_clear_color(float r, float g, float b)
+    {
+        assert(r >= 0.f && r <= 1.f);
+        assert(g >= 0.f && g <= 1.f);
+        assert(b >= 0.f && b <= 1.f);
+
+        framebuf.set_clear_color({r, g, b});
     }
     
     void context::clear_framebuf(bool clear_color, bool clear_depth) {
         framebuf.clear(clear_color, clear_depth);
-    }
-    
-    void context::set_canvas(cr::canvas* canvas)
-    {
-        this->canvas = canvas;
-        framebuf.resize(canvas->get_width(), canvas->get_height());
     }
     
     void context::set_viewport(size_t x, size_t y, size_t width, size_t height)
@@ -41,9 +38,12 @@ namespace cr
             throw std::runtime_error("Viewport outside of the framebuffer!");
         }
 
-        viewp_x = x;
-        viewp_y = y;
-        viewp_width = width;
-        viewp_height = height;
+        viewport = {x, y, width, height};
+    }
+    
+    void context::set_canvas(cr::canvas* canvas)
+    {
+        this->canvas = canvas;
+        framebuf.resize(canvas->get_width(), canvas->get_height());
     }
 }

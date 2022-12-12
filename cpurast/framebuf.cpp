@@ -55,7 +55,10 @@ namespace cr
 
         const size_t cur_index = y * width + x;
 
-        if (test_depth) {
+        if (test_depth)
+        {
+            assert(depth >= -1.f && depth <= 1.f);
+
             if (depth < depth_buf[cur_index])
             {
                 color_buf[cur_index] = color;
@@ -74,12 +77,7 @@ namespace cr
         return height;
     }
 
-    void framebuf::set_clear_color(color clear_color)
-    {
-        assert(clear_color.r >= 0.f && clear_color.r <= 1.f);
-        assert(clear_color.g >= 0.f && clear_color.g <= 1.f);
-        assert(clear_color.b >= 0.f && clear_color.b <= 1.f);
-
+    void framebuf::set_clear_color(color clear_color) {
         this->clear_color = clear_color;
     }
 

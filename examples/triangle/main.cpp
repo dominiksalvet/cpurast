@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     // create cpurast context
     cr::context cr_context = cr::context(cr_canvas.get());
     // set up context properties
-    cr_context.set_clear_color({.3f, .5f, .7f});
+    cr_context.set_clear_color(.3f, .5f, .7f);
 
     bool shouldExit = false;
     while (!shouldExit)
