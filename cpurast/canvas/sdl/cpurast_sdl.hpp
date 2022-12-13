@@ -3,8 +3,3 @@
 #pragma once
 
 #include "sdl_canvas.hpp"
-
-namespace cr
-{
-
-}

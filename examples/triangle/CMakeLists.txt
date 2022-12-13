@@ -5,7 +5,9 @@ project(triangle CXX)
 
 find_package(SDL2 REQUIRED)
 
-add_executable(triangle main.cpp)
+add_executable(triangle
+    main.cpp
+)
 target_include_directories(triangle PRIVATE
     ${SDL2_INCLUDE_DIRS}
     ${CPURAST_INCLUDE_DIR}

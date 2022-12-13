@@ -4,8 +4,5 @@
 
 #include "context.hpp"
 #include "canvas.hpp"
-
-namespace cr
-{
-
-}
+#include "vertex.hpp"
+#include "vertex_shader.hpp"
