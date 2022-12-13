@@ -14,6 +14,8 @@ namespace cr
 
     void framebuf::resize(size_t new_width, size_t new_height)
     {
+        assert(new_width > 0 && new_height > 0);
+
         color_buf.resize(new_width * new_height);
 
         if (test_depth) {

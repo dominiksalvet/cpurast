@@ -10,7 +10,7 @@ namespace cr
         canvas(canvas),
         framebuf(canvas->get_width(), canvas->get_height()),
         viewport{0, 0, canvas->get_width(), canvas->get_height()},
-        vs(std::make_unique<empty_vs>()) {} // empty vertex shader for start
+        vs(std::make_shared<empty_vs>()) {} // empty vertex shader for start
 
     void context::update_canvas() {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());

@@ -91,6 +91,6 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * Add support for shadows
 * Add support for reflections
 * Add support for vertex and fragment shader
-* Add support for various culling
+* Add support for various culling (remove some asserts)
 * Multiple VAO support
 * Add more examples
