@@ -16,7 +16,7 @@ namespace cr
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
     }
 
-    void context::set_canvas(cr::canvas* canvas)
+    void context::bind_canvas(cr::canvas* canvas)
     {
         this->canvas = canvas;
         framebuf.resize(canvas->get_width(), canvas->get_height());
@@ -45,8 +45,8 @@ namespace cr
 
         viewport = {x, y, width, height};
     }
-    
-    void context::set_vertex_shader(std::unique_ptr<vertex_shader> vs) {
-        this->vs = std::move(vs); // transfer ownership
+
+    void context::bind_vertex_shader(const shared_ptr<vertex_shader>& vs) {
+        this->vs = vs; // share ownership
     }
 }

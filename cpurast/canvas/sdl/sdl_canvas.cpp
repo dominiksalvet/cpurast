@@ -5,6 +5,7 @@
 #include <limits>
 #include <stdexcept>
 
+using std::runtime_error;
 using std::numeric_limits;
 
 namespace cr
@@ -15,16 +16,16 @@ namespace cr
     {
         // SDL pixels must be accessible as Uint32 values
         if (surface->format->BytesPerPixel != sizeof(Uint32)) {
-            throw std::runtime_error("Unsupported number of bytes per SDL pixel!");
+            throw runtime_error("Unsupported number of bytes per SDL pixel!");
         }
 
         // SDL pixels must be stored in linear array without gaps
         if (surface->pitch != sizeof(Uint32) * surface->w) {
-            throw std::runtime_error("Unsupported SDL pixels row width!");
+            throw runtime_error("Unsupported SDL pixels row width!");
         }
     }
 
-    void sdl_canvas::draw(const vector<color>& color_buf, size_t width, size_t height)
+    void sdl_canvas::draw(const std::vector<color>& color_buf, size_t width, size_t height)
     {
         assert(get_width() == width && get_height() == height);
 

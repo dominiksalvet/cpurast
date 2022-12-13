@@ -6,8 +6,6 @@
 #include <vector>
 #include <cstddef>
 
-using std::vector;
-
 namespace cr
 {
     // interface for displaying graphics on a canvas (e.g., content of window)
@@ -17,7 +15,7 @@ namespace cr
         virtual ~canvas() = default;
 
         // canvas resolution and color buffer resolution must be the same
-        virtual void draw(const vector<color>& color_buf, size_t width, size_t height) = 0;
+        virtual void draw(const std::vector<color>& color_buf, size_t width, size_t height) = 0;
 
         // return sizes of canvas in number of pixels
         virtual size_t get_width() = 0;

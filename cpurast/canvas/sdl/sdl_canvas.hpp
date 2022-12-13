@@ -14,7 +14,7 @@ namespace cr
         // should the SDL surface change, recreate the instance of this class
         sdl_canvas(SDL_Surface* const surface);
 
-        void draw(const vector<color>& color_buf, size_t width, size_t height) override;
+        void draw(const std::vector<color>& color_buf, size_t width, size_t height) override;
 
         size_t get_width() override;
         size_t get_height() override;
