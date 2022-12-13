@@ -59,7 +59,7 @@ namespace cr
 
         if (test_depth)
         {
-            assert(depth >= -1.f && depth <= 1.f);
+            assert(depth >= 0.f && depth <= 1.f);
 
             if (depth < depth_buf[cur_index])
             {

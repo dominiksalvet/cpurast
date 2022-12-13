@@ -16,10 +16,12 @@ namespace cr
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
     }
 
-    void context::bind_canvas(cr::canvas* canvas)
-    {
+    void context::bind_canvas(cr::canvas* canvas) {
         this->canvas = canvas;
-        framebuf.resize(canvas->get_width(), canvas->get_height());
+    }
+    
+    void context::resize_framebuf(size_t new_width, size_t new_height) {
+        framebuf.resize(new_width, new_height);
     }
 
     void context::enable_depth_test() {
@@ -41,12 +43,27 @@ namespace cr
     
     void context::set_viewport(size_t x, size_t y, size_t width, size_t height)
     {
-        assert(x + width > framebuf.get_width() && y + height > framebuf.get_height());
+        assert(x + width <= framebuf.get_width() && y + height <= framebuf.get_height());
+        assert(width > 0 && height > 0);
 
         viewport = {x, y, width, height};
     }
 
     void context::bind_vertex_shader(const shared_ptr<vertex_shader>& vs) {
         this->vs = vs; // share ownership
+    }
+
+    size_t context::get_framebuf_x(float x)
+    {
+        assert(x >= 0.f && x <= 1.f);
+
+        return x * (viewport.width - 1) + viewport.x;
+    }
+
+    size_t context::get_framebuf_y(float y)
+    {
+        assert(y >= 0.f && y <= 1.f);
+
+        return y * (viewport.height - 1) + viewport.y;
     }
 }

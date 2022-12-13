@@ -76,8 +76,9 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 ## Features
 
 * Z-buffering support
-* Uses normalized device coordinates
 * Viewport rendering
+* Normalized coordinates
+* Normalized colors
 * Cross platform, no dependencies
 
 ## Todo

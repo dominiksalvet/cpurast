@@ -35,6 +35,6 @@ namespace cr
         vector<color> color_buf; // color buffer representation
 
         bool test_depth; // depth test enable flag
-        vector<float> depth_buf; // depth buffer of values [-1, 1]
+        vector<float> depth_buf; // depth buffer of values [0, 1]
     };
 }

@@ -22,6 +22,8 @@ namespace cr
         // change active canvas pointer (pointer due to foreign ownership)
         void bind_canvas(cr::canvas* canvas);
 
+        // change the resolution of the framebuffer
+        void resize_framebuf(size_t new_width, size_t new_height);
         // enable depth test for framebuffer
         void enable_depth_test();
         // set clear color of framebuffer's color buffer
@@ -36,6 +38,10 @@ namespace cr
         void bind_vertex_shader(const shared_ptr<vertex_shader>& vs);
 
     private:
+        // transform normalized coordinates [0, 1] to framebuffer coordinates
+        size_t get_framebuf_x(float x);
+        size_t get_framebuf_y(float y);
+
         cr::canvas* canvas; // canvas for drawing pixels
         cr::framebuf framebuf; // framebuffer for rendering
 
