@@ -5,9 +5,8 @@
 #include "framebuf.hpp"
 #include "canvas.hpp"
 #include "viewport.hpp"
-#include "vertex_shader.hpp"
-#include "fragment_shader.hpp"
 #include <memory>
+#include "shader.hpp"
 
 using std::shared_ptr;
 

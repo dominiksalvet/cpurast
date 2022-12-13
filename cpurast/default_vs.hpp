@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "vertex_shader.hpp"
+#include "shader.hpp"
+#include <cassert>
 
 namespace cr
 {
@@ -10,8 +11,15 @@ namespace cr
     class default_vs : public vertex_shader
     {
     public:
-        vertex run(const vertex& v) override {
-            return v; // forward input to output
+        void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) override
+        {
+            assert(in_a.size() >= 3);
+
+            // assuming that the first three attributes represent vertex position
+            // performs no vertex transformation
+            out_p[0] = in_a[0]; // x
+            out_p[1] = in_a[1]; // y
+            out_p[2] = in_a[2]; // z
         }
     };
 }

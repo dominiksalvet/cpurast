@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "fragment_shader.hpp"
+#include "shader.hpp"
 
 namespace cr
 {
@@ -10,8 +10,12 @@ namespace cr
     class default_fs : public fragment_shader
     {
     public:
-        color run(const vector<float>& f) override {
-            return WHITE_COLOR; // all fragments are white
+        void run(const vector<float>& in_a, array<float, 3>& out_c) override
+        {
+            // ignore input attributes and use white color for all fragments
+            out_c[0] = 1.f; // r
+            out_c[1] = 1.f; // g
+            out_c[2] = 1.f; // b
         }
     };
 }

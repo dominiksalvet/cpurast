@@ -8,7 +8,7 @@ namespace cr
     framebuf::framebuf(size_t width, size_t height) :
         width(width),
         height(height),
-        clear_color(BLACK_COLOR), // default clear color
+        clear_color{0.f, 0.f, 0.f}, // black clear color
         color_buf(width * height),
         test_depth(false) {}
 

@@ -65,8 +65,7 @@ int main(int argc, char* argv[])
     }
 
     // create and set up cpurast context
-    cr::context cr_context = cr::context(cr_canvas.get());
-    cr_context.set_clear_color(.3f, .5f, .7f);
+    cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
 
     bool shouldExit = false;
     while (!shouldExit)
@@ -82,6 +81,8 @@ int main(int argc, char* argv[])
                     surface = SDL_GetWindowSurface(window); // get new SDL surface
                     cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
                     cr_context.bind_canvas(cr_canvas.get()); // change canvas in cpurast context
+                    cr_context.resize_framebuf(surface->w, surface->h); // resize framebuffer
+                    cr_context.set_viewport(0, 0, surface->w, surface->h); // set up viewport
                 }
             }
 

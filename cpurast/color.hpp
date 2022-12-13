@@ -12,10 +12,4 @@ namespace cr
         float g; // green
         float b; // blue
     };
-
-    constexpr color BLACK_COLOR = { 0.f, 0.f, 0.f };
-    constexpr color WHITE_COLOR = { 1.f, 1.f, 1.f };
-    constexpr color RED_COLOR   = { 1.f, 0.f, 0.f };
-    constexpr color GREEN_COLOR = { 0.f, 1.f, 0.f };
-    constexpr color BLUE_COLOR  = { 0.f, 0.f, 1.f };
 }

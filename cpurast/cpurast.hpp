@@ -4,6 +4,4 @@
 
 #include "context.hpp"
 #include "canvas.hpp"
-#include "vertex.hpp"
-#include "vertex_shader.hpp"
-#include "fragment_shader.hpp"
+#include "shader.hpp"
