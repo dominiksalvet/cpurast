@@ -23,9 +23,6 @@ constexpr nanoseconds FRAMETIME(duration_cast<nanoseconds>(seconds(1)) / FRAMERA
 class main_vs : public cr::vertex_shader
 {
 public:
-    main_vs(const vector<float>& uniforms) :
-        vertex_shader(uniforms) {}
-
     const cr::vertex& run(const cr::vertex& v) override
     {
         // todo: add vertex shader code
@@ -78,15 +75,12 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    // create cpurast context
+    // create and set up cpurast context
     cr::context cr_context = cr::context(cr_canvas.get());
-
-    // create custom vertex shader
-    std::shared_ptr<cr::vertex_shader> vs;
-    vs = std::make_shared<main_vs>(std::vector<float>{0.f, 1.f, 2.f});
-
-    // set up context properties
     cr_context.set_clear_color(.3f, .5f, .7f);
+
+    // create and bind custom vertex shader
+    std::shared_ptr<cr::vertex_shader> vs = std::make_shared<main_vs>();
     cr_context.bind_vertex_shader(vs);
 
     bool shouldExit = false;

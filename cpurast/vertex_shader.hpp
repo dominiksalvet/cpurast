@@ -13,9 +13,6 @@ namespace cr
     class vertex_shader
     {
     public:
-        vertex_shader(const vector<float>& uniforms) {
-            set_uniforms(uniforms);
-        }
         virtual ~vertex_shader() = default;
 
         // run per-vertex operation

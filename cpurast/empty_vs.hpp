@@ -10,9 +10,6 @@ namespace cr
     class empty_vs : public vertex_shader
     {
     public:
-        empty_vs() :
-            vertex_shader({}) {}
-
         const cr::vertex& run(const cr::vertex& v) override {
             return v; // forward input to output
         }
