@@ -2,13 +2,15 @@
 
 #include "context.hpp"
 #include <cassert>
+#include "empty_vs.hpp"
 
 namespace cr
 {
     context::context(cr::canvas* canvas) :
         canvas(canvas),
         framebuf(canvas->get_width(), canvas->get_height()),
-        viewport{0, 0, canvas->get_width(), canvas->get_height()} {}
+        viewport{0, 0, canvas->get_width(), canvas->get_height()},
+        vs(std::make_unique<empty_vs>()) {} // empty vertex shader for start
 
     void context::update_canvas() {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
@@ -42,5 +44,9 @@ namespace cr
         assert(x + width > framebuf.get_width() && y + height > framebuf.get_height());
 
         viewport = {x, y, width, height};
+    }
+    
+    void context::set_vertex_shader(std::unique_ptr<vertex_shader> vs) {
+        this->vs = std::move(vs); // transfer ownership
     }
 }
