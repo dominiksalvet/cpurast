@@ -19,17 +19,6 @@ constexpr int WINDOW_HEIGHT = 480;
 constexpr int FRAMERATE = 30;
 constexpr nanoseconds FRAMETIME(duration_cast<nanoseconds>(seconds(1)) / FRAMERATE);
 
-// custom vertex shader
-class main_vs : public cr::vertex_shader
-{
-public:
-    cr::vertex run(const cr::vertex& v) override
-    {
-        // todo: add vertex shader code
-        return v;
-    }
-};
-
 void prepare_sdl(SDL_Window** window, SDL_Surface** surface, const char* window_title)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -78,10 +67,6 @@ int main(int argc, char* argv[])
     // create and set up cpurast context
     cr::context cr_context = cr::context(cr_canvas.get());
     cr_context.set_clear_color(.3f, .5f, .7f);
-
-    // create and bind custom vertex shader
-    std::shared_ptr<cr::vertex_shader> vs = std::make_shared<main_vs>();
-    cr_context.bind_vertex_shader(vs);
 
     bool shouldExit = false;
     while (!shouldExit)
