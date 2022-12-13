@@ -6,11 +6,11 @@
 
 namespace cr
 {
-    // empty vertex shader
-    class empty_vs : public vertex_shader
+    // default vertex shader
+    class default_vs : public vertex_shader
     {
     public:
-        cr::vertex run(const cr::vertex& v) override {
+        vertex run(const vertex& v) override {
             return v; // forward input to output
         }
     };

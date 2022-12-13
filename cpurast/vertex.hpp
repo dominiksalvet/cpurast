@@ -6,7 +6,11 @@
 
 namespace cr
 {
-    // first three items must be vertex positions x, y, z
-    // other items are extra attributes (optional)
-    using vertex = std::vector<float>;
+    struct vertex
+    {
+        float x;
+        float y;
+        float z;
+        std::vector<float> attribs; // optional extra attributes
+    };
 }

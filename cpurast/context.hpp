@@ -6,6 +6,7 @@
 #include "canvas.hpp"
 #include "viewport.hpp"
 #include "vertex_shader.hpp"
+#include "fragment_shader.hpp"
 #include <memory>
 
 using std::shared_ptr;
@@ -36,6 +37,8 @@ namespace cr
 
         // change active vertex shader program
         void bind_vertex_shader(const shared_ptr<vertex_shader>& vs);
+        // change active fragment shader program
+        void bind_fragment_shader(const shared_ptr<fragment_shader>& fs);
 
     private:
         // transform normalized coordinates [0, 1] to framebuffer coordinates
@@ -48,5 +51,6 @@ namespace cr
         cr::viewport viewport; // current viewport properties
 
         shared_ptr<vertex_shader> vs; // active vertex shader
+        shared_ptr<fragment_shader> fs; // active fragment shader
     };
 }

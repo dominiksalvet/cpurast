@@ -2,7 +2,8 @@
 
 #include "context.hpp"
 #include <cassert>
-#include "empty_vs.hpp"
+#include "default_vs.hpp"
+#include "default_fs.hpp"
 
 namespace cr
 {
@@ -10,7 +11,8 @@ namespace cr
         canvas(canvas),
         framebuf(canvas_w, canvas_h),
         viewport{0, 0, canvas_w, canvas_h},
-        vs(std::make_shared<empty_vs>()) {} // empty vertex shader for start
+        vs(std::make_shared<default_vs>()),
+        fs(std::make_shared<default_fs>()) {}
 
     void context::update_canvas() {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
@@ -51,6 +53,10 @@ namespace cr
 
     void context::bind_vertex_shader(const shared_ptr<vertex_shader>& vs) {
         this->vs = vs; // share ownership
+    }
+
+    void context::bind_fragment_shader(const shared_ptr<fragment_shader>& fs) {
+        this->fs = fs; // share ownership
     }
 
     size_t context::get_framebuf_x(float x)
