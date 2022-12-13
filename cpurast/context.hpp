@@ -15,7 +15,7 @@ namespace cr
     class context
     {
     public: // cpurast API
-        context(cr::canvas* canvas);
+        context(cr::canvas* canvas, size_t canvas_w, size_t canvas_h);
 
         // draw framebuffer to the canvas
         void update_canvas();

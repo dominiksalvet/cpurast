@@ -6,10 +6,10 @@
 
 namespace cr
 {
-    context::context(cr::canvas* canvas) :
+    context::context(cr::canvas* canvas, size_t canvas_w, size_t canvas_h) :
         canvas(canvas),
-        framebuf(canvas->get_width(), canvas->get_height()),
-        viewport{0, 0, canvas->get_width(), canvas->get_height()},
+        framebuf(canvas_w, canvas_h),
+        viewport{0, 0, canvas_w, canvas_h},
         vs(std::make_shared<empty_vs>()) {} // empty vertex shader for start
 
     void context::update_canvas() {
