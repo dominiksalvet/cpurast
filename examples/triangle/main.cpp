@@ -23,7 +23,7 @@ constexpr nanoseconds FRAMETIME(duration_cast<nanoseconds>(seconds(1)) / FRAMERA
 class main_vs : public cr::vertex_shader
 {
 public:
-    const cr::vertex& run(const cr::vertex& v) override
+    cr::vertex run(const cr::vertex& v) override
     {
         // todo: add vertex shader code
         return v;

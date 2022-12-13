@@ -16,7 +16,7 @@ namespace cr
         virtual ~vertex_shader() = default;
 
         // run per-vertex operation
-        virtual const vertex& run(const vertex& v) = 0;
+        virtual vertex run(const vertex& v) = 0;
 
         void set_uniforms(const vector<float>& uniforms) {
             this->uniforms = std::move(uniforms);
