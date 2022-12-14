@@ -45,8 +45,9 @@ namespace cr
     
     void context::set_viewport(size_t x, size_t y, size_t width, size_t height)
     {
-        assert(x + width <= framebuf.get_width() && y + height <= framebuf.get_height());
+        assert(x < framebuf.get_width() && y < framebuf.get_height());
         assert(width > 0 && height > 0);
+        assert(x + width <= framebuf.get_width() && y + height <= framebuf.get_height());
 
         viewport = {x, y, width, height};
     }
