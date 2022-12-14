@@ -87,7 +87,7 @@ cr_canvas = std::make_unique<custom_canvas>(/* custom constructor */);
 ## Todo
 
 * Use multiple threads
-* use two drawing framebuffers
+* use two rendering framebuffers
 * Add support for texturing
 * Add support for lighting
 * Draw point, line, triangle

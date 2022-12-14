@@ -7,7 +7,7 @@
 
 namespace cr
 {
-    // SDL canvas used for surface rendering (e.g., window surface)
+    // SDL canvas used for surface drawing (e.g., window surface)
     class sdl_canvas : public canvas
     {
     public:
