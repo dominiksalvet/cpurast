@@ -10,8 +10,9 @@ namespace cr
         canvas(canvas),
         framebuf(canvas_w, canvas_h),
         viewport{0, 0, canvas_w, canvas_h},
-        vs(std::make_shared<default_vs>()),
-        fs(std::make_shared<default_fs>()) {}
+        v_shader(std::make_shared<default_vs>()),
+        f_shader(std::make_shared<default_fs>()),
+        renderer(framebuf, viewport, v_shader.get(), f_shader.get()) {}
 
     void context::update_canvas() const {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
@@ -50,25 +51,27 @@ namespace cr
         viewport = {x, y, width, height};
     }
 
-    void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& vs) {
-        this->vs = vs; // share ownership
-    }
-
-    void context::bind_fragment_shader(const shared_ptr<const fragment_shader>& fs) {
-        this->fs = fs; // share ownership
-    }
-
-    size_t context::get_framebuf_x(float x) const
+    void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader)
     {
-        assert(x >= 0.f && x <= 1.f);
-
-        return x * (viewport.width - 1) + viewport.x;
+        this->v_shader = v_shader; // share ownership
+        renderer.set_vs(v_shader.get());
     }
 
-    size_t context::get_framebuf_y(float y) const
+    void context::bind_fragment_shader(const shared_ptr<const fragment_shader>& f_shader)
     {
-        assert(y >= 0.f && y <= 1.f);
+        this->f_shader = f_shader; // share ownership
+        renderer.set_fs(f_shader.get());
+    }
 
-        return y * (viewport.height - 1) + viewport.y;
+    void context::draw_point(const vector<float>& v) {
+        renderer.render_point(v);
+    }
+
+    void context::draw_line(const vector<float>& v1, const vector<float> v2) {
+        renderer.render_line(v1, v2);
+    }
+
+    void context::draw_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3) {
+        renderer.render_triangle(v1, v2, v3);
     }
 }

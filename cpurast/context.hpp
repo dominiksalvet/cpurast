@@ -7,6 +7,7 @@
 #include "viewport.hpp"
 #include <memory>
 #include "shader.hpp"
+#include "renderer.hpp"
 
 using std::shared_ptr;
 
@@ -35,21 +36,24 @@ namespace cr
         void set_viewport(size_t x, size_t y, size_t width, size_t height);
 
         // change active vertex shader program
-        void bind_vertex_shader(const shared_ptr<const vertex_shader>& vs);
+        void bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader);
         // change active fragment shader program
-        void bind_fragment_shader(const shared_ptr<const fragment_shader>& fs);
+        void bind_fragment_shader(const shared_ptr<const fragment_shader>& f_shader);
+
+        // drawing of primitives (v - vertex attributes)
+        void draw_point(const vector<float>& v);
+        void draw_line(const vector<float>& v1, const vector<float> v2);
+        void draw_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3);
 
     private:
-        // transform normalized coordinates [0, 1] to framebuffer coordinates
-        size_t get_framebuf_x(float x) const;
-        size_t get_framebuf_y(float y) const;
-
         cr::canvas* canvas; // canvas for drawing pixels
 
         cr::framebuf framebuf; // framebuffer for rendering
         cr::viewport viewport; // current viewport properties
 
-        shared_ptr<const vertex_shader> vs; // active vertex shader
-        shared_ptr<const fragment_shader> fs; // active fragment shader
+        shared_ptr<const vertex_shader> v_shader; // active vertex shader
+        shared_ptr<const fragment_shader> f_shader; // active fragment shader
+
+        cr::renderer renderer; // graphics renderer
     };
 }
