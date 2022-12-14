@@ -2,8 +2,7 @@
 
 #include "context.hpp"
 #include <cassert>
-#include "default_vs.hpp"
-#include "default_fs.hpp"
+#include "default_shader.hpp"
 
 namespace cr
 {
