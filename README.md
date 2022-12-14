@@ -70,11 +70,14 @@ class custom_canvas : cr::canvas
 
 std::unique_ptr<cr::canvas> cr_canvas;
 ...
-cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
+cr_canvas = std::make_unique<custom_canvas>(/* custom constructor */);
 ```
+
+> If you are using a custom canvas, please consider contributing.
 
 ## Features
 
+* Vertex and fragment shaders
 * Z-buffering support
 * Viewport rendering
 * Normalized coordinates
@@ -87,11 +90,9 @@ cr_canvas = std::make_unique<cr::custom_canvas>(/* custom constructor */);
 * use two drawing framebuffers
 * Add support for texturing
 * Add support for lighting
-* Add support for vextex attributes
 * Draw point, line, triangle
 * Add support for shadows
 * Add support for reflections
-* Add support for vertex and fragment shader
 * Add support for various culling (remove some asserts)
-* Multiple VAO support
 * Add more examples
+* Add repository topics
