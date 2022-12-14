@@ -71,11 +71,11 @@ namespace cr
         }
     }
 
-    size_t framebuf::get_width() {
+    size_t framebuf::get_width() const {
         return width;
     }
 
-    size_t framebuf::get_height() {
+    size_t framebuf::get_height() const {
         return height;
     }
 
@@ -83,7 +83,7 @@ namespace cr
         this->clear_color = clear_color;
     }
 
-    const vector<color>& framebuf::get_color_buf() {
+    const vector<color>& framebuf::get_color_buf() const {
         return color_buf;
     }
 }

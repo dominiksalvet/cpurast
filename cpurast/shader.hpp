@@ -34,7 +34,7 @@ namespace cr
 
         // run per-vertex operation with given vertex attributes
         // arguments: input attributes, output position [x, y, z], output attributes (empty on call)
-        virtual void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) = 0;
+        virtual void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const = 0;
     };
 
     // abstract class for fragment shader representation
@@ -45,6 +45,6 @@ namespace cr
 
         // run per-fragment operation with given fragment attributes
         // arguments: input attributes, output normalized color [r, g, b]
-        virtual void run(const vector<float>& in_a, array<float, 3>& out_c) = 0;
+        virtual void run(const vector<float>& in_a, array<float, 3>& out_c) const = 0;
     };
 }

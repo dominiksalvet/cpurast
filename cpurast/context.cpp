@@ -13,7 +13,7 @@ namespace cr
         vs(std::make_shared<default_vs>()),
         fs(std::make_shared<default_fs>()) {}
 
-    void context::update_canvas() {
+    void context::update_canvas() const {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
     }
 
@@ -50,22 +50,22 @@ namespace cr
         viewport = {x, y, width, height};
     }
 
-    void context::bind_vertex_shader(const shared_ptr<vertex_shader>& vs) {
+    void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& vs) {
         this->vs = vs; // share ownership
     }
 
-    void context::bind_fragment_shader(const shared_ptr<fragment_shader>& fs) {
+    void context::bind_fragment_shader(const shared_ptr<const fragment_shader>& fs) {
         this->fs = fs; // share ownership
     }
 
-    size_t context::get_framebuf_x(float x)
+    size_t context::get_framebuf_x(float x) const
     {
         assert(x >= 0.f && x <= 1.f);
 
         return x * (viewport.width - 1) + viewport.x;
     }
 
-    size_t context::get_framebuf_y(float y)
+    size_t context::get_framebuf_y(float y) const
     {
         assert(y >= 0.f && y <= 1.f);
 

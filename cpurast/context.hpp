@@ -18,7 +18,7 @@ namespace cr
         context(cr::canvas* canvas, size_t canvas_w, size_t canvas_h);
 
         // draw framebuffer to the canvas
-        void update_canvas();
+        void update_canvas() const;
         // change active canvas pointer (pointer due to foreign ownership)
         void bind_canvas(cr::canvas* canvas);
 
@@ -35,21 +35,21 @@ namespace cr
         void set_viewport(size_t x, size_t y, size_t width, size_t height);
 
         // change active vertex shader program
-        void bind_vertex_shader(const shared_ptr<vertex_shader>& vs);
+        void bind_vertex_shader(const shared_ptr<const vertex_shader>& vs);
         // change active fragment shader program
-        void bind_fragment_shader(const shared_ptr<fragment_shader>& fs);
+        void bind_fragment_shader(const shared_ptr<const fragment_shader>& fs);
 
     private:
         // transform normalized coordinates [0, 1] to framebuffer coordinates
-        size_t get_framebuf_x(float x);
-        size_t get_framebuf_y(float y);
+        size_t get_framebuf_x(float x) const;
+        size_t get_framebuf_y(float y) const;
 
         cr::canvas* canvas; // canvas for drawing pixels
-        cr::framebuf framebuf; // framebuffer for rendering
 
+        cr::framebuf framebuf; // framebuffer for rendering
         cr::viewport viewport; // current viewport properties
 
-        shared_ptr<vertex_shader> vs; // active vertex shader
-        shared_ptr<fragment_shader> fs; // active fragment shader
+        shared_ptr<const vertex_shader> vs; // active vertex shader
+        shared_ptr<const fragment_shader> fs; // active fragment shader
     };
 }

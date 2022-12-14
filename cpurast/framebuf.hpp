@@ -22,10 +22,10 @@ namespace cr
         // lower depth value means it is closer to the viewport
         void write(size_t x, size_t y, cr::color color, float depth);
 
-        size_t get_width();
-        size_t get_height();
+        size_t get_width() const;
+        size_t get_height() const;
         void set_clear_color(color clear_color);
-        const vector<color>& get_color_buf();
+        const vector<color>& get_color_buf() const;
 
     private:
         size_t width;

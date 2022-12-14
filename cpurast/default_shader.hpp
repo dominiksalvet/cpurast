@@ -11,7 +11,7 @@ namespace cr
     class default_vs : public vertex_shader
     {
     public:
-        void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) override
+        void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const override
         {
             assert(in_a.size() >= 3);
 
@@ -27,7 +27,7 @@ namespace cr
     class default_fs : public fragment_shader
     {
     public:
-        void run(const vector<float>& in_a, array<float, 3>& out_c) override
+        void run(const vector<float>& in_a, array<float, 3>& out_c) const override
         {
             // ignore input attributes and use white color for all fragments
             out_c[0] = 1.f; // r
