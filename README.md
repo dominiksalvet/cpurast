@@ -90,7 +90,17 @@ cr_canvas = std::make_unique<custom_canvas>(/* custom constructor */);
 
 ## Used Sources
 
-TODO
+In chronological order:
+
+* https://db.in.tum.de/teaching/ss20/c++praktikum/slides/lecture-11.pdf
+* https://trenki2.github.io/blog/2017/06/02/using-sdl2-with-cmake/
+* https://benedicthenshaw.com/soft_render_sdl2.html
+* https://www.youtube.com/watch?v=dUlWUcugA9A
+* https://www.khronos.org/opengl/wiki/Default_Framebuffer
+* https://registry.khronos.org/OpenGL-Refpages/gl4/html/glViewport.xhtml
+* https://learnopengl.com/Getting-started/Hello-Triangle
+
+> I have also used official [CMake](https://cmake.org/cmake/help/latest/), [SDL](https://wiki.libsdl.org/wiki/index), and [C++](https://en.cppreference.com/w/) documentation.
 
 ## Todo
 
