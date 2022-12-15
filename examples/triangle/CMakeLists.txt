@@ -12,6 +12,7 @@ target_include_directories(triangle PRIVATE
     ${SDL2_INCLUDE_DIRS}
     ${CPURAST_INCLUDE_DIR}
     ${CPURAST_SDL_INCLUDE_DIR}
+    ${SHADERS_INCLUDE_DIR}
 )
 target_link_libraries(triangle PRIVATE
     ${SDL2_LIBRARIES}

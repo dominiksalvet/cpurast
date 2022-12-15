@@ -13,6 +13,14 @@ This project was created during my master's studies. I chose this assignment bec
 * Normalized colors
 * Cross platform, minimal dependencies
 
+## Repository Structure
+
+* `cpurast` - this rasterization library
+* `cpurast/sdl_canvas` - SDL canvas to draw on
+* `examples` - example programs utilizing cpurast
+* `examples/triangle` - color triangle with window resize support
+* `shaders` - example cpurast shaders
+
 ## How to Run Examples
 
 Requirements to run examples:

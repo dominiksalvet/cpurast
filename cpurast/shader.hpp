@@ -33,7 +33,7 @@ namespace cr
         virtual ~vertex_shader() = default;
 
         // run per-vertex operation with given vertex attributes
-        // arguments: input attributes, output position [x, y, z], output attributes (empty on call)
+        // arguments: input attributes, output position [x, y, z], output attributes (resize as you require)
         virtual void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const = 0;
     };
 

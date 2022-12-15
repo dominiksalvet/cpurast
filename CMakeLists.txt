@@ -5,4 +5,5 @@ project(examples CXX)
 
 add_subdirectory(cpurast)
 add_subdirectory(cpurast/sdl_canvas)
+add_subdirectory(shaders)
 add_subdirectory(examples/triangle)
