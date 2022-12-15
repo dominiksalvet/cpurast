@@ -1,5 +1,18 @@
 # CPU Rasterizer
 
+The cpurast is a software rasterizer written from scratch. Basically, it is a very simple and limited imitation of a graphics library (such as OpenGL), yet it performs all graphical computations on the processor. This approach is much slower than using a graphics processor, but it is more flexible since it has no additional driver and hardware requirements. Surprisingly, cpurast comes with a set of advanced [features](#features).
+
+This project was created during my master's studies. I chose this assignment because I wanted to get an idea of what could be inside a real graphics processor so that it supports the functions of graphics libraries. When I started, I had just a little experience with computer graphics, so I had to study a lot. Feel free to take a look at the [used sources](#used-sources) from which I have gained my knowledge.
+
+## Features
+
+* Vertex and fragment shaders
+* Z-buffering support
+* Viewport rendering
+* Normalized coordinates
+* Normalized colors
+* Cross platform, minimal dependencies
+
 ## How to Run Examples
 
 Requirements to run examples:
@@ -11,17 +24,17 @@ Requirements to run examples:
 Building examples that use **cpurast**:
 
 ```
+cd cpurast
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE="Release" ..
 make
 ```
 
-Running a **triangle** example:
+Running a **triangle** example after building:
 
 ```
-cd build/examples/triangle
-./triangle
+./examples/triangle/triangle
 ```
 
 ## How to Use as a Library
@@ -37,7 +50,7 @@ What may be useful:
 
 > It is suggested to start with an existing example, copy it to a new example directory, and start customizing it. Later, after some experience with using and building cpurast, the created program may be used as the foundation of a new project.
 
-## Custom Canvas
+### Using a Custom Canvas
 
 This library comes with **SDL canvas** to draw on:
 
@@ -73,16 +86,11 @@ std::unique_ptr<cr::canvas> cr_canvas;
 cr_canvas = std::make_unique<custom_canvas>(/* custom constructor */);
 ```
 
-> If you are using a custom canvas, please consider contributing.
+> If you created a custom canvas, please consider [contributing](https://github.com/dominiksalvet/cpurast/issues/new) to cpurast.
 
-## Features
+## Used Sources
 
-* Vertex and fragment shaders
-* Z-buffering support
-* Viewport rendering
-* Normalized coordinates
-* Normalized colors
-* Cross platform, no dependencies
+TODO
 
 ## Todo
 
