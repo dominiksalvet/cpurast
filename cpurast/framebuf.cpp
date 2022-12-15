@@ -55,7 +55,8 @@ namespace cr
     {
         assert(x < width && y < height);
 
-        const size_t cur_index = y * width + x;
+        // the bottom row has y value of 0
+        const size_t cur_index = (height - y - 1) * width + x;
 
         if (test_depth)
         {
