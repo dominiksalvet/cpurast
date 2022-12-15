@@ -64,6 +64,14 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    // triangle - vertices attributes
+    std::vector<std::vector<float>> vs
+    {
+        {0.f, 0.f, 0.f}, // bottom left
+        {.5f, 1.f, 0.f}, // center top
+        {1.f, 0.f, 0.f} // bottom right
+    };
+
     // create and set up cpurast context
     cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
 
@@ -98,6 +106,7 @@ int main(int argc, char* argv[])
         }
 
         cr_context.clear_framebuf(true, false);
+        cr_context.draw_triangle(vs[0], vs[1], vs[2]);
         cr_context.update_canvas();
         SDL_UpdateWindowSurface(window);
 
