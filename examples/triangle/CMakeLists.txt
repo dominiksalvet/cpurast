@@ -16,5 +16,5 @@ target_include_directories(triangle PRIVATE
 target_link_libraries(triangle PRIVATE
     ${SDL2_LIBRARIES}
     cpurast
-    cpurast-sdl
+    cpurast_sdl
 )
