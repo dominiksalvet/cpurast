@@ -113,4 +113,3 @@ In chronological order:
 * Add support for reflections
 * Add support for various culling (remove some asserts)
 * Add more examples
-* Add repository topics
