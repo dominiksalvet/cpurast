@@ -28,7 +28,7 @@ cd cpurast
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE="Release" ..
-make
+make -j
 ```
 
 Running a **triangle** example after building:
