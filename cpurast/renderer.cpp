@@ -31,12 +31,15 @@ namespace cr
 
     void renderer::render_line(const vector<float>& v1, const vector<float> v2)
     {
-
+        render_point(v1);
+        render_point(v2);
     }
 
     void renderer::render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3)
     {
-
+        render_point(v1);
+        render_point(v2);
+        render_point(v3);
     }
 
     void renderer::set_vs(const vertex_shader* vs) {
