@@ -13,7 +13,20 @@ namespace cr
     
     void renderer::render_point(const vector<float>& v)
     {
+        position pos = vs->run(v, shader_pipe); // run vertex shader
 
+        if (!pos.is_normalized()) { // clipping
+            return;
+        }
+
+        // compute final framebuffer coordinates
+        size_t x = get_framebuf_x(pos.x);
+        size_t y = get_framebuf_y(pos.y);
+
+        color col = fs->run(shader_pipe); // run fragment shader
+
+        // write to framebuffer
+        fb.write(x, y, col, pos.z);
     }
 
     void renderer::render_line(const vector<float>& v1, const vector<float> v2)

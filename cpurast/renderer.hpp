@@ -31,5 +31,7 @@ namespace cr
 
         const vertex_shader* vs;
         const fragment_shader* fs;
+
+        vector<float> shader_pipe; // helper structure for shader attributes
     };
 }

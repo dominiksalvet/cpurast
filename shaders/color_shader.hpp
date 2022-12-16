@@ -8,30 +8,26 @@
 class color_vs : public cr::vertex_shader
 {
 public:
-    void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const override
+    cr::position run(const vector<float>& in, vector<float>& out) const override
     {
-        assert(in_a.size() >= 6);
+        assert(in.size() >= 6);
 
-        out_p[0] = in_a[0]; // x
-        out_p[1] = in_a[1]; // y
-        out_p[2] = in_a[2]; // z
+        out.resize(3);
+        out[0] = in[3]; // r
+        out[1] = in[4]; // g
+        out[2] = in[5]; // b
 
-        out_a.resize(3);
-        out_a[0] = in_a[3]; // r
-        out_a[1] = in_a[4]; // g
-        out_a[2] = in_a[5]; // b
+        return {in[0], in[1], in[2]}; // x, y, z
     }
 };
 
 class color_fs : public cr::fragment_shader
 {
 public:
-    void run(const vector<float>& in_a, array<float, 3>& out_c) const override
+    cr::color run(const vector<float>& in) const override
     {
-        assert(in_a.size() >= 3);
+        assert(in.size() >= 3);
 
-        out_c[0] = in_a[0]; // r
-        out_c[1] = in_a[1]; // g
-        out_c[2] = in_a[2]; // b
+        return {in[0], in[1], in[2]}; // r, g, b
     }
 };

@@ -11,15 +11,13 @@ namespace cr
     class default_vs : public vertex_shader
     {
     public:
-        void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const override
+        position run(const vector<float>& in, vector<float>& out) const override
         {
-            assert(in_a.size() >= 3);
+            assert(in.size() >= 3);
 
             // assuming that the first three attributes represent vertex position
             // performs no vertex transformation
-            out_p[0] = in_a[0]; // x
-            out_p[1] = in_a[1]; // y
-            out_p[2] = in_a[2]; // z
+            return {in[0], in[1], in[2]}; // x, y, z
         }
     };
 
@@ -27,12 +25,10 @@ namespace cr
     class default_fs : public fragment_shader
     {
     public:
-        void run(const vector<float>& in_a, array<float, 3>& out_c) const override
+        color run(const vector<float>& in) const override
         {
             // ignore input attributes and use white color for all fragments
-            out_c[0] = 1.f; // r
-            out_c[1] = 1.f; // g
-            out_c[2] = 1.f; // b
+            return {1.f, 1.f, 1.f}; // r, g, b
         }
     };
 }

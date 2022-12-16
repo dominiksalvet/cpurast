@@ -3,10 +3,10 @@
 #pragma once
 
 #include <vector>
-#include <array>
+#include "position.hpp"
+#include "color.hpp"
 
 using std::vector;
-using std::array;
 
 namespace cr
 {
@@ -33,8 +33,8 @@ namespace cr
         virtual ~vertex_shader() = default;
 
         // run per-vertex operation with given vertex attributes
-        // arguments: input attributes, output position [x, y, z], output attributes (resize as you require)
-        virtual void run(const vector<float>& in_a, array<float, 3>& out_p, vector<float>& out_a) const = 0;
+        // returns: output position, arguments: input attributes, output attributes (resize as you require)
+        virtual position run(const vector<float>& in, vector<float>& out) const = 0;
     };
 
     // abstract class for fragment shader representation
@@ -44,7 +44,7 @@ namespace cr
         virtual ~fragment_shader() = default;
 
         // run per-fragment operation with given fragment attributes
-        // arguments: input attributes, output normalized color [r, g, b]
-        virtual void run(const vector<float>& in_a, array<float, 3>& out_c) const = 0;
+        // returns: output normalized color, arguments: input attributes
+        virtual color run(const vector<float>& in) const = 0;
     };
 }

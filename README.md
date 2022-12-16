@@ -78,7 +78,7 @@ You may also create and use a **custom canvas**:
 ```cpp
 #include "canvas.hpp" // cpurast canvas interface
 
-class custom_canvas : cr::canvas
+class custom_canvas : public cr::canvas
 {
 ...
 }
@@ -116,7 +116,7 @@ In chronological order:
 * use two rendering framebuffers
 * Add support for texturing
 * Add support for lighting
-* Draw point, line, triangle
+* Draw line, triangle
 * Add support for shadows
 * Add support for reflections
 * Add support for various culling (remove some asserts)
