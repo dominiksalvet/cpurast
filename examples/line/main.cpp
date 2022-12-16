@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
     std::vector<float> circle{1.f, .5f, .5f}; // computed dynamically
     double angle = 0.f;
 
-    // create and set up cpurast context
+    // create cpurast context
     cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
 
     bool shouldExit = false;

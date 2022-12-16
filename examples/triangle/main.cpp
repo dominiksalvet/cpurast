@@ -7,6 +7,7 @@
 #include <memory>
 #include "cpurast.hpp" // cpurast core
 #include "cpurast_sdl.hpp" // cpurast SDL canvas
+#include "color_shader.hpp"
 
 // timer stuff
 using std::chrono::nanoseconds;
@@ -64,16 +65,19 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    // triangle - vertices attributes
-    std::vector<std::vector<float>> vs
+    // create triangle vertex attributes
+    std::vector<std::vector<float>> v
     {
-        {0.f, 0.f, 0.f}, // bottom left
-        {.5f, 1.f, 0.f}, // center top
-        {1.f, 0.f, 0.f} // bottom right
+        {0.f, 0.f, .5f, 1.f, 0.f, 0.f}, // left bottom, red
+        {.5f, 1.f, .5f, 0.f, 1.f, 0.f}, // center top, green
+        {1.f, 0.f, .5f, 0.f, 0.f, 1.f} // right bottom, blue
     };
 
-    // create and set up cpurast context
+    // create cpurast context
     cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
+    // use color shaders
+    cr_context.bind_vertex_shader(std::make_shared<color_vs>());
+    cr_context.bind_fragment_shader(std::make_shared<color_fs>());
 
     bool shouldExit = false;
     while (!shouldExit)
@@ -83,6 +87,7 @@ int main(int argc, char* argv[])
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+            // window resize handling
             if (event.type == SDL_WINDOWEVENT) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                 {
@@ -105,10 +110,13 @@ int main(int argc, char* argv[])
             }
         }
 
-        cr_context.clear_framebuf(true, false);
-        cr_context.draw_triangle(vs[0], vs[1], vs[2]);
-        cr_context.update_canvas();
-        SDL_UpdateWindowSurface(window);
+        cr_context.clear_framebuf(true, false); // clear color buffer
+
+        // draw colored triangle
+        cr_context.draw_triangle(v[0], v[1], v[2]);
+
+        cr_context.update_canvas(); // draw ramebuffer data to SDL canvas
+        SDL_UpdateWindowSurface(window); // update SDL window
 
         // simple timer mechanism (may not be very accurate)
         nanoseconds cur_frametime = high_resolution_clock::now() - time_start;
