@@ -1,6 +1,6 @@
 # CPU Rasterizer
 
-The cpurast is a software rasterizer written from scratch. Basically, it is a very simple and limited imitation of a graphics library (such as OpenGL), yet it performs all graphical computations on the processor. This approach is much slower than using a graphics processor, but it is more flexible since it has no additional driver and hardware requirements. Furthermore, some concepts such as packing and transferring data to the graphics processor are completely omitted. The final use should be easier to understand. Yet surprisingly, cpurast comes with some advanced [features](#features).
+The cpurast is a software rasterizer written from scratch. Basically, it is a very simple and limited imitation of a graphics library (such as OpenGL), yet it performs all graphical computations on the processor. This approach is much slower than utilizing a graphics processor but more flexible since it has no additional driver and hardware requirements. Furthermore, some concepts like packing and transferring data to the graphics processor are entirely omitted. Hence, the final use should be straightforward. Yet surprisingly, cpurast comes with some advanced [features](#features).
 
 This project was created during my master's studies. I chose this assignment because I wanted to get an idea of what could be inside a real graphics processor so that it supports the functions of graphics libraries. When I started, I had just a little experience with computer graphics, so I had to study a lot. Feel free to take a look at the [used sources](#used-sources) from which I have gained my knowledge.
 
@@ -18,7 +18,7 @@ This project was created during my master's studies. I chose this assignment bec
 * `cpurast` - this rasterization library
 * `cpurast/sdl_canvas` - SDL canvas to draw on
 * `examples` - example programs utilizing cpurast
-* `examples/triangle` - color triangle with window resize support
+* `examples/triangle` - colored triangle with window resize support
 * `shaders` - example cpurast shaders
 
 ## How to Run Examples
