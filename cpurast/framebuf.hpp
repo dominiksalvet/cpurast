@@ -20,7 +20,7 @@ namespace cr
         void clear(bool clear_color_buf, bool clear_depth_buf);
 
         // the origin of the coordinate system is placed at the left bottom
-        // lower depth value means it is closer to the viewport
+        // higher depth value means it is closer to the viewport
         // if depth test is disabled, depth value is ignored
         void write(size_t x, size_t y, cr::color color, float depth);
 
@@ -37,6 +37,6 @@ namespace cr
         vector<color> color_buf; // color buffer representation
 
         bool test_depth; // depth test enable flag
-        vector<float> depth_buf; // depth buffer of values [0, 1]
+        vector<float> depth_buf; // depth buffer of values [-1, 1]
     };
 }

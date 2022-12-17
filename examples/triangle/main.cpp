@@ -68,9 +68,9 @@ int main(int argc, char* argv[])
     // create triangle vertex attributes
     std::vector<std::vector<float>> v
     {
-        {0.f, 0.f, .5f, 1.f, 0.f, 0.f}, // left bottom, red
-        {.5f, 1.f, .5f, 0.f, 1.f, 0.f}, // center top, green
-        {1.f, 0.f, .5f, 0.f, 0.f, 1.f} // right bottom, blue
+        {-1.f, -1.f, 0.f, 1.f, 0.f, 0.f}, // left bottom, red
+        {0.f, 1.f, 0.f, 0.f, 1.f, 0.f}, // center top, green
+        {1.f, -1.f, 0.f, 0.f, 0.f, 1.f} // right bottom, blue
     };
 
     // create cpurast context

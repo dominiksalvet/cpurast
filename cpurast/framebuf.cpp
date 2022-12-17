@@ -46,7 +46,7 @@ namespace cr
                 color_buf[i] = clear_color;
             }
             if (clear_depth_buf) {
-                depth_buf[i] = 1.f;
+                depth_buf[i] = -1.f;
             }
         }
     }
@@ -60,9 +60,9 @@ namespace cr
 
         if (test_depth)
         {
-            assert(depth >= 0.f && depth <= 1.f);
+            assert(depth >= -1.f && depth <= 1.f);
 
-            if (depth < depth_buf[cur_index])
+            if (depth > depth_buf[cur_index])
             {
                 color_buf[cur_index] = color;
                 depth_buf[cur_index] = depth;

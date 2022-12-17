@@ -13,6 +13,8 @@ This project was created during my master's studies. I chose this assignment bec
 * Normalized colors
 * Cross platform, minimal dependencies
 
+> Coordinate and color interpretations are compatible with OpenGL.
+
 ## Repository Structure
 
 * `cpurast` - this rasterization library

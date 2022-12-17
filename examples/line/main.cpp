@@ -65,8 +65,8 @@ int main(int argc, char* argv[])
     }
 
     // create end points of the line
-    std::vector<float> center{.5f, .5f, .5f};
-    std::vector<float> circle{1.f, .5f, .5f}; // computed dynamically
+    std::vector<float> center{.0f, .0f, .0f};
+    std::vector<float> circle{1.f, .0f, .0f}; // computed dynamically
     double angle = 0.f;
 
     // create cpurast context
@@ -95,9 +95,8 @@ int main(int argc, char* argv[])
 
         // draw circling line
         angle += .05f;
-        // transform from space [-1, 1] to [0, 1]
-        circle[0] = (std::cos(angle) + 1.f) / 2.f;
-        circle[1] = (std::sin(angle) + 1.f) / 2.f;
+        circle[0] = std::cos(angle);
+        circle[1] = std::sin(angle);
         cr_context.draw_line(center, circle);
 
         cr_context.update_canvas(); // draw ramebuffer data to SDL canvas

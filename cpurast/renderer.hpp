@@ -22,7 +22,7 @@ namespace cr
         void set_fs(const fragment_shader* fs);
 
     private:
-        // transform normalized coordinates [0, 1] to framebuffer coordinates
+        // transform normalized coordinates [-1, 1] to framebuffer coordinates
         size_t get_framebuf_x(float x) const;
         size_t get_framebuf_y(float y) const;
 
