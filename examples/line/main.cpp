@@ -65,9 +65,11 @@ int main(int argc, char* argv[])
     }
 
     // create end points of the line
-    std::vector<float> center{.0f, .0f, .0f};
-    std::vector<float> circle{1.f, .0f, .0f}; // computed dynamically
-    double angle = 0.f;
+    std::vector<float> inner_v(3);
+    std::vector<float> outer_v(3);
+
+    double inner_angle = 0.f;
+    double outer_angle = 0.f;
 
     // create cpurast context
     cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
@@ -93,11 +95,14 @@ int main(int argc, char* argv[])
 
         cr_context.clear_framebuf(true, false); // clear color buffer
 
-        // draw circling line
-        angle += .05f;
-        circle[0] = std::cos(angle);
-        circle[1] = std::sin(angle);
-        cr_context.draw_line(center, circle);
+        // draw dancing line
+        inner_angle += .05f;
+        outer_angle += .07f;
+        inner_v[0] = std::cos(inner_angle) / 2;
+        inner_v[1] = std::sin(inner_angle) / 2;
+        outer_v[0] = std::sin(outer_angle);
+        outer_v[1] = std::cos(outer_angle);
+        cr_context.draw_line(inner_v, outer_v);
 
         cr_context.update_canvas(); // draw ramebuffer data to SDL canvas
         SDL_UpdateWindowSurface(window); // update SDL window

@@ -20,7 +20,7 @@ This project was created during my master's studies. I chose this assignment bec
 * `cpurast` - this rasterization library
 * `cpurast/sdl_canvas` - SDL canvas to draw on
 * `examples` - example programs utilizing cpurast
-* `examples/line` - circling white line
+* `examples/line` - dancing line testing various angles and sizes
 * `examples/triangle` - colored triangle with a resizable window
 * `shaders` - example cpurast shaders
 
