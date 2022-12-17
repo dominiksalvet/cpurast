@@ -54,15 +54,17 @@ namespace cr
     {
         assert(x >= -1.f && x <= 1.f);
 
+        float w = vp.width;
         // each pixel is addressable by its center
-        return (x * vp.width - x + vp.width) / 2 + vp.x;
+        return (x * (w - 1) + w) / 2 + vp.x;
     }
 
     size_t renderer::get_framebuf_y(float y) const
     {
         assert(y >= -1.f && y <= 1.f);
 
+        float h = vp.height;
         // each pixel is addressable by its center
-        return (y * vp.height - y + vp.height) / 2 + vp.y;
+        return (y * (h - 1) + h) / 2 + vp.y;
     }
 }
