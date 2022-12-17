@@ -119,14 +119,13 @@ In chronological order:
 ## Todo
 
 * Draw triangle
-* Use multiple threads
-* use two rendering framebuffers
+* Add more examples (e.g., lighting)
+* Improve clipping for lines, triangles
+* Add support for drawing arrays of primitives
 * Add support for texturing
-* Add support for lighting
 * Add support for shadows
 * Add support for reflections
-* Add support for various culling (remove some asserts)
-* Add more examples
-* Add interpolation to features
-* Improve clipping for lines, triangles
-* Color transparency
+* Add support for backface culling
+* Add interpolation to features list
+* Add color transparency for transparent textures
+* Perspective correct rasterization interpolation
