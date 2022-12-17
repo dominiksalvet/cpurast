@@ -64,7 +64,6 @@ namespace cr
         if (x1 > x2)
         {
             // swap vertices and all required data
-            // todo: check performance here
             std::swap(x1, x2);
             std::swap(y1, y2);
             std::swap(pos1.z, pos2.z);

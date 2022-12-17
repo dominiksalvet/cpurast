@@ -112,6 +112,7 @@ In chronological order:
 * https://registry.khronos.org/OpenGL-Refpages/gl4/html/glViewport.xhtml
 * https://learnopengl.com/Getting-started/Hello-Triangle
 * https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
+* https://stackoverflow.com/questions/72069953/single-point-line-two-verteces-on-top-of-each-other-no-point-drawn
 
 > I have also used official [CMake](https://cmake.org/cmake/help/latest/), [SDL](https://wiki.libsdl.org/wiki/index), and [C++](https://en.cppreference.com/w/) documentation.
 
