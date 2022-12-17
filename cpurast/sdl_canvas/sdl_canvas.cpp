@@ -25,7 +25,7 @@ namespace cr
         }
     }
 
-    void sdl_canvas::draw(const std::vector<color>& color_buf, size_t width, size_t height)
+    void sdl_canvas::draw(const std::vector<color>& color_buf, unsigned int width, unsigned int height)
     {
         assert(surface->w == width && surface->h == height);
 
@@ -34,10 +34,10 @@ namespace cr
         }
         
         Uint32* const pixels = static_cast<Uint32*>(surface->pixels);
-        const size_t total_size = width * height;
+        const unsigned int total_size = width * height;
 
         // we can perform linear for-loop because of restrictions in constructor
-        for (size_t i = 0; i < total_size; i++)
+        for (unsigned int i = 0; i < total_size; i++)
         {
             color cur_color = color_buf[i];
 

@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <cstddef>
 #include "framebuf.hpp"
 #include "viewport.hpp"
 #include "shader.hpp"
@@ -23,8 +22,8 @@ namespace cr
 
     private:
         // transform normalized coordinates [-1, 1] to framebuffer coordinates
-        size_t get_framebuf_x(float x) const;
-        size_t get_framebuf_y(float y) const;
+        unsigned int get_framebuf_x(float x) const;
+        unsigned int get_framebuf_y(float y) const;
 
         framebuf& fb;
         viewport& vp;

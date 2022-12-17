@@ -16,7 +16,7 @@ namespace cr
     class context
     {
     public: // cpurast API
-        context(cr::canvas* canvas, size_t canvas_w, size_t canvas_h);
+        context(cr::canvas* canvas, unsigned int canvas_w, unsigned int canvas_h);
 
         // draw framebuffer to the canvas
         void update_canvas() const;
@@ -24,7 +24,7 @@ namespace cr
         void bind_canvas(cr::canvas* canvas);
 
         // change the resolution of the framebuffer
-        void resize_framebuf(size_t new_width, size_t new_height);
+        void resize_framebuf(unsigned int new_width, unsigned int new_height);
         // enable depth test for framebuffer
         void enable_depth_test();
         // set clear color of framebuffer's color buffer
@@ -33,7 +33,7 @@ namespace cr
         void clear_framebuf(bool clear_color, bool clear_depth);
 
         // normalized device coordinates are in the given frame of the framebuffer
-        void set_viewport(size_t x, size_t y, size_t width, size_t height);
+        void set_viewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 
         // change active vertex shader program
         void bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader);

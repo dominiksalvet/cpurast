@@ -6,6 +6,7 @@ This project was created during my master's studies. I chose this assignment bec
 
 ## Features
 
+* Draws points and lines
 * Vertex and fragment shaders
 * Z-buffering support
 * Viewport rendering
@@ -20,7 +21,7 @@ This project was created during my master's studies. I chose this assignment bec
 * `cpurast` - this rasterization library
 * `cpurast/sdl_canvas` - SDL canvas to draw on
 * `examples` - example programs utilizing cpurast
-* `examples/line` - dancing line testing various angles and sizes
+* `examples/line` - dancing line with various angles and sizes
 * `examples/triangle` - colored triangle with a resizable window
 * `shaders` - example cpurast shaders
 
@@ -110,16 +111,17 @@ In chronological order:
 * https://www.khronos.org/opengl/wiki/Default_Framebuffer
 * https://registry.khronos.org/OpenGL-Refpages/gl4/html/glViewport.xhtml
 * https://learnopengl.com/Getting-started/Hello-Triangle
+* https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 
 > I have also used official [CMake](https://cmake.org/cmake/help/latest/), [SDL](https://wiki.libsdl.org/wiki/index), and [C++](https://en.cppreference.com/w/) documentation.
 
 ## Todo
 
+* Draw triangle
 * Use multiple threads
 * use two rendering framebuffers
 * Add support for texturing
 * Add support for lighting
-* Draw line, triangle
 * Add support for shadows
 * Add support for reflections
 * Add support for various culling (remove some asserts)

@@ -21,8 +21,8 @@ namespace cr
         }
 
         // compute final framebuffer coordinates
-        size_t x = get_framebuf_x(pos.x);
-        size_t y = get_framebuf_y(pos.y);
+        unsigned int x = get_framebuf_x(pos.x);
+        unsigned int y = get_framebuf_y(pos.y);
 
         color col = fs->run(shader_pipes[0]); // run fragment shader
 
@@ -40,7 +40,6 @@ namespace cr
             return;
         }
 
-        // todo: change data types
         // compute endpoint framebuffer coordinates
         int x1 = get_framebuf_x(pos1.x);
         int y1 = get_framebuf_y(pos1.y);
@@ -70,7 +69,7 @@ namespace cr
         const int dy = std::abs(y2 - y1);
         int error = 2 * dy - dx;
     
-        // initial coordinates
+        // final framebuffer coordinates
         const int& fb_x = steep ? y1 : x1;
         const int& fb_y = steep ? x1 : y1;
 
@@ -104,7 +103,7 @@ namespace cr
         this->fs = fs;
     }
 
-    size_t renderer::get_framebuf_x(float x) const
+    unsigned int renderer::get_framebuf_x(float x) const
     {
         assert(x >= -1.f && x <= 1.f);
 
@@ -113,7 +112,7 @@ namespace cr
         return (x * (w - 1) + w) / 2 + vp.x;
     }
 
-    size_t renderer::get_framebuf_y(float y) const
+    unsigned int renderer::get_framebuf_y(float y) const
     {
         assert(y >= -1.f && y <= 1.f);
 
