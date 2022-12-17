@@ -14,27 +14,27 @@ namespace cr
     
     void renderer::render_point(const vector<float>& v)
     {
-        position pos = vs->run(v, shader_pipes[0]); // run vertex shader
+        position pos = vs->run(v, vertex_attribs[0]); // run vertex shader
 
         if (!pos.is_normalized()) { // clipping
             return;
         }
 
         // compute final framebuffer coordinates
-        unsigned int x = get_framebuf_x(pos.x);
-        unsigned int y = get_framebuf_y(pos.y);
+        unsigned int fb_x = get_framebuf_x(pos.x);
+        unsigned int fb_y = get_framebuf_y(pos.y);
 
-        color col = fs->run(shader_pipes[0]); // run fragment shader
+        color fb_col = fs->run(vertex_attribs[0]); // run fragment shader
 
         // write to framebuffer
-        fb.write(x, y, col, pos.z);
+        fb.write(fb_x, fb_y, fb_col, pos.z);
     }
 
     void renderer::render_line(const vector<float>& v1, const vector<float> v2)
     {
         // run vertex shader
-        position pos1 = vs->run(v1, shader_pipes[0]);
-        position pos2 = vs->run(v2, shader_pipes[1]);
+        position pos1 = vs->run(v1, vertex_attribs[0]);
+        position pos2 = vs->run(v2, vertex_attribs[1]);
 
         if (!pos1.is_normalized() || !pos2.is_normalized()) { // simple clipping
             return;
@@ -45,6 +45,11 @@ namespace cr
         int y1 = get_framebuf_y(pos1.y);
         int x2 = get_framebuf_x(pos2.x);
         int y2 = get_framebuf_y(pos2.y);
+
+        // if it is not a line, skip
+        if (x1 == x2 && y1 == y2) {
+            return;
+        }
 
         // rasterization (Bresenham's line algorithm)
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)
@@ -58,8 +63,12 @@ namespace cr
         // eliminate 4th and 5th octants
         if (x1 > x2)
         {
+            // swap vertices and all required data
+            // todo: check performance here
             std::swap(x1, x2);
             std::swap(y1, y2);
+            std::swap(pos1.z, pos2.z);
+            std::swap(vertex_attribs[0], vertex_attribs[1]);
         }
         // eliminate 8th octant
         const int y_step = y2 > y1 ? 1 : -1;
@@ -69,22 +78,28 @@ namespace cr
         const int dy = std::abs(y2 - y1);
         int error = 2 * dy - dx;
     
+        // initial coordinates
+        int x = x1;
+        int y = y1;
         // final framebuffer coordinates
-        const int& fb_x = steep ? y1 : x1;
-        const int& fb_y = steep ? x1 : y1;
+        const int& fb_x = steep ? y : x;
+        const int& fb_y = steep ? x : y;
 
-        while (x1 <= x2) // from x1 to x2
+        while (x <= x2) // from x1 to x2
         {
-            fb.write(fb_x, fb_y, {1.f, 1.f, 1.f}, 0.f);
+            // interpolation -> fragment shader -> write to framebuffer
+            float fb_z = line_interpolation(pos1.z, pos2.z, x - x1, dx);
+            color fb_col = fs->run(fragment_attribs);
+            fb.write(fb_x, fb_y, fb_col, fb_z);
 
             if (error > 0)
             {
-                y1 += y_step;
+                y += y_step;
                 error -= 2 * dx;
             }
             error += 2 * dy;
 
-            x1++;
+            x++;
         }
     }
 
@@ -119,5 +134,22 @@ namespace cr
         float h = vp.height;
         // each pixel is addressable by its center
         return (y * (h - 1) + h) / 2 + vp.y;
+    }
+
+    float renderer::line_interpolation(float d1, float d2, unsigned int cur, unsigned int total)
+    {
+        assert(vertex_attribs[0].size() == vertex_attribs[1].size());
+
+        float progress = float(cur) / total;
+        float d = d1 * (1.f - progress) + d2 * progress; // depth interpolation
+
+        fragment_attribs.resize(vertex_attribs[0].size());
+        for (unsigned int i = 0; i < fragment_attribs.size(); i++)
+        {
+            // fragment attributes interpolation
+            fragment_attribs[i] = vertex_attribs[0][i] * (1.f - progress) + vertex_attribs[1][i] * progress;
+        }
+
+        return d;
     }
 }

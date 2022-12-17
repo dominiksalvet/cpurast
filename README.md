@@ -126,3 +126,6 @@ In chronological order:
 * Add support for reflections
 * Add support for various culling (remove some asserts)
 * Add more examples
+* Add interpolation to features
+* Improve clipping for lines, triangles
+* Color transparency

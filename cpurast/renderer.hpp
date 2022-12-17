@@ -25,12 +25,18 @@ namespace cr
         unsigned int get_framebuf_x(float x) const;
         unsigned int get_framebuf_y(float y) const;
 
+        // interpolation methods for rasterization
+        // returns interpolated depth of two vertices, attributes are interpolated to class member
+        float line_interpolation(float d1, float d2, unsigned int cur, unsigned int total);
+
         framebuf& fb;
         viewport& vp;
 
         const vertex_shader* vs;
         const fragment_shader* fs;
 
-        vector<float> shader_pipes[2]; // shader attributes pipes
+        // helper shader structures
+        vector<float> vertex_attribs[2];
+        vector<float> fragment_attribs;
     };
 }
