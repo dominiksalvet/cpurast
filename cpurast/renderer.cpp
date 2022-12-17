@@ -13,7 +13,7 @@ namespace cr
     
     void renderer::render_point(const vector<float>& v)
     {
-        position pos = vs->run(v, shader_pipe); // run vertex shader
+        position pos = vs->run(v, shader_pipes[0]); // run vertex shader
 
         if (!pos.is_normalized()) { // clipping
             return;
@@ -23,7 +23,7 @@ namespace cr
         size_t x = get_framebuf_x(pos.x);
         size_t y = get_framebuf_y(pos.y);
 
-        color col = fs->run(shader_pipe); // run fragment shader
+        color col = fs->run(shader_pipes[0]); // run fragment shader
 
         // write to framebuffer
         fb.write(x, y, col, pos.z);
