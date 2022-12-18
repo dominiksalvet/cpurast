@@ -6,7 +6,7 @@
 
 namespace cr
 {
-    context::context(cr::canvas* canvas, unsigned int canvas_w, unsigned int canvas_h) :
+    context::context(cr::canvas* canvas, unsigned canvas_w, unsigned canvas_h) :
         canvas(canvas),
         framebuf(canvas_w, canvas_h),
         viewport{0, 0, canvas_w, canvas_h},
@@ -22,7 +22,7 @@ namespace cr
         this->canvas = canvas;
     }
     
-    void context::resize_framebuf(unsigned int new_width, unsigned int new_height) {
+    void context::resize_framebuf(unsigned new_width, unsigned new_height) {
         framebuf.resize(new_width, new_height);
     }
 
@@ -43,7 +43,7 @@ namespace cr
         framebuf.clear(clear_color, clear_depth);
     }
     
-    void context::set_viewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+    void context::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height)
     {
         assert(x < framebuf.get_width() && y < framebuf.get_height());
         assert(width > 0 && height > 0);

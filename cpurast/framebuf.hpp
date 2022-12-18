@@ -12,25 +12,25 @@ namespace cr
     class framebuf
     {
     public:
-        framebuf(unsigned int width, unsigned int height);
+        framebuf(unsigned width, unsigned height);
 
-        void resize(unsigned int new_width, unsigned int new_height);
+        void resize(unsigned new_width, unsigned new_height);
         void enable_depth_test();
         void clear(bool clear_color_buf, bool clear_depth_buf);
 
         // the origin of the coordinate system is placed at the left bottom
         // higher depth value means it is closer to the viewport
         // if depth test is disabled, depth value is ignored
-        void write(unsigned int x, unsigned int y, cr::color color, float depth);
+        void write(unsigned x, unsigned y, cr::color color, float depth);
 
-        unsigned int get_width() const;
-        unsigned int get_height() const;
+        unsigned get_width() const;
+        unsigned get_height() const;
         void set_clear_color(color clear_color);
         const vector<color>& get_color_buf() const;
 
     private:
-        unsigned int width;
-        unsigned int height;
+        unsigned width;
+        unsigned height;
 
         color clear_color; // color used for clearing color buffer
         vector<color> color_buf; // color buffer representation

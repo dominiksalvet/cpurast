@@ -5,14 +5,14 @@
 
 namespace cr
 {
-    framebuf::framebuf(unsigned int width, unsigned int height) :
+    framebuf::framebuf(unsigned width, unsigned height) :
         width(width),
         height(height),
         clear_color{0.f, 0.f, 0.f}, // black clear color
         color_buf(width * height),
         test_depth(false) {}
 
-    void framebuf::resize(unsigned int new_width, unsigned int new_height)
+    void framebuf::resize(unsigned new_width, unsigned new_height)
     {
         assert(new_width > 0 && new_height > 0);
 
@@ -38,9 +38,9 @@ namespace cr
 
     void framebuf::clear(bool clear_color_buf, bool clear_depth_buf)
     {
-        const unsigned int total_size = width * height;
+        const unsigned total_size = width * height;
 
-        for (unsigned int i = 0; i < total_size; i++)
+        for (unsigned i = 0; i < total_size; i++)
         {
             if (clear_color_buf) {
                 color_buf[i] = clear_color;
@@ -51,12 +51,12 @@ namespace cr
         }
     }
 
-    void framebuf::write(unsigned int x, unsigned int y, cr::color color, float depth)
+    void framebuf::write(unsigned x, unsigned y, cr::color color, float depth)
     {
         assert(x < width && y < height);
 
         // the bottom row has y value of 0
-        const unsigned int cur_index = (height - y - 1) * width + x;
+        const unsigned cur_index = (height - y - 1) * width + x;
 
         if (test_depth)
         {
@@ -72,11 +72,11 @@ namespace cr
         }
     }
 
-    unsigned int framebuf::get_width() const {
+    unsigned framebuf::get_width() const {
         return width;
     }
 
-    unsigned int framebuf::get_height() const {
+    unsigned framebuf::get_height() const {
         return height;
     }
 

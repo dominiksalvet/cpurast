@@ -6,9 +6,9 @@ namespace cr
 {
     struct viewport
     {
-        unsigned int x;
-        unsigned int y;
-        unsigned int width;
-        unsigned int height;
+        unsigned x;
+        unsigned y;
+        unsigned width;
+        unsigned height;
     };
 }

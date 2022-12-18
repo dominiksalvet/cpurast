@@ -22,12 +22,12 @@ namespace cr
 
     private:
         // transform normalized coordinates [-1, 1] to framebuffer coordinates
-        unsigned int get_framebuf_x(float x) const;
-        unsigned int get_framebuf_y(float y) const;
+        unsigned get_framebuf_x(float x) const;
+        unsigned get_framebuf_y(float y) const;
 
         // interpolation methods for rasterization
         // returns interpolated depth of two vertices, attributes are interpolated to class member
-        float line_interpolation(float d1, float d2, unsigned int cur, unsigned int total);
+        float line_interpolation(float d1, float d2, unsigned cur, unsigned total);
 
         framebuf& fb;
         viewport& vp;

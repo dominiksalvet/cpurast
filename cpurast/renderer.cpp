@@ -21,8 +21,8 @@ namespace cr
         }
 
         // compute final framebuffer coordinates
-        unsigned int fb_x = get_framebuf_x(pos.x);
-        unsigned int fb_y = get_framebuf_y(pos.y);
+        unsigned fb_x = get_framebuf_x(pos.x);
+        unsigned fb_y = get_framebuf_y(pos.y);
 
         color fb_col = fs->run(vertex_attribs[0]); // run fragment shader
 
@@ -116,12 +116,12 @@ namespace cr
         }
 
         // compute endpoint framebuffer coordinates
-        unsigned int x1 = get_framebuf_x(pos1.x);
-        unsigned int y1 = get_framebuf_y(pos1.y);
-        unsigned int x2 = get_framebuf_x(pos2.x);
-        unsigned int y2 = get_framebuf_y(pos2.y);
-        unsigned int x3 = get_framebuf_x(pos3.x);
-        unsigned int y3 = get_framebuf_y(pos3.y);
+        unsigned x1 = get_framebuf_x(pos1.x);
+        unsigned y1 = get_framebuf_y(pos1.y);
+        unsigned x2 = get_framebuf_x(pos2.x);
+        unsigned y2 = get_framebuf_y(pos2.y);
+        unsigned x3 = get_framebuf_x(pos3.x);
+        unsigned y3 = get_framebuf_y(pos3.y);
 
         // if it is not a triangle, skip
         if ((x1 == x2 && y1 == y2) || (x1 == x3 && y1 == y3) || (x2 == x3 && y2 == y3)) {
@@ -162,7 +162,7 @@ namespace cr
         this->fs = fs;
     }
 
-    unsigned int renderer::get_framebuf_x(float x) const
+    unsigned renderer::get_framebuf_x(float x) const
     {
         assert(x >= -1.f && x <= 1.f);
 
@@ -171,7 +171,7 @@ namespace cr
         return (x * (w - 1) + w) / 2 + vp.x;
     }
 
-    unsigned int renderer::get_framebuf_y(float y) const
+    unsigned renderer::get_framebuf_y(float y) const
     {
         assert(y >= -1.f && y <= 1.f);
 
@@ -180,7 +180,7 @@ namespace cr
         return (y * (h - 1) + h) / 2 + vp.y;
     }
 
-    float renderer::line_interpolation(float d1, float d2, unsigned int cur, unsigned int total)
+    float renderer::line_interpolation(float d1, float d2, unsigned cur, unsigned total)
     {
         assert(vertex_attribs[0].size() == vertex_attribs[1].size());
 
@@ -188,7 +188,7 @@ namespace cr
         float d = d1 * (1.f - progress) + d2 * progress; // depth interpolation
 
         fragment_attribs.resize(vertex_attribs[0].size());
-        for (unsigned int i = 0; i < fragment_attribs.size(); i++)
+        for (unsigned i = 0; i < fragment_attribs.size(); i++)
         {
             // fragment attributes interpolation
             fragment_attribs[i] = vertex_attribs[0][i] * (1.f - progress) + vertex_attribs[1][i] * progress;

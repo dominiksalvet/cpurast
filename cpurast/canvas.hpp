@@ -14,6 +14,6 @@ namespace cr
         virtual ~canvas() = default;
 
         // canvas resolution and color buffer resolution must be the same
-        virtual void draw(const std::vector<color>& color_buf, unsigned int width, unsigned int height) = 0;
+        virtual void draw(const std::vector<color>& color_buf, unsigned width, unsigned height) = 0;
     };
 }
