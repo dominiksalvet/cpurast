@@ -13,6 +13,7 @@ namespace cr
     public:
         renderer(framebuf& fb, viewport& vp, const vertex_shader* vs, const fragment_shader* fs);
 
+        // main render functions
         void render_point(const vector<float>& v);
         void render_line(const vector<float>& v1, const vector<float> v2);
         void render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3);
@@ -25,7 +26,10 @@ namespace cr
         unsigned get_framebuf_x(float x) const;
         unsigned get_framebuf_y(float y) const;
 
-        // interpolation methods for rasterization
+        // rasterization functions (based on Bresenham's line algorithm)
+        void rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2);
+        void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
+
         // returns interpolated depth of two vertices, attributes are interpolated to class member
         float line_interpolation(float d1, float d2, unsigned cur, unsigned total);
 

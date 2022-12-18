@@ -7,7 +7,7 @@ namespace cr
     struct position
     {
         // check if position is located in the [-1, 1] space
-        bool is_normalized()
+        bool is_normalized() const
         {
             return x >= -1.f && x <= 1.f &&
                    y >= -1.f && y <= 1.f &&
