@@ -119,6 +119,10 @@ In chronological order:
 ## Todo
 
 * Draw triangle
+* Test two triangles with two same vertices (no holes)
+* If vertices are not a triangle, skip (check it)
+* Add interpolation to features list
+* More reuse in renderer class
 * Add more examples (e.g., lighting)
 * Improve clipping for lines, triangles
 * Add support for drawing arrays of primitives
@@ -126,6 +130,5 @@ In chronological order:
 * Add support for shadows
 * Add support for reflections
 * Add support for backface culling
-* Add interpolation to features list
 * Add color transparency for transparent textures
 * Perspective correct rasterization interpolation

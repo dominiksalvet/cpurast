@@ -36,7 +36,7 @@ namespace cr
         const fragment_shader* fs;
 
         // helper shader structures
-        vector<float> vertex_attribs[2];
+        vector<float> vertex_attribs[3];
         vector<float> fragment_attribs;
     };
 }

@@ -36,7 +36,8 @@ namespace cr
         position pos1 = vs->run(v1, vertex_attribs[0]);
         position pos2 = vs->run(v2, vertex_attribs[1]);
 
-        if (!pos1.is_normalized() || !pos2.is_normalized()) { // simple clipping
+        // simple clipping (all or nothing)
+        if (!pos1.is_normalized() || !pos2.is_normalized()) {
             return;
         }
 
@@ -104,9 +105,53 @@ namespace cr
 
     void renderer::render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3)
     {
-        render_line(v1, v2);
-        render_line(v2, v3);
-        render_line(v3, v1);
+        // run vertex shader
+        position pos1 = vs->run(v1, vertex_attribs[0]);
+        position pos2 = vs->run(v2, vertex_attribs[1]);
+        position pos3 = vs->run(v3, vertex_attribs[2]);
+
+        // simple clipping (all or nothing)
+        if (!pos1.is_normalized() || !pos2.is_normalized() || !pos3.is_normalized()) {
+            return;
+        }
+
+        // compute endpoint framebuffer coordinates
+        unsigned int x1 = get_framebuf_x(pos1.x);
+        unsigned int y1 = get_framebuf_y(pos1.y);
+        unsigned int x2 = get_framebuf_x(pos2.x);
+        unsigned int y2 = get_framebuf_y(pos2.y);
+        unsigned int x3 = get_framebuf_x(pos3.x);
+        unsigned int y3 = get_framebuf_y(pos3.y);
+
+        // if it is not a triangle, skip
+        if ((x1 == x2 && y1 == y2) || (x1 == x3 && y1 == y3) || (x2 == x3 && y2 == y3)) {
+            return;
+        }
+
+        // sort vertices by its y position (so that y1 < y2 < y3)
+        if (y1 > y2)
+        {
+            std::swap(x1, x2);
+            std::swap(y1, y2);
+            std::swap(pos1.z, pos2.z);
+            std::swap(vertex_attribs[0], vertex_attribs[1]);
+        }
+        if (y1 > y3)
+        {
+            std::swap(x1, x3);
+            std::swap(y1, y3);
+            std::swap(pos1.z, pos3.z);
+            std::swap(vertex_attribs[0], vertex_attribs[2]);
+        }
+        if (y2 > y3)
+        {
+            std::swap(x2, x3);
+            std::swap(y2, y3);
+            std::swap(pos2.z, pos3.z);
+            std::swap(vertex_attribs[1], vertex_attribs[2]);
+        }
+
+        // todo: rasterization
     }
 
     void renderer::set_vs(const vertex_shader* vs) {
