@@ -24,6 +24,7 @@ This project was created during my master's studies. I chose this assignment bec
 * `examples` - example programs utilizing cpurast
 * `examples/line` - dancing line with various angles and sizes
 * `examples/triangle` - colored triangle with a resizable window
+* `examples/square` - colored square utilizing squared viewport
 * `shaders` - example cpurast shaders
 
 ## How to Run Examples

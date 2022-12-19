@@ -7,7 +7,7 @@
 #include <memory>
 #include "cpurast.hpp" // cpurast core
 #include "cpurast_sdl.hpp" // cpurast SDL canvas
-#include <cmath>
+#include "color_shader.hpp"
 
 // timer stuff
 using std::chrono::nanoseconds;
@@ -28,7 +28,8 @@ void prepare_sdl(SDL_Window** window, SDL_Surface** surface, const char* window_
 
     *window = SDL_CreateWindow(window_title,
                                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                               WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+                               WINDOW_WIDTH, WINDOW_HEIGHT,
+                               SDL_WINDOW_RESIZABLE);
     if (!*window)
     {
         SDL_Quit();
@@ -53,7 +54,7 @@ int main(int argc, char* argv[])
     try
     {
         // initialize SDL library and create window
-        prepare_sdl(&window, &surface, "cpurast example - line");
+        prepare_sdl(&window, &surface, "cpurast example - square");
 
         // initialize cpurast SDL canvas
         cr_canvas = std::make_unique<cr::sdl_canvas>(surface);
@@ -64,15 +65,20 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    // create end points of the line
-    std::vector<float> inner_v(3);
-    std::vector<float> outer_v(3);
-
-    double inner_angle = 0.f;
-    double outer_angle = 0.f;
+    // create square vertex attributes
+    std::vector<std::vector<float>> v
+    {
+        {-.5f, -.5f, 0.f, 1.f, 1.f, 1.f}, // left bottom, white
+        {-.5f, .5f, 0.f, 1.f, 0.f, 0.f}, // left top, red
+        {.5f, .5f, 0.f, 0.f, 1.f, 0.f}, // right top, green
+        {.5f, -.5f, 0.f, 0.f, 0.f, 1.f}, // right bottom, blue
+    };
 
     // create cpurast context
     cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
+    // use color shaders
+    cr_context.bind_vertex_shader(std::make_shared<color_vs>());
+    cr_context.bind_fragment_shader(std::make_shared<color_fs>());
 
     bool shouldExit = false;
     while (!shouldExit)
@@ -82,6 +88,21 @@ int main(int argc, char* argv[])
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+            // window resize handling
+            if (event.type == SDL_WINDOWEVENT) {
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                {
+                    surface = SDL_GetWindowSurface(window); // get new SDL surface
+                    cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
+                    cr_context.bind_canvas(cr_canvas.get()); // change canvas in cpurast context
+                    cr_context.resize_framebuf(surface->w, surface->h); // resize framebuffer
+
+                    // set up squared viewport
+                    int square_x = std::min(surface->w, surface->h);
+                    cr_context.set_viewport(0, 0, square_x, square_x);
+                }
+            }
+
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     shouldExit = true;
@@ -95,14 +116,9 @@ int main(int argc, char* argv[])
 
         cr_context.clear_framebuf(true, false); // clear color buffer
 
-        // draw dancing line
-        inner_angle += .05f;
-        outer_angle += .07f;
-        inner_v[0] = std::cos(inner_angle) / 2;
-        inner_v[1] = std::sin(inner_angle) / 2;
-        outer_v[0] = std::sin(outer_angle);
-        outer_v[1] = std::cos(outer_angle);
-        cr_context.draw_line(inner_v, outer_v);
+        // draw colored square
+        cr_context.draw_triangle(v[0], v[1], v[2]);
+        cr_context.draw_triangle(v[0], v[2], v[3]);
 
         cr_context.update_canvas(); // draw ramebuffer data to SDL canvas
         SDL_UpdateWindowSurface(window); // update SDL window
