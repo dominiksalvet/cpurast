@@ -28,7 +28,7 @@ namespace cr
 
         // line rasterization based on Bresenham's line algorithm
         void rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2);
-        // triangle rasterization based on digital differential analyzer (DDA algorithm)
+        // triangle rasterization based on scanline digital differential analyzer (DDA algorithm)
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 
         // returns interpolated depth of two vertices, attributes are interpolated to class member

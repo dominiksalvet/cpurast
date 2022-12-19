@@ -6,7 +6,7 @@ This project was created during my master's studies. I chose this assignment bec
 
 ## Features
 
-* Draws points and lines
+* Draws points, lines, and triangles
 * Interpolation of vertex attributes
 * Vertex and fragment shaders
 * Z-buffering support
@@ -103,7 +103,7 @@ cr_canvas = std::make_unique<custom_canvas>(/* custom constructor */);
 
 ## Used Sources
 
-In chronological order:
+The most important sources, in chronological order:
 
 * https://db.in.tum.de/teaching/ss20/c++praktikum/slides/lecture-11.pdf
 * https://trenki2.github.io/blog/2017/06/02/using-sdl2-with-cmake/
@@ -114,12 +114,13 @@ In chronological order:
 * https://learnopengl.com/Getting-started/Hello-Triangle
 * https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 * https://stackoverflow.com/questions/72069953/single-point-line-two-verteces-on-top-of-each-other-no-point-drawn
+* http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
 
 > I have also used official [CMake](https://cmake.org/cmake/help/latest/), [SDL](https://wiki.libsdl.org/wiki/index), and [C++](https://en.cppreference.com/w/) documentation.
 
 ## Todo
 
-* Draw triangle (and interpolation)
+* Add triangle interpolation
 * Test two triangles with two same vertices (no holes)
 * Use integer-based rasterization for triangle
 * Add more examples (e.g., lighting)

@@ -2,7 +2,7 @@
 
 #include "renderer.hpp"
 #include <cassert>
-#include <cstdlib>
+#include <cmath>
 
 namespace cr
 {
@@ -193,36 +193,41 @@ namespace cr
         const float slope12 = float(x2 - x1) / (y2 - y1);
         const float slope13 = float(x3 - x1) / (y3 - y1);
         const float slope23 = float(x3 - x2) / (y3 - y2);
-        const bool edge2_is_left = slope12 < slope13;
+        const bool edge12_is_left = slope12 < slope13;
 
-        float left_slope = edge2_is_left ? slope12 : slope13;
-        float right_slope = edge2_is_left ? slope13 : slope12;
+        float left_slope = edge12_is_left ? slope12 : slope13;
+        float right_slope = edge12_is_left ? slope13 : slope12;
+
+        // render middle row only in appropriate flat rendering
+        if (y1 == y2) {
+            y2--;
+        }
+
+        // render flat top triangle (from bottom)
         float left_x = x1;
         float right_x = x1;
-
-        // render flat top triangle
-        for (int cur_y = y1; cur_y <= y2; cur_y++)
+        for (int fb_y = y1; fb_y <= y2; fb_y++)
         {
-            for (unsigned i = left_x; i <= right_x; i++) {
-                fb.write(i, cur_y, {1.f, 1.f, 1.f}, 0.f);
+            for (int fb_x = std::round(left_x); fb_x <= std::round(right_x); fb_x++) {
+                fb.write(fb_x, fb_y, {1.f, 1.f, 1.f}, 0.f);
             }
             left_x += left_slope;
             right_x += right_slope;
         }
 
-        // render bottom flat triangle
-        if (edge2_is_left) {
+        // render bottom flat triangle (from top)
+        if (edge12_is_left) {
             left_slope = slope23;
         } else {
             right_slope = slope23;
         }
+
         left_x = x3;
         right_x = x3;
-
-        for (int cur_y = y3; cur_y >= y2; cur_y--)
+        for (int fb_y = y3; fb_y > y2; fb_y--)
         {
-            for (unsigned i = left_x; i <= right_x; i++) {
-                fb.write(i, cur_y, {1.f, 1.f, 1.f}, 0.f);
+            for (int fb_x = std::round(left_x); fb_x <= std::round(right_x); fb_x++) {
+                fb.write(fb_x, fb_y, {1.f, 1.f, 1.f}, 0.f);
             }
             left_x -= left_slope;
             right_x -= right_slope;
