@@ -117,8 +117,8 @@ int main(int argc, char* argv[])
         cr_context.clear_framebuf(true, false); // clear color buffer
 
         // draw colored square
-        cr_context.draw_triangle(v[0], v[1], v[2]);
-        cr_context.draw_triangle(v[0], v[2], v[3]);
+        cr_context.draw_triangle(v[0], v[1], v[3]);
+        cr_context.draw_triangle(v[3], v[1], v[2]);
 
         cr_context.update_canvas(); // draw ramebuffer data to SDL canvas
         SDL_UpdateWindowSurface(window); // update SDL window
