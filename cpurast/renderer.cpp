@@ -79,7 +79,7 @@ namespace cr
 
         // if it is not a triangle, skip
         if ((x1 == x2 && y1 == y2) || (x1 == x3 && y1 == y3) || (x2 == x3 && y2 == y3) ||
-            (x1 == x2 && x2 == x3) || (y1 == y2 && y2 == y3) ) {
+            (x1 == x2 && x2 == x3) || (y1 == y2 && y2 == y3)) {
             return;
         }
 
@@ -112,7 +112,6 @@ namespace cr
         return (y * (h - 1) + h) / 2 + vp.y;
     }
 
-    // based on Bresenham's line algorithm
     void renderer::rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2)
     {
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)

@@ -7,6 +7,7 @@ This project was created during my master's studies. I chose this assignment bec
 ## Features
 
 * Draws points and lines
+* Interpolation of vertex attributes
 * Vertex and fragment shaders
 * Z-buffering support
 * Viewport rendering
@@ -118,11 +119,9 @@ In chronological order:
 
 ## Todo
 
-* Draw triangle
+* Draw triangle (and interpolation)
 * Test two triangles with two same vertices (no holes)
-* If vertices are not a triangle, skip (check it)
-* Add interpolation to features list
-* More reuse in renderer class
+* Use integer-based rasterization for triangle
 * Add more examples (e.g., lighting)
 * Improve clipping for lines, triangles
 * Add support for drawing arrays of primitives
