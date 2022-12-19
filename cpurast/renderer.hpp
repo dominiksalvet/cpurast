@@ -26,7 +26,7 @@ namespace cr
         unsigned get_framebuf_x(float x) const;
         unsigned get_framebuf_y(float y) const;
 
-        // rasterization functions (based on Bresenham's line algorithm)
+        // rasterization functions
         void rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2);
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 

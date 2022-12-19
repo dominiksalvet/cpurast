@@ -112,6 +112,7 @@ namespace cr
         return (y * (h - 1) + h) / 2 + vp.y;
     }
 
+    // based on Bresenham's line algorithm
     void renderer::rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2)
     {
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)
@@ -189,16 +190,44 @@ namespace cr
             std::swap(vertex_attribs[1], vertex_attribs[2]);
         }
 
-        // rasterization
         // determine left and right edge
-        const float angle2 = float(x2 - x1) / (y2 - y1);
-        const float angle3 = float(x3 - x1) / (y3 - y1);
-        const bool edge2_is_left = angle2 < angle3;
+        const float slope12 = float(x2 - x1) / (y2 - y1);
+        const float slope13 = float(x3 - x1) / (y3 - y1);
+        const float slope23 = float(x3 - x2) / (y3 - y2);
+        const bool edge2_is_left = slope12 < slope13;
 
-        const int& left_y = edge2_is_left ? y2 : y3;
-        const int& left_x = edge2_is_left ? x2 : x3;
-        const int& right_y = edge2_is_left ? y3 : y2;
-        const int& eight_x = edge2_is_left ? x3 : x2;
+        float left_slope = edge2_is_left ? slope12 : slope13;
+        float right_slope = edge2_is_left ? slope13 : slope12;
+        float left_x = x1;
+        float right_x = x1;
+
+        // render flat top triangle
+        for (int cur_y = y1; cur_y <= y2; cur_y++)
+        {
+            for (unsigned i = left_x; i <= right_x; i++) {
+                fb.write(i, cur_y, {1.f, 1.f, 1.f}, 0.f);
+            }
+            left_x += left_slope;
+            right_x += right_slope;
+        }
+
+        // render bottom flat triangle
+        if (edge2_is_left) {
+            left_slope = slope23;
+        } else {
+            right_slope = slope23;
+        }
+        left_x = x3;
+        right_x = x3;
+
+        for (int cur_y = y3; cur_y >= y2; cur_y--)
+        {
+            for (unsigned i = left_x; i <= right_x; i++) {
+                fb.write(i, cur_y, {1.f, 1.f, 1.f}, 0.f);
+            }
+            left_x -= left_slope;
+            right_x -= right_slope;
+        }
     }
 
     float renderer::line_interpolation(float d1, float d2, unsigned cur, unsigned total)
