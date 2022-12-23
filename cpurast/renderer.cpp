@@ -99,8 +99,9 @@ namespace cr
         assert(x >= -1.f && x <= 1.f);
 
         float w = vp.width;
-        // each pixel is addressable by its center
-        return (x * (w - 1) + w) / 2 + vp.x;
+        // position x=1 is mapped to width-1
+        unsigned rel_x = x == 1.f ? w - 1 : ((x + 1) * w) / 2;
+        return vp.x + rel_x;
     }
 
     unsigned renderer::get_framebuf_y(float y) const
@@ -108,8 +109,9 @@ namespace cr
         assert(y >= -1.f && y <= 1.f);
 
         float h = vp.height;
-        // each pixel is addressable by its center
-        return (y * (h - 1) + h) / 2 + vp.y;
+        // position y=1 is mapped to height-1
+        unsigned rel_y = y == 1.f ? h - 1 : ((y + 1) * h) / 2;
+        return vp.y + rel_y;
     }
 
     void renderer::rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2)

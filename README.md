@@ -121,7 +121,6 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Check pixel addressing
 * Check depth buffer before interpolation
 * Use integer-based rasterization for triangle
 * Do not use division in interpolation on every call
