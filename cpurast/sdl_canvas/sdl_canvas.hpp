@@ -8,6 +8,7 @@
 namespace cr
 {
     // SDL canvas used for surface drawing (e.g., window surface)
+    // this canvas does not use any OpenGL/DirectX features (at least not directly)
     class sdl_canvas : public canvas
     {
     public:
