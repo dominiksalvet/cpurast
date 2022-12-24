@@ -31,8 +31,10 @@ namespace cr
         // triangle rasterization based on scanline digital differential analyzer (DDA algorithm)
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 
-        // returns interpolated depth of two vertices, attributes are interpolated to class member
-        float line_interpolation(float d1, float d2, unsigned cur, unsigned total);
+        // initialize interpolation (call once before a batch of interpolation calls)
+        void init_interpolation(unsigned index, vector<float>& v1, unsigned step_count);
+        // interpolates given depths and attributes based on given weight, results are written to given index
+        void interpolation(unsigned index, float d1, vector<float>& v1, float d2, vector<float>& v2, float weight2);
 
         framebuf& fb;
         viewport& vp;
@@ -40,8 +42,10 @@ namespace cr
         const vertex_shader* vs;
         const fragment_shader* fs;
 
-        // helper shader structures
-        vector<float> vertex_attribs[3];
-        vector<float> fragment_attribs;
+        vector<float> vertex_attribs[3]; // vertex shader output attributes
+
+        float interp_step[3]; // prepared interpolation steps
+        float interp_depth[3]; // interpolated depths
+        vector<float> interp_attribs[3]; // interpolated attributes
     };
 }

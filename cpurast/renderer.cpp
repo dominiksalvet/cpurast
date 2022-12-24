@@ -140,6 +140,8 @@ namespace cr
         const int dx = x2 - x1;
         const int dy = std::abs(y2 - y1);
         int error = 2 * dy - dx;
+
+        init_interpolation(0, vertex_attribs[0], dx);
     
         // initial coordinates
         int x = x1;
@@ -151,9 +153,9 @@ namespace cr
         while (x <= x2) // from x1 to x2
         {
             // interpolation -> fragment shader -> write to framebuffer
-            float fb_d = line_interpolation(d1, d2, x - x1, dx);
-            color fb_col = fs->run(fragment_attribs);
-            fb.write(fb_x, fb_y, fb_col, fb_d);
+            interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], (x - x1) * interp_step[0]);
+            color fb_col = fs->run(interp_attribs[0]);
+            fb.write(fb_x, fb_y, fb_col, interp_depth[0]);
 
             if (error > 0)
             {
@@ -236,20 +238,27 @@ namespace cr
         }
     }
 
-    float renderer::line_interpolation(float d1, float d2, unsigned cur, unsigned total)
+    void renderer::init_interpolation(unsigned index, vector<float>& v1, unsigned step_count)    
     {
-        assert(vertex_attribs[0].size() == vertex_attribs[1].size());
+        assert(index <= 3);
 
-        float progress = float(cur) / total;
-        float d = d1 * (1.f - progress) + d2 * progress; // depth interpolation
+        interp_step[index] = 1.f / step_count;
+        interp_attribs[index].resize(v1.size());
+    }
 
-        fragment_attribs.resize(vertex_attribs[0].size());
-        for (unsigned i = 0; i < fragment_attribs.size(); i++)
+    void renderer::interpolation(unsigned index, float d1, vector<float>& v1, float d2, vector<float>& v2, float weight2)
+    {
+        assert(index <= 3);
+        assert(v1.size() == interp_attribs[index].size() && v2.size() == interp_attribs[index].size());
+        assert(weight2 >= 0.f && weight2 <= 1.f);
+
+        float weight1 = 1.f - weight2;
+        interp_depth[index] = weight1 * d1 + weight2 * d2; // depth interpolation
+
+        for (unsigned i = 0; i < interp_attribs[index].size(); i++)
         {
-            // fragment attributes interpolation
-            fragment_attribs[i] = vertex_attribs[0][i] * (1.f - progress) + vertex_attribs[1][i] * progress;
+            // interpolation of attributes
+            interp_attribs[index][i] = weight1 * v1[i] + weight2 * v2[i];
         }
-
-        return d;
     }
 }

@@ -122,7 +122,6 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Do not use division in interpolation on every call
 * Check depth buffer before interpolation
 * Use integer-based rasterization for triangle
 * Add triangle interpolation
