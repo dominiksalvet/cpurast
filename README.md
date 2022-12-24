@@ -25,6 +25,7 @@ This project was created during my master's studies. I chose this assignment bec
 * `examples/line` - dancing line with various angles and sizes
 * `examples/triangle` - colored triangle with a resizable window
 * `examples/square` - colored square utilizing squared viewport
+* `examples/grid` - grid of randomly colored rectangles
 * `shaders` - example cpurast shaders
 
 ## How to Run Examples
@@ -121,9 +122,9 @@ The most important sources, in chronological order:
 
 ## Todo
 
+* Do not use division in interpolation on every call
 * Check depth buffer before interpolation
 * Use integer-based rasterization for triangle
-* Do not use division in interpolation on every call
 * Add triangle interpolation
 * Perspective correct interpolation
 * Add more examples
