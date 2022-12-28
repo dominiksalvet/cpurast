@@ -7,6 +7,7 @@ This project was created during my master's studies. I chose this assignment bec
 ## Features
 
 * Draws points, lines, and triangles
+* Integer-based rasterization
 * Interpolation of vertex attributes
 * Vertex and fragment shaders
 * Z-buffering support
@@ -122,9 +123,8 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Use integer-based rasterization for triangle
+* Improve integer-based rasterization for triangle
 * Render two adjacent triangles efficiently
-* Fix relative coordinates to pixel coordinates transformation
 * Revise early checks before rasterization calls
 * Check depth buffer before interpolation
 * Add triangle interpolation

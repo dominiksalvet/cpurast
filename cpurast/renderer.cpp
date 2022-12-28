@@ -101,9 +101,13 @@ namespace cr
     {
         assert(x >= -1.f && x <= 1.f);
 
-        float w = vp.width;
-        // position x=1 is mapped to width-1
-        unsigned rel_x = x == 1.f ? w - 1 : ((x + 1) * w) / 2;
+        unsigned rel_x = ((x + 1) * vp.width) / 2;
+
+        // last position interval is closed from both sides
+        if (rel_x == vp.width) {
+            rel_x--;
+        }
+
         return vp.x + rel_x;
     }
 
@@ -111,9 +115,13 @@ namespace cr
     {
         assert(y >= -1.f && y <= 1.f);
 
-        float h = vp.height;
-        // position y=1 is mapped to height-1
-        unsigned rel_y = y == 1.f ? h - 1 : ((y + 1) * h) / 2;
+        unsigned rel_y = ((y + 1) * vp.height) / 2;
+
+        // last position interval is closed from both sides
+        if (rel_y == vp.height) {
+            rel_y--;
+        }
+
         return vp.y + rel_y;
     }
 

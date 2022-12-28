@@ -26,9 +26,8 @@ namespace cr
         unsigned get_framebuf_x(float x) const;
         unsigned get_framebuf_y(float y) const;
 
-        // line rasterization based on Bresenham's line algorithm
+        // rasterization functions based on Bresenham's line algorithm
         void rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2);
-        // triangle rasterization based on scanline digital differential analyzer (DDA algorithm)
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 
         // initialize interpolation (call once before a batch of interpolation calls)
