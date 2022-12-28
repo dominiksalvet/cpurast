@@ -52,11 +52,6 @@ namespace cr
         const int x2 = get_framebuf_x(pos2.x);
         const int y2 = get_framebuf_y(pos2.y);
 
-        // if it is not a line, skip
-        if (x1 == x2 && y1 == y2) {
-            return;
-        }
-
         rasterize_line(x1, y1, pos1.z, x2, y2, pos2.z);
     }
 
@@ -79,12 +74,6 @@ namespace cr
         const int y2 = get_framebuf_y(pos2.y);
         const int x3 = get_framebuf_x(pos3.x);
         const int y3 = get_framebuf_y(pos3.y);
-
-        // if it is not a triangle, skip
-        if ((x1 == x2 && y1 == y2) || (x1 == x3 && y1 == y3) || (x2 == x3 && y2 == y3) ||
-            (x1 == x2 && x2 == x3) || (y1 == y2 && y2 == y3)) {
-            return;
-        }
 
         rasterize_triangle(x1, y1, pos1.z, x2, y2, pos2.z, x3, y3, pos3.z);
     }
@@ -215,7 +204,7 @@ namespace cr
         const float slope13 = float(dx13) / dy13;
         const bool edge12_is_left = slope12 < slope13;
 
-        // render bottom part of triangle (top flat)
+        // render top flat triangle (from bottom)
         int left_dx = edge12_is_left ? dx12 : dx13;
         int right_dx = edge12_is_left ? dx13 : dx12;
         int left_dy = edge12_is_left ? dy12 : dy13;
@@ -226,8 +215,8 @@ namespace cr
         left_dx = abs(left_dx);
         right_dx = abs(right_dx);
 
-        int left_error = 2 * left_dy - left_dx;
-        int right_error = 2 * right_dy - right_dx;
+        int left_error = left_dy - left_dx;
+        int right_error = right_dy - right_dx;
         int left_x = x1;
         int right_x = x1;
 
@@ -244,7 +233,7 @@ namespace cr
                 right_x += right_dx_sign;
             }
 
-            for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
+            for (int fb_x = left_x; fb_x < right_x; fb_x++) {
                 fb.write(fb_x, fb_y, {1.f, 0.f, 0.f}, 0.f);
             }
 
@@ -256,15 +245,13 @@ namespace cr
         const int dx23 = x3 - x2;
         const int dy23 = y3 - y2;
 
-        // render top part of triangle (bottom flat)
+        // render bottom flat triangle (from top)
         if (edge12_is_left)
         {
             left_dx = dx23;
             left_dy = dy23;
             left_dx_sign = left_dx < 0 ? -1 : 1;
             left_dx = abs(left_dx);
-            left_error = 2 * left_dy - left_dx;
-            left_x = x2;
         }
         else
         {
@@ -272,43 +259,32 @@ namespace cr
             right_dy = dy23;
             right_dx_sign = right_dx < 0 ? -1 : 1;
             right_dx = abs(right_dx);
-            right_error = 2 * right_dy - right_dx;
-            right_x = x2;
         }
 
-        for (int fb_y = y2; fb_y < y3; fb_y++)
+        left_error = left_dy - left_dx;
+        right_error = right_dy - right_dx;
+        left_x = x3;
+        right_x = x3;
+
+        for (int fb_y = y3 - 1; fb_y >= y2; fb_y--)
         {
-            while (left_error <= 0)
+            while (left_error < 0)
             {
                 left_error += 2 * left_dy;
-                left_x += left_dx_sign;
+                left_x -= left_dx_sign;
             }
-            while (right_error <= 0)
+            while (right_error < 0)
             {
                 right_error += 2 * right_dy;
-                right_x += right_dx_sign;
+                right_x -= right_dx_sign;
             }
 
-            for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
-                fb.write(fb_x, fb_y, {1.f, 0.f, 0.f}, 0.f);
+            for (int fb_x = left_x; fb_x < right_x; fb_x++) {
+                fb.write(fb_x, fb_y, {0.f, 1.f, 0.f}, 0.f);
             }
 
             left_error -= 2 * left_dx;
             right_error -= 2 * right_dx;
-        }
-
-        // render triangle top row
-        left_x = x3;
-        right_x = x3;
-
-        if (y3 == y2)
-        {
-            left_x = edge12_is_left ? x2 : x3;
-            right_x = edge12_is_left ? x3 : x2;
-        }
-
-        for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
-            fb.write(fb_x, y3, {1.f, 0.f, 0.f}, 0.f);
         }
     }
 

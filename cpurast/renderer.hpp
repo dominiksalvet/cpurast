@@ -16,6 +16,7 @@ namespace cr
         // main render functions
         void render_point(const vector<float>& v);
         void render_line(const vector<float>& v1, const vector<float> v2);
+        // this function also supports adjacent triangles rendering
         void render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3);
 
         void set_vs(const vertex_shader* vs);

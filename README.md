@@ -122,9 +122,7 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Improve integer-based rasterization for triangle
-* Render two adjacent triangles efficiently
-* Revise early checks before rasterization calls
+* Fix triangle rendering one-off
 * Check depth buffer before interpolation
 * Add triangle interpolation
 * Perspective correct interpolation
