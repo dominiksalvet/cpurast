@@ -4,14 +4,16 @@
 #include <cassert>
 #include "default_shader.hpp"
 
+using std::make_shared;
+
 namespace cr
 {
     context::context(cr::canvas* canvas, unsigned canvas_w, unsigned canvas_h) :
         canvas(canvas),
         framebuf(canvas_w, canvas_h),
         viewport{0, 0, canvas_w, canvas_h},
-        v_shader(std::make_shared<default_vs>()),
-        f_shader(std::make_shared<default_fs>()),
+        v_shader(make_shared<default_vs>()),
+        f_shader(make_shared<default_fs>()),
         renderer(framebuf, viewport, v_shader.get(), f_shader.get()) {}
 
     void context::update_canvas() const {

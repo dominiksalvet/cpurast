@@ -122,8 +122,11 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Check depth buffer before interpolation
 * Use integer-based rasterization for triangle
+* Render two adjacent triangles efficiently
+* Fix relative coordinates to pixel coordinates transformation
+* Revise early checks before rasterization calls
+* Check depth buffer before interpolation
 * Add triangle interpolation
 * Perspective correct interpolation
 * Add more examples

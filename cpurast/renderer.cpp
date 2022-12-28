@@ -4,6 +4,9 @@
 #include <cassert>
 #include <cmath>
 
+using std::abs;
+using std::swap;
+
 namespace cr
 {
     renderer::renderer(framebuf& fb, viewport& vp, const vertex_shader* vs, const fragment_shader* fs) :
@@ -118,27 +121,27 @@ namespace cr
     {
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)
         bool steep = false;
-        if (std::abs(y2 - y1) > std::abs(x2 - x1))
+        if (abs(y2 - y1) > abs(x2 - x1))
         {
-            std::swap(x1, y1);
-            std::swap(x2, y2);
+            swap(x1, y1);
+            swap(x2, y2);
             steep = true;
         }
         // eliminate 4th and 5th octants
         if (x1 > x2)
         {
             // swap vertices and all required data
-            std::swap(x1, x2);
-            std::swap(y1, y2);
-            std::swap(d1, d2);
-            std::swap(vertex_attribs[0], vertex_attribs[1]);
+            swap(x1, x2);
+            swap(y1, y2);
+            swap(d1, d2);
+            swap(vertex_attribs[0], vertex_attribs[1]);
         }
         // eliminate 8th octant
         const int y_step = y2 > y1 ? 1 : -1;
 
         // end point differences
         const int dx = x2 - x1;
-        const int dy = std::abs(y2 - y1);
+        const int dy = abs(y2 - y1);
         int error = 2 * dy - dx;
 
         init_interpolation(0, vertex_attribs[0], dx);
@@ -173,68 +176,131 @@ namespace cr
         // sort vertices by its y position (so that y1 <= y2 <= y3)
         if (y1 > y2)
         {
-            std::swap(x1, x2);
-            std::swap(y1, y2);
-            std::swap(d1, d2);
-            std::swap(vertex_attribs[0], vertex_attribs[1]);
+            swap(x1, x2);
+            swap(y1, y2);
+            swap(d1, d2);
+            swap(vertex_attribs[0], vertex_attribs[1]);
         }
         if (y1 > y3)
         {
-            std::swap(x1, x3);
-            std::swap(y1, y3);
-            std::swap(d1, d3);
-            std::swap(vertex_attribs[0], vertex_attribs[2]);
+            swap(x1, x3);
+            swap(y1, y3);
+            swap(d1, d3);
+            swap(vertex_attribs[0], vertex_attribs[2]);
         }
         if (y2 > y3)
         {
-            std::swap(x2, x3);
-            std::swap(y2, y3);
-            std::swap(d2, d3);
-            std::swap(vertex_attribs[1], vertex_attribs[2]);
+            swap(x2, x3);
+            swap(y2, y3);
+            swap(d2, d3);
+            swap(vertex_attribs[1], vertex_attribs[2]);
         }
+
+        // compute position differences
+        const int dx12 = x2 - x1;
+        const int dx13 = x3 - x1;
+        const int dy12 = y2 - y1;
+        const int dy13 = y3 - y1;
 
         // determine left and right edge
-        const float slope12 = float(x2 - x1) / (y2 - y1);
-        const float slope13 = float(x3 - x1) / (y3 - y1);
-        const float slope23 = float(x3 - x2) / (y3 - y2);
+        const float slope12 = float(dx12) / dy12;
+        const float slope13 = float(dx13) / dy13;
         const bool edge12_is_left = slope12 < slope13;
 
-        float left_slope = edge12_is_left ? slope12 : slope13;
-        float right_slope = edge12_is_left ? slope13 : slope12;
+        // render bottom part of triangle (top flat)
+        int left_dx = edge12_is_left ? dx12 : dx13;
+        int right_dx = edge12_is_left ? dx13 : dx12;
+        int left_dy = edge12_is_left ? dy12 : dy13;
+        int right_dy = edge12_is_left ? dy13 : dy12;
 
-        // render middle row only in appropriate flat rendering
-        if (y1 == y2) {
-            y2--;
-        }
+        int left_dx_sign = left_dx < 0 ? -1 : 1;
+        int right_dx_sign = right_dx < 0 ? -1 : 1;
+        left_dx = abs(left_dx);
+        right_dx = abs(right_dx);
 
-        // render flat top triangle (from bottom)
-        float left_x = x1;
-        float right_x = x1;
-        for (int fb_y = y1; fb_y <= y2; fb_y++)
+        int left_error = 2 * left_dy - left_dx;
+        int right_error = 2 * right_dy - right_dx;
+        int left_x = x1;
+        int right_x = x1;
+
+        for (int fb_y = y1; fb_y < y2; fb_y++)
         {
-            for (int fb_x = std::round(left_x); fb_x <= std::round(right_x); fb_x++) {
-                fb.write(fb_x, fb_y, {1.f, 1.f, 1.f}, 0.f);
+            while (left_error <= 0)
+            {
+                left_error += 2 * left_dy;
+                left_x += left_dx_sign;
             }
-            left_x += left_slope;
-            right_x += right_slope;
+            while (right_error <= 0)
+            {
+                right_error += 2 * right_dy;
+                right_x += right_dx_sign;
+            }
+
+            for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
+                fb.write(fb_x, fb_y, {1.f, 0.f, 0.f}, 0.f);
+            }
+
+            left_error -= 2 * left_dx;
+            right_error -= 2 * right_dx;
         }
 
-        // render bottom flat triangle (from top)
-        if (edge12_is_left) {
-            left_slope = slope23;
-        } else {
-            right_slope = slope23;
+        // compute additional position differences
+        const int dx23 = x3 - x2;
+        const int dy23 = y3 - y2;
+
+        // render top part of triangle (bottom flat)
+        if (edge12_is_left)
+        {
+            left_dx = dx23;
+            left_dy = dy23;
+            left_dx_sign = left_dx < 0 ? -1 : 1;
+            left_dx = abs(left_dx);
+            left_error = 2 * left_dy - left_dx;
+            left_x = x2;
+        }
+        else
+        {
+            right_dx = dx23;
+            right_dy = dy23;
+            right_dx_sign = right_dx < 0 ? -1 : 1;
+            right_dx = abs(right_dx);
+            right_error = 2 * right_dy - right_dx;
+            right_x = x2;
         }
 
+        for (int fb_y = y2; fb_y < y3; fb_y++)
+        {
+            while (left_error <= 0)
+            {
+                left_error += 2 * left_dy;
+                left_x += left_dx_sign;
+            }
+            while (right_error <= 0)
+            {
+                right_error += 2 * right_dy;
+                right_x += right_dx_sign;
+            }
+
+            for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
+                fb.write(fb_x, fb_y, {1.f, 0.f, 0.f}, 0.f);
+            }
+
+            left_error -= 2 * left_dx;
+            right_error -= 2 * right_dx;
+        }
+
+        // render triangle top row
         left_x = x3;
         right_x = x3;
-        for (int fb_y = y3; fb_y > y2; fb_y--)
+
+        if (y3 == y2)
         {
-            for (int fb_x = std::round(left_x); fb_x <= std::round(right_x); fb_x++) {
-                fb.write(fb_x, fb_y, {1.f, 1.f, 1.f}, 0.f);
-            }
-            left_x -= left_slope;
-            right_x -= right_slope;
+            left_x = edge12_is_left ? x2 : x3;
+            right_x = edge12_is_left ? x3 : x2;
+        }
+
+        for (int fb_x = left_x; fb_x <= right_x; fb_x++) {
+            fb.write(fb_x, y3, {1.f, 0.f, 0.f}, 0.f);
         }
     }
 
