@@ -18,10 +18,16 @@ namespace cr
         void enable_depth_test();
         void clear(bool clear_color_buf, bool clear_depth_buf);
 
-        // the origin of the coordinate system is placed at the left bottom
-        // higher depth value means it is closer to the viewport
-        // if depth test is disabled, depth value is ignored
-        void write(unsigned x, unsigned y, cr::color color, float depth);
+        // returns single index to framebuffer based on given x and y coordinates
+        // the origin of the framebuffer coordinate system is placed at the left bottom
+        unsigned get_index(unsigned x, unsigned y) const;
+
+        // checks whether given depth value is higher (closer to the viewport) than depth buffer value
+        // if so, updates depth buffer and returns success, otherwise fails
+        // if depth test is disabled, depth value is ignored and always returns success
+        bool depth_test(unsigned index, float depth);
+        // this function should be called only after a successful depth test
+        void write(unsigned index, cr::color color);
 
         unsigned get_width() const;
         unsigned get_height() const;
@@ -35,7 +41,7 @@ namespace cr
         color clear_color; // color used for clearing color buffer
         vector<color> color_buf; // color buffer representation
 
-        bool test_depth; // depth test enable flag
+        bool depth_test_enabled; // depth test enable flag
         vector<float> depth_buf; // depth buffer of values [-1, 1]
     };
 }

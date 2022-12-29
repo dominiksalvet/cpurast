@@ -26,7 +26,6 @@ class color_fs : public cr::fragment_shader
 public:
     cr::color run(const vector<float>& in) const override
     {
-        assert(in.size() >= 3);
         assert(in[0] >= 0.f && in[0] <= 1.f);
         assert(in[1] >= 0.f && in[1] <= 1.f);
         assert(in[2] >= 0.f && in[2] <= 1.f);

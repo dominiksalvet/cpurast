@@ -11,13 +11,13 @@ namespace cr
     class renderer
     {
     public:
-        renderer(framebuf& fb, viewport& vp, const vertex_shader* vs, const fragment_shader* fs);
+        renderer(framebuf& fb, const viewport& vp, const vertex_shader* vs, const fragment_shader* fs);
 
         // main render functions
         void render_point(const vector<float>& v);
-        void render_line(const vector<float>& v1, const vector<float> v2);
+        void render_line(const vector<float>& v1, const vector<float>& v2);
         // this function also supports adjacent triangles rendering
-        void render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3);
+        void render_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3);
 
         void set_vs(const vertex_shader* vs);
         void set_fs(const fragment_shader* fs);
@@ -32,12 +32,16 @@ namespace cr
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 
         // initialize interpolation (call once before a batch of interpolation calls)
-        void init_interpolation(unsigned index, vector<float>& v1, unsigned step_count);
+        void init_interpolation(unsigned index, const vector<float>& v1, unsigned step_count);
         // interpolates given depths and attributes based on given weight, results are written to given index
-        void interpolation(unsigned index, float d1, vector<float>& v1, float d2, vector<float>& v2, float weight2);
+        void interpolation(
+            unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2
+        );
+
+        void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 
         framebuf& fb;
-        viewport& vp;
+        const viewport& vp;
 
         const vertex_shader* vs;
         const fragment_shader* fs;

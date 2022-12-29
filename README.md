@@ -7,16 +7,13 @@ This project was created during my master's studies. I chose this assignment bec
 ## Features
 
 * Draws points, lines, and triangles
-* Integer-based rasterization
+* Integer-based rasterization with adjacent triangles support
 * Interpolation of vertex attributes
 * Vertex and fragment shaders
-* Z-buffering support
+* Early depth testing
 * Viewport rendering
-* Normalized coordinates
-* Normalized colors
+* Normalized coordinates and colors, both compatible with OpenGL
 * Cross platform, minimal dependencies
-
-> Coordinate and color interpretations are compatible with OpenGL.
 
 ## Repository Structure
 
@@ -123,14 +120,13 @@ The most important sources, in chronological order:
 ## Todo
 
 * Fix triangle rendering one-off
-* Check depth buffer before interpolation
 * Add triangle interpolation
 * Perspective correct interpolation
 * Add more examples
 * Improve clipping for lines, triangles
+* Add support for texturing
+* Add support for textures with transparency
 * Add support for drawing arrays of primitives
 * Add support for backface culling
-* Add support for texturing
-* Add color transparency for transparent textures
 * Add support for shadows
 * Add support for reflections

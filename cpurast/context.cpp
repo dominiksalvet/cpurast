@@ -70,11 +70,11 @@ namespace cr
         renderer.render_point(v);
     }
 
-    void context::draw_line(const vector<float>& v1, const vector<float> v2) {
+    void context::draw_line(const vector<float>& v1, const vector<float>& v2) {
         renderer.render_line(v1, v2);
     }
 
-    void context::draw_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3) {
+    void context::draw_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3) {
         renderer.render_triangle(v1, v2, v3);
     }
 }

@@ -42,8 +42,8 @@ namespace cr
 
         // drawing of primitives (v - vertex attributes)
         void draw_point(const vector<float>& v);
-        void draw_line(const vector<float>& v1, const vector<float> v2);
-        void draw_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3);
+        void draw_line(const vector<float>& v1, const vector<float>& v2);
+        void draw_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3);
 
     private:
         cr::canvas* canvas; // canvas for drawing pixels

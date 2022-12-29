@@ -9,7 +9,7 @@ using std::swap;
 
 namespace cr
 {
-    renderer::renderer(framebuf& fb, viewport& vp, const vertex_shader* vs, const fragment_shader* fs) :
+    renderer::renderer(framebuf& fb, const viewport& vp, const vertex_shader* vs, const fragment_shader* fs) :
         fb(fb),
         vp(vp),
         vs(vs),
@@ -24,18 +24,14 @@ namespace cr
             return;
         }
 
-        // compute final framebuffer coordinates
+        // compute framebuffer coordinates
         const unsigned fb_x = get_framebuf_x(pos.x);
         const unsigned fb_y = get_framebuf_y(pos.y);
 
-        // run fragment shader
-        const color fb_col = fs->run(vertex_attribs[0]);
-
-        // write to framebuffer
-        fb.write(fb_x, fb_y, fb_col, pos.z);
+        process_fragment(fb_x, fb_y, pos.z, vertex_attribs[0]);
     }
 
-    void renderer::render_line(const vector<float>& v1, const vector<float> v2)
+    void renderer::render_line(const vector<float>& v1, const vector<float>& v2)
     {
         // run vertex shader
         const position pos1 = vs->run(v1, vertex_attribs[0]);
@@ -55,7 +51,7 @@ namespace cr
         rasterize_line(x1, y1, pos1.z, x2, y2, pos2.z);
     }
 
-    void renderer::render_triangle(const vector<float>& v1, const vector<float> v2, const vector<float> v3)
+    void renderer::render_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3)
     {
         // run vertex shader
         const position pos1 = vs->run(v1, vertex_attribs[0]);
@@ -152,10 +148,8 @@ namespace cr
 
         while (x <= x2) // from x1 to x2
         {
-            // interpolation -> fragment shader -> write to framebuffer
             interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], (x - x1) * interp_step[0]);
-            color fb_col = fs->run(interp_attribs[0]);
-            fb.write(fb_x, fb_y, fb_col, interp_depth[0]);
+            process_fragment(fb_x, fb_y, interp_depth[0], interp_attribs[0]);
 
             if (error > 0)
             {
@@ -234,7 +228,7 @@ namespace cr
             }
 
             for (int fb_x = left_x; fb_x < right_x; fb_x++) {
-                fb.write(fb_x, fb_y, {1.f, 0.f, 0.f}, 0.f);
+                process_fragment(fb_x, fb_y, 0.f, vertex_attribs[0]);
             }
 
             left_error -= 2 * left_dx;
@@ -280,7 +274,7 @@ namespace cr
             }
 
             for (int fb_x = left_x; fb_x < right_x; fb_x++) {
-                fb.write(fb_x, fb_y, {0.f, 1.f, 0.f}, 0.f);
+                process_fragment(fb_x, fb_y, 0.f, vertex_attribs[0]);
             }
 
             left_error -= 2 * left_dx;
@@ -288,7 +282,7 @@ namespace cr
         }
     }
 
-    void renderer::init_interpolation(unsigned index, vector<float>& v1, unsigned step_count)    
+    void renderer::init_interpolation(unsigned index, const vector<float>& v1, unsigned step_count)    
     {
         assert(index <= 3);
 
@@ -296,10 +290,10 @@ namespace cr
         interp_attribs[index].resize(v1.size());
     }
 
-    void renderer::interpolation(unsigned index, float d1, vector<float>& v1, float d2, vector<float>& v2, float weight2)
-    {
-        assert(index <= 3);
-        assert(v1.size() == interp_attribs[index].size() && v2.size() == interp_attribs[index].size());
+    void renderer::interpolation(
+        unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2
+    ) {
+        assert(v1.size() == v2.size());
         assert(weight2 >= 0.f && weight2 <= 1.f);
 
         float weight1 = 1.f - weight2;
@@ -309,6 +303,19 @@ namespace cr
         {
             // interpolation of attributes
             interp_attribs[index][i] = weight1 * v1[i] + weight2 * v2[i];
+        }
+    }
+
+    void renderer::process_fragment(unsigned x, unsigned y, float d, const vector<float>& v)
+    {
+        // compute final framebuffer index
+        const unsigned fb_index = fb.get_index(x, y);
+
+        // depth test -> fragment shader -> write to framebuffer
+        if (fb.depth_test(fb_index, d))
+        {
+            const color fb_col = fs->run(v);
+            fb.write(fb_index, fb_col);
         }
     }
 }
