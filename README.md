@@ -119,13 +119,12 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* It should not matter in which order line vertices are drawn
 * Interpolation - check corner cases
 * Triangle rasterization should all lines be less than right_x?
 * Add support for disabling interpolation
 * Fix triangle rendering one-off
+* Add some 3D examples
 * Perspective correct interpolation
-* Add more examples
 * Improve clipping for lines, triangles
 * Add support for texturing
 * Add support for textures with transparency

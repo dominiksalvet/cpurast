@@ -321,7 +321,7 @@ namespace cr
     {
         assert(index <= 3);
 
-        interp_step[index] = 1.f / total_steps;
+        interp_step[index] = total_steps == 0 ? 1.f : 1.f / total_steps;
         interp_attribs[index].resize(v1.size());
     }
 
