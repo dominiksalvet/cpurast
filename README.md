@@ -126,7 +126,6 @@ The most important sources, in chronological order:
 * Triangle rasterization should all lines be less than right_x?
 * Merge top flat and bottom flat triangle rendering to a function
 * Add support for disabling interpolation
-* Add disable depth test
 * Break interpolation initialization to multiple functions
 * Fix triangle rendering one-off
 * Perspective correct interpolation

@@ -31,6 +31,10 @@ namespace cr
     void context::enable_depth_test() {
         framebuf.enable_depth_test();
     }
+    
+    void context::disable_depth_test() {
+        framebuf.disable_depth_test();
+    }
 
     void context::set_clear_color(float r, float g, float b)
     {

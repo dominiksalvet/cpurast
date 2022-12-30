@@ -16,6 +16,7 @@ namespace cr
 
         void resize(unsigned new_width, unsigned new_height);
         void enable_depth_test();
+        void disable_depth_test();
         void clear(bool clear_color_buf, bool clear_depth_buf);
 
         // returns single index to framebuffer based on given x and y coordinates

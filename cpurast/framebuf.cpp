@@ -35,6 +35,16 @@ namespace cr
         depth_buf.resize(width * height);
         depth_test_enabled = true;
     }
+    
+    void framebuf::disable_depth_test()
+    {
+        if (!depth_test_enabled) {
+            return;
+        }
+
+        depth_test_enabled = false;
+        depth_buf.clear();
+    }
 
     void framebuf::clear(bool clear_color_buf, bool clear_depth_buf)
     {

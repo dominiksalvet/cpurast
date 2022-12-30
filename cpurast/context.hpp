@@ -25,8 +25,9 @@ namespace cr
 
         // change the resolution of the framebuffer
         void resize_framebuf(unsigned new_width, unsigned new_height);
-        // enable depth test for framebuffer
+        // enable/disable depth test for framebuffer
         void enable_depth_test();
+        void disable_depth_test();
         // set clear color of framebuffer's color buffer
         void set_clear_color(float r, float g, float b);
         // clear individual buffers of the framebuffer
