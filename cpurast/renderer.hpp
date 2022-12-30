@@ -11,7 +11,7 @@ namespace cr
     class renderer
     {
     public:
-        renderer(framebuf& fb, const viewport& vp, const vertex_shader* vs, const fragment_shader* fs);
+        renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs);
 
         // main render functions
         void render_point(const vector<float>& v);
@@ -21,6 +21,7 @@ namespace cr
 
         void set_vs(const vertex_shader* vs);
         void set_fs(const fragment_shader* fs);
+        void set_viewport(unsigned x, unsigned y, unsigned width, unsigned height);
 
     private:
         // transform normalized coordinates [-1, 1] to framebuffer coordinates
@@ -39,13 +40,12 @@ namespace cr
         void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 
         framebuf& fb;
-        const viewport& vp;
-
         const vertex_shader* vs;
         const fragment_shader* fs;
 
-        vector<float> vertex_attribs[3]; // vertex shader output attributes
+        viewport vp; // current viewport properties
 
+        vector<float> vertex_attribs[3]; // vertex shader output attributes
         float interp_step[3]; // prepared interpolation steps
         float interp_depth[3]; // interpolated depths
         vector<float> interp_attribs[3]; // interpolated attributes

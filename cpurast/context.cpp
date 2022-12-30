@@ -11,10 +11,9 @@ namespace cr
     context::context(cr::canvas* canvas, unsigned canvas_w, unsigned canvas_h) :
         canvas(canvas),
         framebuf(canvas_w, canvas_h),
-        viewport{0, 0, canvas_w, canvas_h},
         v_shader(make_shared<default_vs>()),
         f_shader(make_shared<default_fs>()),
-        renderer(framebuf, viewport, v_shader.get(), f_shader.get()) {}
+        renderer(framebuf, v_shader.get(), f_shader.get()) {}
 
     void context::update_canvas() const {
         canvas->draw(framebuf.get_color_buf(), framebuf.get_width(), framebuf.get_height());
@@ -55,7 +54,7 @@ namespace cr
         assert(width > 0 && height > 0);
         assert(x + width <= framebuf.get_width() && y + height <= framebuf.get_height());
 
-        viewport = {x, y, width, height};
+        renderer.set_viewport(x, y, width, height);
     }
 
     void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader)

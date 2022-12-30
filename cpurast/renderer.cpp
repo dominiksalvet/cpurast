@@ -9,11 +9,11 @@ using std::swap;
 
 namespace cr
 {
-    renderer::renderer(framebuf& fb, const viewport& vp, const vertex_shader* vs, const fragment_shader* fs) :
+    renderer::renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs) :
         fb(fb),
-        vp(vp),
         vs(vs),
-        fs(fs) {}
+        fs(fs),
+        vp{0, 0, fb.get_width(), fb.get_height()} {}
     
     void renderer::render_point(const vector<float>& v)
     {
@@ -80,6 +80,10 @@ namespace cr
 
     void renderer::set_fs(const fragment_shader* fs) {
         this->fs = fs;
+    }
+
+    void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
+        vp = {x, y, width, height};
     }
 
     unsigned renderer::get_framebuf_x(float x) const

@@ -4,7 +4,6 @@
 
 #include "framebuf.hpp"
 #include "canvas.hpp"
-#include "viewport.hpp"
 #include <memory>
 #include "shader.hpp"
 #include "renderer.hpp"
@@ -48,9 +47,7 @@ namespace cr
 
     private:
         cr::canvas* canvas; // canvas for drawing pixels
-
         cr::framebuf framebuf; // framebuffer for rendering
-        cr::viewport viewport; // current viewport properties
 
         shared_ptr<const vertex_shader> v_shader; // active vertex shader
         shared_ptr<const fragment_shader> f_shader; // active fragment shader
