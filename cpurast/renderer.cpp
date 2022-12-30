@@ -203,22 +203,22 @@ namespace cr
         int left_dx, right_dx;
         int left_dy, right_dy;
         float left_d, right_d;
-        vector<float> left_attribs, right_attribs;
+        const vector<float> *left_attribs, *right_attribs;
 
         // render top flat triangle (from bottom)
         if (edge12_is_left)
         {
-            left_dx = dx12;                   right_dx = dx13;
-            left_dy = dy12;                   right_dy = dy13;
-            left_d = d2;                      right_d = d3;
-            left_attribs = vertex_attribs[1]; right_attribs = vertex_attribs[2];
+            left_dx = dx12;                    right_dx = dx13;
+            left_dy = dy12;                    right_dy = dy13;
+            left_d = d2;                       right_d = d3;
+            left_attribs = &vertex_attribs[1]; right_attribs = &vertex_attribs[2];
         }
         else
         {
-            left_dx = dx13;                   right_dx = dx12;
-            left_dy = dy13;                   right_dy = dy12;
-            left_d = d3;                      right_d = d2;
-            left_attribs = vertex_attribs[2]; right_attribs = vertex_attribs[1];
+            left_dx = dx13;                    right_dx = dx12;
+            left_dy = dy13;                    right_dy = dy12;
+            left_d = d3;                       right_d = d2;
+            left_attribs = &vertex_attribs[2]; right_attribs = &vertex_attribs[1];
         }
 
         int left_dx_sign = left_dx < 0 ? -1 : 1;
@@ -246,8 +246,8 @@ namespace cr
                 right_x += right_dx_sign;
             }
 
-            interpolation(0, d1, vertex_attribs[0], left_d, left_attribs, (fb_y - y1) * interp_step[0]);
-            interpolation(1, d1, vertex_attribs[0], right_d, right_attribs, (fb_y - y1) * interp_step[1]);
+            interpolation(0, d1, vertex_attribs[0], left_d, *left_attribs, (fb_y - y1) * interp_step[0]);
+            interpolation(1, d1, vertex_attribs[0], right_d, *right_attribs, (fb_y - y1) * interp_step[1]);
 
             init_interpolation(2, vertex_attribs[0], right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)
@@ -266,7 +266,7 @@ namespace cr
             left_dx = dx23;
             left_dy = dy23;
             right_d = d1;
-            right_attribs = vertex_attribs[0];
+            right_attribs = &vertex_attribs[0];
             
             left_dx_sign = left_dx < 0 ? -1 : 1;
             left_dx = abs(left_dx);
@@ -276,7 +276,7 @@ namespace cr
             right_dx = dx23;
             right_dy = dy23;
             left_d = d1;
-            left_attribs = vertex_attribs[0];
+            left_attribs = &vertex_attribs[0];
 
             right_dx_sign = right_dx < 0 ? -1 : 1;
             right_dx = abs(right_dx);
@@ -302,8 +302,8 @@ namespace cr
                 right_x -= right_dx_sign;
             }
 
-            interpolation(0, d3, vertex_attribs[2], left_d, left_attribs, (y3 - fb_y) * interp_step[0]);
-            interpolation(1, d3, vertex_attribs[2], right_d, right_attribs, (y3 - fb_y) * interp_step[1]);
+            interpolation(0, d3, vertex_attribs[2], left_d, *left_attribs, (y3 - fb_y) * interp_step[0]);
+            interpolation(1, d3, vertex_attribs[2], right_d, *right_attribs, (y3 - fb_y) * interp_step[1]);
 
             init_interpolation(2, vertex_attribs[0], right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)

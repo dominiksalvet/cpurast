@@ -119,14 +119,12 @@ The most important sources, in chronological order:
 
 ## Todo
 
+* Merge top flat and bottom flat triangle rendering to a function
+* Break interpolation initialization to multiple functions
 * Interpolation - check corner cases
 * Add also x coordinate to interpolation (compare with OpenGL)
-* Change some values to pointers in triangle rasterization
-* Use arrays of arguments and swap index only?
 * Triangle rasterization should all lines be less than right_x?
-* Merge top flat and bottom flat triangle rendering to a function
 * Add support for disabling interpolation
-* Break interpolation initialization to multiple functions
 * Fix triangle rendering one-off
 * Perspective correct interpolation
 * Add more examples
