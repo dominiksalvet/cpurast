@@ -32,9 +32,9 @@ namespace cr
         void rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
 
         // initialize interpolation (call once before a batch of interpolation calls)
-        void init_interpolation(unsigned index, const vector<float>& v1, unsigned step_count);
-        // interpolates depths and attributes based on weight, results are written to member arrays based on index
-        void interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2);
+        void init_interpolation(unsigned index, const vector<float>& v1, unsigned total_steps);
+        // interpolates depths and attributes based on current step, uses member arrays based on index
+        void interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, unsigned cur_step);
 
         void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 

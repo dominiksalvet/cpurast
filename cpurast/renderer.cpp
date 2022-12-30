@@ -147,7 +147,7 @@ namespace cr
         init_interpolation(0, vertex_attribs[0], dx);
         while (x <= x2) // from x1 to x2
         {
-            interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], (x - x1) * interp_step[0]);
+            interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], x - x1);
             process_fragment(fb_x, fb_y, interp_depth[0], interp_attribs[0]);
 
             if (error > 0)
@@ -231,8 +231,8 @@ namespace cr
         int left_x = x1;
         int right_x = x1;
 
-        init_interpolation(0, vertex_attribs[0], left_dy);
-        init_interpolation(1, vertex_attribs[0], right_dy);
+        init_interpolation(0, vertex_attribs[0], left_dx + left_dy);
+        init_interpolation(1, vertex_attribs[0], right_dx + right_dy);
         for (int fb_y = y1; fb_y < y2; fb_y++)
         {
             while (left_error <= 0)
@@ -246,13 +246,13 @@ namespace cr
                 right_x += right_dx_sign;
             }
 
-            interpolation(0, d1, vertex_attribs[0], left_d, *left_attribs, (fb_y - y1) * interp_step[0]);
-            interpolation(1, d1, vertex_attribs[0], right_d, *right_attribs, (fb_y - y1) * interp_step[1]);
+            interpolation(0, d1, vertex_attribs[0], left_d, *left_attribs, abs(x1 - left_x) + fb_y - y1);
+            interpolation(1, d1, vertex_attribs[0], right_d, *right_attribs, abs(x1 - right_x) + fb_y - y1);
 
             init_interpolation(2, vertex_attribs[0], right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)
             {
-                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], (fb_x - left_x) * interp_step[2]);
+                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], fb_x - left_x);
                 process_fragment(fb_x, fb_y, interp_depth[2], interp_attribs[2]);
             }
 
@@ -287,8 +287,8 @@ namespace cr
         left_x = x3;
         right_x = x3;
 
-        init_interpolation(0, vertex_attribs[2], left_dy);
-        init_interpolation(1, vertex_attribs[2], right_dy);
+        init_interpolation(0, vertex_attribs[2], left_dx + left_dy);
+        init_interpolation(1, vertex_attribs[2], right_dx + right_dy);
         for (int fb_y = y3 - 1; fb_y >= y2; fb_y--)
         {
             while (left_error < 0)
@@ -302,13 +302,13 @@ namespace cr
                 right_x -= right_dx_sign;
             }
 
-            interpolation(0, d3, vertex_attribs[2], left_d, *left_attribs, (y3 - fb_y) * interp_step[0]);
-            interpolation(1, d3, vertex_attribs[2], right_d, *right_attribs, (y3 - fb_y) * interp_step[1]);
+            interpolation(0, d3, vertex_attribs[2], left_d, *left_attribs, abs(x3 - left_x) + y3 - fb_y);
+            interpolation(1, d3, vertex_attribs[2], right_d, *right_attribs, abs(x3 - right_x) + y3 - fb_y);
 
             init_interpolation(2, vertex_attribs[0], right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)
             {
-                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], (fb_x - left_x) * interp_step[2]);
+                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], fb_x - left_x);
                 process_fragment(fb_x, fb_y, interp_depth[2], interp_attribs[2]);
             }
 
@@ -317,21 +317,24 @@ namespace cr
         }
     }
 
-    void renderer::init_interpolation(unsigned index, const vector<float>& v1, unsigned step_count)    
+    void renderer::init_interpolation(unsigned index, const vector<float>& v1, unsigned total_steps)
     {
         assert(index <= 3);
 
-        interp_step[index] = 1.f / step_count;
+        interp_step[index] = 1.f / total_steps;
         interp_attribs[index].resize(v1.size());
     }
 
-    void renderer::interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2)
+    void renderer::interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, unsigned cur_step)
     {
         assert(index <= 3);
         assert(v1.size() == v2.size());
+
+        const float weight2 = cur_step * interp_step[index];
+        const float weight1 = 1.f - weight2;
+
         assert(weight2 >= 0.f && weight2 <= 1.f);
 
-        float weight1 = 1.f - weight2;
         interp_depth[index] = weight1 * d1 + weight2 * d2; // depth interpolation
 
         for (unsigned i = 0; i < interp_attribs[index].size(); i++)

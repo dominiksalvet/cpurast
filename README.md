@@ -9,7 +9,7 @@ This project was created during my master's studies. I chose this assignment bec
 * Draws points, lines, and triangles
 * Integer-based rasterization with adjacent triangles support
 * Interpolation of vertex attributes
-* Vertex and fragment shaders
+* Programmable vertex and fragment shaders
 * Early depth testing
 * Viewport rendering
 * Normalized coordinates and colors, both compatible with OpenGL
@@ -119,10 +119,8 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Merge top flat and bottom flat triangle rendering to a function
-* Break interpolation initialization to multiple functions
+* It should not matter in which order line vertices are drawn
 * Interpolation - check corner cases
-* Add also x coordinate to interpolation (compare with OpenGL)
 * Triangle rasterization should all lines be less than right_x?
 * Add support for disabling interpolation
 * Fix triangle rendering one-off
