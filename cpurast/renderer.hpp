@@ -33,10 +33,8 @@ namespace cr
 
         // initialize interpolation (call once before a batch of interpolation calls)
         void init_interpolation(unsigned index, const vector<float>& v1, unsigned step_count);
-        // interpolates given depths and attributes based on given weight, results are written to given index
-        void interpolation(
-            unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2
-        );
+        // interpolates depths and attributes based on weight, results are written to member arrays based on index
+        void interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2);
 
         void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 

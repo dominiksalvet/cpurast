@@ -137,8 +137,6 @@ namespace cr
         const int dy = abs(y2 - y1);
         int error = 2 * dy - dx;
 
-        init_interpolation(0, vertex_attribs[0], dx);
-    
         // initial coordinates
         int x = x1;
         int y = y1;
@@ -146,6 +144,7 @@ namespace cr
         const int& fb_x = steep ? y : x;
         const int& fb_y = steep ? x : y;
 
+        init_interpolation(0, vertex_attribs[0], dx);
         while (x <= x2) // from x1 to x2
         {
             interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], (x - x1) * interp_step[0]);
@@ -190,19 +189,37 @@ namespace cr
         // compute position differences
         const int dx12 = x2 - x1;
         const int dx13 = x3 - x1;
+        const int dx23 = x3 - x2;
         const int dy12 = y2 - y1;
         const int dy13 = y3 - y1;
+        const int dy23 = y3 - y2;
 
         // determine left and right edge
         const float slope12 = float(dx12) / dy12;
         const float slope13 = float(dx13) / dy13;
         const bool edge12_is_left = slope12 < slope13;
 
+        // prepare left and right variables
+        int left_dx, right_dx;
+        int left_dy, right_dy;
+        float left_d, right_d;
+        vector<float> left_attribs, right_attribs;
+
         // render top flat triangle (from bottom)
-        int left_dx = edge12_is_left ? dx12 : dx13;
-        int right_dx = edge12_is_left ? dx13 : dx12;
-        int left_dy = edge12_is_left ? dy12 : dy13;
-        int right_dy = edge12_is_left ? dy13 : dy12;
+        if (edge12_is_left)
+        {
+            left_dx = dx12;                   right_dx = dx13;
+            left_dy = dy12;                   right_dy = dy13;
+            left_d = d2;                      right_d = d3;
+            left_attribs = vertex_attribs[1]; right_attribs = vertex_attribs[2];
+        }
+        else
+        {
+            left_dx = dx13;                   right_dx = dx12;
+            left_dy = dy13;                   right_dy = dy12;
+            left_d = d3;                      right_d = d2;
+            left_attribs = vertex_attribs[2]; right_attribs = vertex_attribs[1];
+        }
 
         int left_dx_sign = left_dx < 0 ? -1 : 1;
         int right_dx_sign = right_dx < 0 ? -1 : 1;
@@ -214,6 +231,8 @@ namespace cr
         int left_x = x1;
         int right_x = x1;
 
+        init_interpolation(0, vertex_attribs[0], left_dy);
+        init_interpolation(1, vertex_attribs[0], right_dy);
         for (int fb_y = y1; fb_y < y2; fb_y++)
         {
             while (left_error <= 0)
@@ -227,23 +246,28 @@ namespace cr
                 right_x += right_dx_sign;
             }
 
-            for (int fb_x = left_x; fb_x < right_x; fb_x++) {
-                process_fragment(fb_x, fb_y, 0.f, vertex_attribs[0]);
+            interpolation(0, d1, vertex_attribs[0], left_d, left_attribs, (fb_y - y1) * interp_step[0]);
+            interpolation(1, d1, vertex_attribs[0], right_d, right_attribs, (fb_y - y1) * interp_step[1]);
+
+            init_interpolation(2, vertex_attribs[0], right_x - left_x);
+            for (int fb_x = left_x; fb_x < right_x; fb_x++)
+            {
+                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], (fb_x - left_x) * interp_step[2]);
+                process_fragment(fb_x, fb_y, interp_depth[2], interp_attribs[2]);
             }
 
             left_error -= 2 * left_dx;
             right_error -= 2 * right_dx;
         }
 
-        // compute additional position differences
-        const int dx23 = x3 - x2;
-        const int dy23 = y3 - y2;
-
         // render bottom flat triangle (from top)
         if (edge12_is_left)
         {
             left_dx = dx23;
             left_dy = dy23;
+            right_d = d1;
+            right_attribs = vertex_attribs[0];
+            
             left_dx_sign = left_dx < 0 ? -1 : 1;
             left_dx = abs(left_dx);
         }
@@ -251,6 +275,9 @@ namespace cr
         {
             right_dx = dx23;
             right_dy = dy23;
+            left_d = d1;
+            left_attribs = vertex_attribs[0];
+
             right_dx_sign = right_dx < 0 ? -1 : 1;
             right_dx = abs(right_dx);
         }
@@ -260,6 +287,8 @@ namespace cr
         left_x = x3;
         right_x = x3;
 
+        init_interpolation(0, vertex_attribs[2], left_dy);
+        init_interpolation(1, vertex_attribs[2], right_dy);
         for (int fb_y = y3 - 1; fb_y >= y2; fb_y--)
         {
             while (left_error < 0)
@@ -273,8 +302,14 @@ namespace cr
                 right_x -= right_dx_sign;
             }
 
-            for (int fb_x = left_x; fb_x < right_x; fb_x++) {
-                process_fragment(fb_x, fb_y, 0.f, vertex_attribs[0]);
+            interpolation(0, d3, vertex_attribs[2], left_d, left_attribs, (y3 - fb_y) * interp_step[0]);
+            interpolation(1, d3, vertex_attribs[2], right_d, right_attribs, (y3 - fb_y) * interp_step[1]);
+
+            init_interpolation(2, vertex_attribs[0], right_x - left_x);
+            for (int fb_x = left_x; fb_x < right_x; fb_x++)
+            {
+                interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], (fb_x - left_x) * interp_step[2]);
+                process_fragment(fb_x, fb_y, interp_depth[2], interp_attribs[2]);
             }
 
             left_error -= 2 * left_dx;
@@ -290,9 +325,9 @@ namespace cr
         interp_attribs[index].resize(v1.size());
     }
 
-    void renderer::interpolation(
-        unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2
-    ) {
+    void renderer::interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, float weight2)
+    {
+        assert(index <= 3);
         assert(v1.size() == v2.size());
         assert(weight2 >= 0.f && weight2 <= 1.f);
 
