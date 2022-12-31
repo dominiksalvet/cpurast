@@ -7,7 +7,7 @@ This project was created during my master's studies. I chose this assignment bec
 ## Features
 
 * Draws points, lines, and triangles
-* Integer-based rasterization with adjacent triangles support
+* Integer-based rasterization
 * Interpolation of vertex attributes
 * Programmable vertex and fragment shaders
 * Early depth testing
@@ -114,6 +114,7 @@ The most important sources, in chronological order:
 * https://learnopengl.com/Getting-started/Hello-Triangle
 * https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 * http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
+* https://www.geeks3d.com/20130514/opengl-interpolation-qualifiers-glsl-tutorial/
 
 > I have also used official [CMake](https://cmake.org/cmake/help/latest/), [SDL](https://wiki.libsdl.org/wiki/index), and [C++](https://en.cppreference.com/w/) documentation.
 
@@ -121,7 +122,6 @@ The most important sources, in chronological order:
 
 * Interpolation - check corner cases
 * Triangle rasterization should all lines be less than right_x?
-* Add support for disabling interpolation
 * Fix triangle rendering one-off
 * Add some 3D examples
 * Perspective correct interpolation
@@ -132,3 +132,4 @@ The most important sources, in chronological order:
 * Add support for backface culling
 * Add support for shadows
 * Add support for reflections
+* Add support for some model formats

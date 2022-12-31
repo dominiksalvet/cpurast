@@ -27,12 +27,8 @@ namespace cr
         framebuf.resize(new_width, new_height);
     }
 
-    void context::enable_depth_test() {
-        framebuf.enable_depth_test();
-    }
-    
-    void context::disable_depth_test() {
-        framebuf.disable_depth_test();
+    void context::clear_framebuf(bool clear_color, bool clear_depth) {
+        framebuf.clear(clear_color, clear_depth);
     }
 
     void context::set_clear_color(float r, float g, float b)
@@ -44,10 +40,6 @@ namespace cr
         framebuf.set_clear_color({r, g, b});
     }
     
-    void context::clear_framebuf(bool clear_color, bool clear_depth) {
-        framebuf.clear(clear_color, clear_depth);
-    }
-    
     void context::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height)
     {
         assert(x < framebuf.get_width() && y < framebuf.get_height());
@@ -55,6 +47,22 @@ namespace cr
         assert(x + width <= framebuf.get_width() && y + height <= framebuf.get_height());
 
         renderer.set_viewport(x, y, width, height);
+    }
+
+    void context::enable_depth_test() {
+        framebuf.enable_depth_test();
+    }
+    
+    void context::disable_depth_test() {
+        framebuf.disable_depth_test();
+    }
+
+    void context::enable_interpolation() {
+        renderer.enable_interpolation();
+    }
+
+    void context::disable_interpolation() {
+        renderer.disable_interpolation();
     }
 
     void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader)

@@ -24,16 +24,19 @@ namespace cr
 
         // change the resolution of the framebuffer
         void resize_framebuf(unsigned new_width, unsigned new_height);
+        // clear individual buffers of the framebuffer
+        void clear_framebuf(bool clear_color, bool clear_depth);
+        // set clear color of framebuffer's color buffer
+        void set_clear_color(float r, float g, float b);
+        // normalized device coordinates are in the given frame of the framebuffer
+        void set_viewport(unsigned x, unsigned y, unsigned width, unsigned height);
         // enable/disable depth test for framebuffer
         void enable_depth_test();
         void disable_depth_test();
-        // set clear color of framebuffer's color buffer
-        void set_clear_color(float r, float g, float b);
-        // clear individual buffers of the framebuffer
-        void clear_framebuf(bool clear_color, bool clear_depth);
-
-        // normalized device coordinates are in the given frame of the framebuffer
-        void set_viewport(unsigned x, unsigned y, unsigned width, unsigned height);
+        // enable interpolation of vertex attributes
+        void enable_interpolation();
+        // disable interpolation, uses first vertex attributes for all fragments
+        void disable_interpolation();
 
         // change active vertex shader program
         void bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader);

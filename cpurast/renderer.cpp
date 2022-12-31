@@ -11,9 +11,10 @@ namespace cr
 {
     renderer::renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs) :
         fb(fb),
+        vp{0, 0, fb.get_width(), fb.get_height()},
         vs(vs),
         fs(fs),
-        vp{0, 0, fb.get_width(), fb.get_height()} {}
+        interp_enabled(true) {}
     
     void renderer::render_point(const vector<float>& v)
     {
@@ -27,6 +28,13 @@ namespace cr
         // compute framebuffer coordinates
         const unsigned fb_x = get_framebuf_x(pos.x);
         const unsigned fb_y = get_framebuf_y(pos.y);
+
+        // whether interpolation is enabled or not, point is renderer the same in both cases
+        if (!interp_enabled)
+        {
+            provoking_depth = pos.z;
+            provoking_attribs = std::move(vertex_attribs[0]);
+        }
 
         process_fragment(fb_x, fb_y, pos.z, vertex_attribs[0]);
     }
@@ -74,6 +82,10 @@ namespace cr
         rasterize_triangle(x1, y1, pos1.z, x2, y2, pos2.z, x3, y3, pos3.z);
     }
 
+    void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
+        vp = {x, y, width, height};
+    }
+
     void renderer::set_vs(const vertex_shader* vs) {
         this->vs = vs;
     }
@@ -82,8 +94,12 @@ namespace cr
         this->fs = fs;
     }
 
-    void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
-        vp = {x, y, width, height};
+    void renderer::enable_interpolation() {
+        interp_enabled = true;
+    }
+
+    void renderer::disable_interpolation() {
+        interp_enabled = false;
     }
 
     unsigned renderer::get_framebuf_x(float x) const
@@ -116,6 +132,12 @@ namespace cr
 
     void renderer::rasterize_line(int x1, int y1, float d1, int x2, int y2, float d2)
     {
+        if (!interp_enabled)
+        {
+            provoking_depth = d1;
+            provoking_attribs = std::move(vertex_attribs[0]); // consume
+        }
+
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)
         bool steep = false;
         if (abs(y2 - y1) > abs(x2 - x1))
@@ -167,6 +189,12 @@ namespace cr
     
     void renderer::rasterize_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3)
     {
+        if (!interp_enabled)
+        {
+            provoking_depth = d1;
+            provoking_attribs = std::move(vertex_attribs[0]);
+        }
+
         // sort vertices by its y position (so that y1 <= y2 <= y3)
         if (y1 > y2)
         {
@@ -323,6 +351,10 @@ namespace cr
 
     void renderer::init_interpolation(unsigned index, const vector<float>& v1, unsigned total_steps)
     {
+        if (!interp_enabled) {
+            return;
+        }
+
         assert(index <= 3);
 
         interp_step[index] = total_steps == 0 ? 1.f : 1.f / total_steps;
@@ -331,6 +363,10 @@ namespace cr
 
     void renderer::interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, unsigned cur_step)
     {
+        if (!interp_enabled) {
+            return;
+        }
+
         assert(index <= 3);
         assert(v1.size() == v2.size());
 
@@ -350,13 +386,17 @@ namespace cr
 
     void renderer::process_fragment(unsigned x, unsigned y, float d, const vector<float>& v)
     {
+        // select first vertex attributes if interpolation is not enabled (and performed)
+        const float& final_d = interp_enabled ? d : provoking_depth;
+        const vector<float>& final_v = interp_enabled ? v : provoking_attribs;
+
         // compute final framebuffer index
         const unsigned fb_index = fb.get_index(x, y);
 
         // depth test -> fragment shader -> write to framebuffer
-        if (fb.depth_test(fb_index, d))
+        if (fb.depth_test(fb_index, final_d)) // early depth test before running fragment shader
         {
-            const color fb_col = fs->run(v);
+            const color fb_col = fs->run(final_v);
             fb.write(fb_index, fb_col);
         }
     }
