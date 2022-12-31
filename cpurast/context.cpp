@@ -58,11 +58,11 @@ namespace cr
     }
 
     void context::enable_interpolation() {
-        renderer.enable_interpolation();
+        renderer.set_interp_enabled(true);
     }
 
     void context::disable_interpolation() {
-        renderer.disable_interpolation();
+        renderer.set_interp_enabled(false);
     }
 
     void context::bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader)
