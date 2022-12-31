@@ -119,8 +119,6 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Improve renderer-rasterizer communication
-* Use provoking attribs as pointer
 * Interpolation - check corner cases
 * Triangle rasterization should all lines be less than right_x?
 * Fix triangle rendering one-off

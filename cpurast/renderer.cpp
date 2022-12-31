@@ -8,7 +8,7 @@ namespace cr
     renderer::renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs) :
         vs(vs),
         vp{0, 0, fb.get_width(), fb.get_height()},
-        rast(vertex_attribs, fb, fs) {}
+        rast(fb, fs) {}
     
     void renderer::render_point(const vector<float>& v)
     {
@@ -23,7 +23,7 @@ namespace cr
         const unsigned x = get_framebuf_x(pos.x);
         const unsigned y = get_framebuf_y(pos.y);
 
-        rast.fill_point(x, y, pos.z);
+        rast.fill_point(x, y, pos.z, &vertex_attribs[0]);
     }
 
     void renderer::render_line(const vector<float>& v1, const vector<float>& v2)
@@ -39,11 +39,12 @@ namespace cr
 
         // compute endpoint framebuffer coordinates
         const int x1 = get_framebuf_x(pos1.x);
-        const int y1 = get_framebuf_y(pos1.y);
         const int x2 = get_framebuf_x(pos2.x);
+        const int y1 = get_framebuf_y(pos1.y);
         const int y2 = get_framebuf_y(pos2.y);
 
-        rast.fill_line(x1, y1, pos1.z, x2, y2, pos2.z);
+        rast.fill_line(x1, y1, pos1.z, &vertex_attribs[0],
+                       x2, y2, pos2.z, &vertex_attribs[1]);
     }
 
     void renderer::render_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3)
@@ -60,13 +61,15 @@ namespace cr
 
         // compute endpoint framebuffer coordinates
         const int x1 = get_framebuf_x(pos1.x);
-        const int y1 = get_framebuf_y(pos1.y);
         const int x2 = get_framebuf_x(pos2.x);
-        const int y2 = get_framebuf_y(pos2.y);
         const int x3 = get_framebuf_x(pos3.x);
+        const int y1 = get_framebuf_y(pos1.y);
+        const int y2 = get_framebuf_y(pos2.y);
         const int y3 = get_framebuf_y(pos3.y);
 
-        rast.fill_triangle(x1, y1, pos1.z, x2, y2, pos2.z, x3, y3, pos3.z);
+        rast.fill_triangle(x1, y1, pos1.z, &vertex_attribs[0],
+                           x2, y2, pos2.z, &vertex_attribs[1],
+                           x3, y3, pos3.z, &vertex_attribs[2]);
     }
 
     unsigned renderer::get_framebuf_x(float x) const

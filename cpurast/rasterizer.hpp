@@ -10,12 +10,16 @@ namespace cr
     class rasterizer
     {
     public:
-        rasterizer(vector<float> (&v)[3], framebuf& fb, const fragment_shader* fs);
+        rasterizer(framebuf& fb, const fragment_shader* fs);
 
-        void fill_point(int x, int y, float d);
+        // fill geometry primitives based on vertices position, depth and attributes
+        void fill_point(int x, int y, float d, const vector<float>* v);
         // rasterization functions based on Bresenham's line algorithm
-        void fill_line(int x1, int y1, float d1, int x2, int y2, float d2);
-        void fill_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3);
+        void fill_line(int x1, int y1, float d1, const vector<float>* v1,
+                       int x2, int y2, float d2, const vector<float>* v2);
+        void fill_triangle(int x1, int y1, float d1, const vector<float>* v1,
+                           int x2, int y2, float d2, const vector<float>* v2,
+                           int x3, int y3, float d3, const vector<float>* v3);
 
         void set_interp_enabled(bool interp_enabled);
         void set_fs(const fragment_shader* fs);
@@ -27,11 +31,9 @@ namespace cr
         void interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, unsigned cur_step);
         void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 
-        vector<float> (&vertex_attribs)[3]; // refrence to vertex attributes
-
         bool interp_enabled; // if interpolation is disabled, provoking attributes are used
         float provoking_depth;
-        vector<float> provoking_attribs;
+        const vector<float>* provoking_attribs;
 
         float interp_step[3]; // prepared interpolation steps
         float interp_depth[3]; // interpolated depths

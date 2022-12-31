@@ -9,30 +9,30 @@ using std::swap;
 
 namespace cr
 {
-    rasterizer::rasterizer(vector<float> (&v)[3], framebuf& fb, const fragment_shader* fs) :
-        vertex_attribs(v),
+    rasterizer::rasterizer(framebuf& fb, const fragment_shader* fs) :
         interp_enabled(true),
         fb(fb),
         fs(fs) {}
 
-    void rasterizer::fill_point(int x, int y, float d)
+    void rasterizer::fill_point(int x, int y, float d, const vector<float>* v)
     {
         // whether interpolation is enabled or not, point is rendered the same in both cases
         if (!interp_enabled)
         {
             provoking_depth = d;
-            provoking_attribs = std::move(vertex_attribs[0]);
+            provoking_attribs = v;
         }
 
-        process_fragment(x, y, d, vertex_attribs[0]);
+        process_fragment(x, y, d, *v);
     }
 
-    void rasterizer::fill_line(int x1, int y1, float d1, int x2, int y2, float d2)
+    void rasterizer::fill_line(int x1, int y1, float d1, const vector<float>* v1,
+                               int x2, int y2, float d2, const vector<float>* v2)
     {
         if (!interp_enabled)
         {
             provoking_depth = d1;
-            provoking_attribs = std::move(vertex_attribs[0]); // consume
+            provoking_attribs = v1;
         }
 
         // eliminate 2nd, 3rd, 6th, 7th octants (steep ones)
@@ -50,7 +50,7 @@ namespace cr
             swap(x1, x2);
             swap(y1, y2);
             swap(d1, d2);
-            swap(vertex_attribs[0], vertex_attribs[1]);
+            swap(v1, v2);
         }
         // eliminate 8th octant
         const int y_step = y2 > y1 ? 1 : -1;
@@ -67,10 +67,10 @@ namespace cr
         const int& fb_x = steep ? y : x;
         const int& fb_y = steep ? x : y;
 
-        init_interpolation(0, vertex_attribs[0], dx);
+        init_interpolation(0, *v1, dx);
         while (x <= x2) // from x1 to x2
         {
-            interpolation(0, d1, vertex_attribs[0], d2, vertex_attribs[1], x - x1);
+            interpolation(0, d1, *v1, d2, *v2, x - x1);
             process_fragment(fb_x, fb_y, interp_depth[0], interp_attribs[0]);
 
             if (error > 0)
@@ -84,35 +84,25 @@ namespace cr
         }
     }
 
-    void rasterizer::fill_triangle(int x1, int y1, float d1, int x2, int y2, float d2, int x3, int y3, float d3)
+    void rasterizer::fill_triangle(int x1, int y1, float d1, const vector<float>* v1,
+                                   int x2, int y2, float d2, const vector<float>* v2,
+                                   int x3, int y3, float d3, const vector<float>* v3)
     {
         if (!interp_enabled)
         {
             provoking_depth = d1;
-            provoking_attribs = std::move(vertex_attribs[0]);
+            provoking_attribs = v1;
         }
 
         // sort vertices by its y position (so that y1 <= y2 <= y3)
-        if (y1 > y2)
-        {
-            swap(x1, x2);
-            swap(y1, y2);
-            swap(d1, d2);
-            swap(vertex_attribs[0], vertex_attribs[1]);
+        if (y1 > y2) {
+            swap(x1, x2); swap(y1, y2); swap(d1, d2); swap(v1, v2);
         }
-        if (y1 > y3)
-        {
-            swap(x1, x3);
-            swap(y1, y3);
-            swap(d1, d3);
-            swap(vertex_attribs[0], vertex_attribs[2]);
+        if (y1 > y3) {
+            swap(x1, x3); swap(y1, y3); swap(d1, d3); swap(v1, v3);
         }
-        if (y2 > y3)
-        {
-            swap(x2, x3);
-            swap(y2, y3);
-            swap(d2, d3);
-            swap(vertex_attribs[1], vertex_attribs[2]);
+        if (y2 > y3) {
+            swap(x2, x3); swap(y2, y3); swap(d2, d3); swap(v2, v3);
         }
 
         // compute position differences
@@ -137,17 +127,17 @@ namespace cr
         // render top flat triangle (from bottom)
         if (edge12_is_left)
         {
-            left_dx = dx12;                    right_dx = dx13;
-            left_dy = dy12;                    right_dy = dy13;
-            left_d = d2;                       right_d = d3;
-            left_attribs = &vertex_attribs[1]; right_attribs = &vertex_attribs[2];
+            left_dx = dx12;    right_dx = dx13;
+            left_dy = dy12;    right_dy = dy13;
+            left_d = d2;       right_d = d3;
+            left_attribs = v2; right_attribs = v3;
         }
         else
         {
-            left_dx = dx13;                    right_dx = dx12;
-            left_dy = dy13;                    right_dy = dy12;
-            left_d = d3;                       right_d = d2;
-            left_attribs = &vertex_attribs[2]; right_attribs = &vertex_attribs[1];
+            left_dx = dx13;    right_dx = dx12;
+            left_dy = dy13;    right_dy = dy12;
+            left_d = d3;       right_d = d2;
+            left_attribs = v3; right_attribs = v2;
         }
 
         int left_dx_sign = left_dx < 0 ? -1 : 1;
@@ -160,8 +150,8 @@ namespace cr
         int left_x = x1;
         int right_x = x1;
 
-        init_interpolation(0, vertex_attribs[0], left_dx + left_dy);
-        init_interpolation(1, vertex_attribs[0], right_dx + right_dy);
+        init_interpolation(0, *v1, left_dx + left_dy);
+        init_interpolation(1, *v1, right_dx + right_dy);
         for (int fb_y = y1; fb_y < y2; fb_y++)
         {
             while (left_error <= 0)
@@ -175,10 +165,10 @@ namespace cr
                 right_x += right_dx_sign;
             }
 
-            interpolation(0, d1, vertex_attribs[0], left_d, *left_attribs, abs(x1 - left_x) + fb_y - y1);
-            interpolation(1, d1, vertex_attribs[0], right_d, *right_attribs, abs(x1 - right_x) + fb_y - y1);
+            interpolation(0, d1, *v1, left_d, *left_attribs, abs(x1 - left_x) + fb_y - y1);
+            interpolation(1, d1, *v1, right_d, *right_attribs, abs(x1 - right_x) + fb_y - y1);
 
-            init_interpolation(2, vertex_attribs[0], right_x - left_x);
+            init_interpolation(2, *v1, right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)
             {
                 interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], fb_x - left_x);
@@ -195,7 +185,7 @@ namespace cr
             left_dx = dx23;
             left_dy = dy23;
             right_d = d1;
-            right_attribs = &vertex_attribs[0];
+            right_attribs = v1;
             
             left_dx_sign = left_dx < 0 ? -1 : 1;
             left_dx = abs(left_dx);
@@ -205,7 +195,7 @@ namespace cr
             right_dx = dx23;
             right_dy = dy23;
             left_d = d1;
-            left_attribs = &vertex_attribs[0];
+            left_attribs = v1;
 
             right_dx_sign = right_dx < 0 ? -1 : 1;
             right_dx = abs(right_dx);
@@ -216,8 +206,8 @@ namespace cr
         left_x = x3;
         right_x = x3;
 
-        init_interpolation(0, vertex_attribs[2], left_dx + left_dy);
-        init_interpolation(1, vertex_attribs[2], right_dx + right_dy);
+        init_interpolation(0, *v3, left_dx + left_dy);
+        init_interpolation(1, *v3, right_dx + right_dy);
         for (int fb_y = y3 - 1; fb_y >= y2; fb_y--)
         {
             while (left_error < 0)
@@ -231,10 +221,10 @@ namespace cr
                 right_x -= right_dx_sign;
             }
 
-            interpolation(0, d3, vertex_attribs[2], left_d, *left_attribs, abs(x3 - left_x) + y3 - fb_y);
-            interpolation(1, d3, vertex_attribs[2], right_d, *right_attribs, abs(x3 - right_x) + y3 - fb_y);
+            interpolation(0, d3, *v3, left_d, *left_attribs, abs(x3 - left_x) + y3 - fb_y);
+            interpolation(1, d3, *v3, right_d, *right_attribs, abs(x3 - right_x) + y3 - fb_y);
 
-            init_interpolation(2, vertex_attribs[0], right_x - left_x);
+            init_interpolation(2, *v1, right_x - left_x);
             for (int fb_x = left_x; fb_x < right_x; fb_x++)
             {
                 interpolation(2, interp_depth[0], interp_attribs[0], interp_depth[1], interp_attribs[1], fb_x - left_x);
@@ -285,7 +275,7 @@ namespace cr
     {
         // select first vertex attributes if interpolation is not enabled (and performed)
         const float& final_d = interp_enabled ? d : provoking_depth;
-        const vector<float>& final_v = interp_enabled ? v : provoking_attribs;
+        const vector<float>& final_v = interp_enabled ? v : *provoking_attribs;
 
         // compute final framebuffer index
         const unsigned fb_index = fb.get_index(x, y);
