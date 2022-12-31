@@ -69,22 +69,6 @@ namespace cr
         rast.fill_triangle(x1, y1, pos1.z, x2, y2, pos2.z, x3, y3, pos3.z);
     }
 
-    void renderer::set_vs(const vertex_shader* vs) {
-        this->vs = vs;
-    }
-
-    void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
-        vp = {x, y, width, height};
-    }
-
-    void renderer::set_interp_enabled(bool interp_enabled) {
-        rast.set_interp_enabled(interp_enabled);
-    }
-
-    void renderer::set_fs(const fragment_shader* fs) {
-        rast.set_fs(fs);
-    }
-
     unsigned renderer::get_framebuf_x(float x) const
     {
         assert(x >= -1.f && x <= 1.f);
@@ -111,5 +95,21 @@ namespace cr
         }
 
         return vp.y + rel_y;
+    }
+
+    void renderer::set_vs(const vertex_shader* vs) {
+        this->vs = vs;
+    }
+
+    void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
+        vp = {x, y, width, height};
+    }
+
+    void renderer::set_interp_enabled(bool interp_enabled) {
+        rast.set_interp_enabled(interp_enabled);
+    }
+
+    void renderer::set_fs(const fragment_shader* fs) {
+        rast.set_fs(fs);
     }
 }

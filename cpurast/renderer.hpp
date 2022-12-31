@@ -22,7 +22,6 @@ namespace cr
 
         void set_vs(const vertex_shader* vs);
         void set_viewport(unsigned x, unsigned y, unsigned width, unsigned height);
-
         void set_interp_enabled(bool interp_enabled);
         void set_fs(const fragment_shader* fs);
 

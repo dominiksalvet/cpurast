@@ -246,14 +246,6 @@ namespace cr
         }
     }
 
-    void rasterizer::set_interp_enabled(bool interp_enabled) {
-        this->interp_enabled = interp_enabled;
-    }
-
-    void rasterizer::set_fs(const fragment_shader* fs) {
-        this->fs = fs;
-    }
-
     void rasterizer::init_interpolation(unsigned index, const vector<float>& v1, unsigned total_steps)
     {
         if (!interp_enabled) {
@@ -304,5 +296,13 @@ namespace cr
             const color fb_col = fs->run(final_v);
             fb.write(fb_index, fb_col);
         }
+    }
+
+    void rasterizer::set_interp_enabled(bool interp_enabled) {
+        this->interp_enabled = interp_enabled;
+    }
+
+    void rasterizer::set_fs(const fragment_shader* fs) {
+        this->fs = fs;
     }
 }
