@@ -1,6 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include "sdl_canvas.hpp"
+#include "cpurast_sdl.hpp"
 #include <cassert>
 #include <limits>
 #include <stdexcept>

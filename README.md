@@ -91,7 +91,6 @@ class custom_canvas : public cr::canvas
 
 ```cpp
 #include "cpurast.hpp" // cpurast core
-// the following header file should include all required custom headers
 #include "cpurast_custom.hpp" // cpurast custom canvas
 
 std::unique_ptr<cr::canvas> cr_canvas;
@@ -120,6 +119,8 @@ The most important sources, in chronological order:
 
 ## Todo
 
+* Improve renderer-rasterizer communication
+* Use provoking attribs as pointer
 * Interpolation - check corner cases
 * Triangle rasterization should all lines be less than right_x?
 * Fix triangle rendering one-off

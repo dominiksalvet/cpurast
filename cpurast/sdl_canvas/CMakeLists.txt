@@ -6,7 +6,7 @@ project(cpurast_sdl CXX)
 find_package(SDL2 REQUIRED)
 
 add_library(cpurast_sdl
-    sdl_canvas.cpp
+    cpurast_sdl.cpp
 )
 target_include_directories(cpurast_sdl PRIVATE
     ${SDL2_INCLUDE_DIRS}

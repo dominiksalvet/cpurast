@@ -1,6 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include "context.hpp"
+#include "cpurast.hpp"
 #include <cassert>
 #include "default_shader.hpp"
 

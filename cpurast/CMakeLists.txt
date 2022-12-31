@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(cpurast CXX)
 
 add_library(cpurast
-    context.cpp
+    cpurast.cpp
     framebuf.cpp
     renderer.cpp
     rasterizer.cpp
