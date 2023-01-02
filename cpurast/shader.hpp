@@ -17,7 +17,11 @@ namespace cr
         virtual ~shader() = default;
 
         void set_uniforms(const vector<float>& uniforms) {
-            this->uniforms = std::move(uniforms);
+            this->uniforms = uniforms; // copy uniforms vector
+        }
+
+        void set_uniforms(vector<float>&& uniforms) noexcept {
+            this->uniforms = std::move(uniforms); // steal uniforms vector
         }
 
     protected:

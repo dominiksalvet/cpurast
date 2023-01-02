@@ -39,7 +39,7 @@ namespace cr
         // we can perform linear for-loop because of restrictions in constructor
         for (unsigned i = 0; i < total_size; i++)
         {
-            color cur_color = color_buf[i];
+            const color cur_color = color_buf[i];
 
             // float to 8-bit for each of RGB components
             Uint8 r = cur_color.r * numeric_limits<Uint8>::max();
