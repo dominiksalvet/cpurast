@@ -8,9 +8,7 @@ namespace cr
     framebuf::framebuf(unsigned width, unsigned height) :
         width(width),
         height(height),
-        clear_color{0.f, 0.f, 0.f}, // black clear color
-        color_buf(width * height),
-        depth_test_enabled(false) {}
+        color_buf(width * height) {}
 
     void framebuf::resize(unsigned new_width, unsigned new_height)
     {

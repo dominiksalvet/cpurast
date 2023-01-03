@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
     double outer_angle = 0.f;
 
     // create cpurast context
-    cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
+    cr::context cr_context = cr::context(*cr_canvas, surface->w, surface->h);
 
     bool shouldExit = false;
     while (!shouldExit)

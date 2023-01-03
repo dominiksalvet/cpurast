@@ -5,8 +5,8 @@
 
 namespace cr
 {
-    renderer::renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs) :
-        vs(vs),
+    renderer::renderer(framebuf& fb, const vertex_shader& vs, const fragment_shader& fs) :
+        vs(&vs),
         vp{0, 0, fb.get_width(), fb.get_height()},
         rast(fb, fs) {}
     
@@ -100,8 +100,8 @@ namespace cr
         return vp.y + rel_y;
     }
 
-    void renderer::set_vs(const vertex_shader* vs) {
-        this->vs = vs;
+    void renderer::set_vs(const vertex_shader& vs) {
+        this->vs = &vs;
     }
 
     void renderer::set_viewport(unsigned x, unsigned y, unsigned width, unsigned height) {
@@ -112,7 +112,7 @@ namespace cr
         rast.set_interp_enabled(interp_enabled);
     }
 
-    void renderer::set_fs(const fragment_shader* fs) {
+    void renderer::set_fs(const fragment_shader& fs) {
         rast.set_fs(fs);
     }
 }

@@ -7,20 +7,23 @@
 #include <memory>
 #include "shader.hpp"
 #include "renderer.hpp"
+#include "default_shader.hpp"
 
 using std::shared_ptr;
+using std::make_shared;
 
 namespace cr
 {
     class context
     {
     public: // cpurast API
-        context(cr::canvas* canvas, unsigned canvas_w, unsigned canvas_h);
+        // create cpurast context with default vertex and fragment shaders
+        context(cr::canvas& canvas, unsigned canvas_w, unsigned canvas_h);
 
         // draw framebuffer to the canvas
         void update_canvas() const;
-        // change active canvas pointer (pointer due to foreign ownership)
-        void bind_canvas(cr::canvas* canvas);
+        // change active canvas pointer (foreign ownership)
+        void bind_canvas(cr::canvas& canvas);
 
         // change the resolution of the framebuffer
         void resize_framebuf(unsigned new_width, unsigned new_height);
@@ -38,23 +41,22 @@ namespace cr
         // disable interpolation, uses first vertex attributes for all fragments
         void disable_interpolation();
 
-        // change active vertex shader program
-        void bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader);
-        // change active fragment shader program
-        void bind_fragment_shader(const shared_ptr<const fragment_shader>& f_shader);
-
         // drawing of primitives (v - vertex attributes)
         void draw_point(const vector<float>& v);
         void draw_line(const vector<float>& v1, const vector<float>& v2);
         void draw_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3);
 
+        // change active vertex shader program (shared ownership)
+        void bind_vertex_shader(const shared_ptr<const vertex_shader>& v_shader);
+        // change active fragment shader program (shared ownership)
+        void bind_fragment_shader(const shared_ptr<const fragment_shader>& f_shader);
+
     private:
         cr::canvas* canvas; // canvas for drawing pixels
         cr::framebuf framebuf; // framebuffer for rendering
 
-        shared_ptr<const vertex_shader> v_shader; // active vertex shader
-        shared_ptr<const fragment_shader> f_shader; // active fragment shader
-
+        shared_ptr<const vertex_shader> v_shader = make_shared<default_vs>(); // active vertex shader
+        shared_ptr<const fragment_shader> f_shader = make_shared<default_fs>(); // active fragment shader
         cr::renderer renderer; // graphics renderer
     };
 }

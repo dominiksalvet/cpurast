@@ -9,10 +9,9 @@ using std::swap;
 
 namespace cr
 {
-    rasterizer::rasterizer(framebuf& fb, const fragment_shader* fs) :
-        interp_enabled(true),
+    rasterizer::rasterizer(framebuf& fb, const fragment_shader& fs) :
         fb(fb),
-        fs(fs) {}
+        fs(&fs) {}
 
     void rasterizer::fill_point(int x, int y, float d, const vector<float>* v)
     {
@@ -292,7 +291,7 @@ namespace cr
         this->interp_enabled = interp_enabled;
     }
 
-    void rasterizer::set_fs(const fragment_shader* fs) {
-        this->fs = fs;
+    void rasterizer::set_fs(const fragment_shader& fs) {
+        this->fs = &fs;
     }
 }

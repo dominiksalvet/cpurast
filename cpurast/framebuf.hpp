@@ -39,10 +39,10 @@ namespace cr
         unsigned width;
         unsigned height;
 
-        color clear_color; // color used for clearing color buffer
+        color clear_color{0.f, 0.f, 0.f}; // color used for clearing color buffer
         vector<color> color_buf; // color buffer representation
 
-        bool depth_test_enabled; // depth test enable flag
+        bool depth_test_enabled = false; // depth test enable flag
         vector<float> depth_buf; // depth buffer of values [-1, 1]
     };
 }

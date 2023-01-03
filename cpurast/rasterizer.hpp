@@ -10,7 +10,7 @@ namespace cr
     class rasterizer
     {
     public:
-        rasterizer(framebuf& fb, const fragment_shader* fs);
+        rasterizer(framebuf& fb, const fragment_shader& fs);
 
         // fill geometry primitives based on vertices position, depth and attributes
         void fill_point(int x, int y, float d, const vector<float>* v);
@@ -22,7 +22,7 @@ namespace cr
                            int x3, int y3, float d3, const vector<float>* v3);
 
         void set_interp_enabled(bool interp_enabled);
-        void set_fs(const fragment_shader* fs);
+        void set_fs(const fragment_shader& fs);
     
     private:
         // initialize interpolation (call once before a batch of interpolation calls)
@@ -31,7 +31,7 @@ namespace cr
         void interpolation(unsigned index, float d1, const vector<float>& v1, float d2, const vector<float>& v2, unsigned cur_step);
         void process_fragment(unsigned x, unsigned y, float d, const vector<float>& v);
 
-        bool interp_enabled; // if interpolation is disabled, provoking attributes are used
+        bool interp_enabled = true; // if interpolation is disabled, provoking attributes are used
         float provoking_depth;
         const vector<float>* provoking_attribs;
 

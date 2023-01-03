@@ -12,7 +12,7 @@ namespace cr
     class renderer
     {
     public:
-        renderer(framebuf& fb, const vertex_shader* vs, const fragment_shader* fs);
+        renderer(framebuf& fb, const vertex_shader& vs, const fragment_shader& fs);
 
         // main render functions
         void render_point(const vector<float>& v);
@@ -20,10 +20,10 @@ namespace cr
         // this function also supports adjacent triangles rendering (no gaps, no overlaps)
         void render_triangle(const vector<float>& v1, const vector<float>& v2, const vector<float>& v3);
 
-        void set_vs(const vertex_shader* vs);
+        void set_vs(const vertex_shader& vs);
         void set_viewport(unsigned x, unsigned y, unsigned width, unsigned height);
         void set_interp_enabled(bool interp_enabled);
-        void set_fs(const fragment_shader* fs);
+        void set_fs(const fragment_shader& fs);
 
     private:
         // transform normalized coordinates [-1, 1] to framebuffer coordinates

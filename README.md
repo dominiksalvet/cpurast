@@ -132,3 +132,4 @@ The most important sources, in chronological order:
 * Add support for shadows
 * Add support for reflections
 * Add support for some model formats
+* Add demonstration images to readme

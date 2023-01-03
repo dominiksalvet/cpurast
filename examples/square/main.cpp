@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     };
 
     // create cpurast context
-    cr::context cr_context = cr::context(cr_canvas.get(), surface->w, surface->h);
+    cr::context cr_context = cr::context(*cr_canvas, surface->w, surface->h);
     // use color shaders
     cr_context.bind_vertex_shader(std::make_shared<color_vs>());
     cr_context.bind_fragment_shader(std::make_shared<color_fs>());
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
                 {
                     surface = SDL_GetWindowSurface(window); // get new SDL surface
                     cr_canvas = std::make_unique<cr::sdl_canvas>(surface); // create new canvas
-                    cr_context.bind_canvas(cr_canvas.get()); // change canvas in cpurast context
+                    cr_context.bind_canvas(*cr_canvas); // change canvas in cpurast context
                     cr_context.resize_framebuf(surface->w, surface->h); // resize framebuffer
 
                     // set up squared viewport
