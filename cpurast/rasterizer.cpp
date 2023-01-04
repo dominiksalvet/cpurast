@@ -1,7 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "rasterizer.hpp"
-#include <cassert>
 #include <cmath>
 
 using std::abs;

@@ -1,7 +1,6 @@
 // https://github.com/dominiksalvet/cpurast
 
 #include "cpurast.hpp"
-#include <cassert>
 
 namespace cr
 {

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "shader.hpp"
-#include <cassert>
 
 class color_vs : public cr::vertex_shader
 {

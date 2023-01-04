@@ -5,7 +5,6 @@
 #include "canvas.hpp"
 #include "framebuf.hpp"
 #include "shader.hpp"
-#include "default_shader.hpp"
 #include "renderer.hpp"
 #include <memory>
 
