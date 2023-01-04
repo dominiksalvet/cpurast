@@ -14,9 +14,10 @@ namespace cr
 
         // fill geometry primitives based on vertices position, depth and attributes
         void fill_point(int x, int y, float d, const vector<float>* v);
-        // rasterization functions based on Bresenham's line algorithm
+        // rasterization functions based on Bresenham's line algorithm (line and triangle)
         void fill_line(int x1, int y1, float d1, const vector<float>* v1,
                        int x2, int y2, float d2, const vector<float>* v2);
+        // this function does not fill x=max(x1, x2, x3) nor y=max(y1, y2, y3) due to adjacent triangles support
         void fill_triangle(int x1, int y1, float d1, const vector<float>* v1,
                            int x2, int y2, float d2, const vector<float>* v2,
                            int x3, int y3, float d3, const vector<float>* v3);
