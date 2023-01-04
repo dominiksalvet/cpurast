@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "framebuf.hpp"
 #include "canvas.hpp"
-#include <memory>
+#include "framebuf.hpp"
 #include "shader.hpp"
-#include "renderer.hpp"
 #include "default_shader.hpp"
+#include "renderer.hpp"
+#include <memory>
 
 using std::shared_ptr;
 using std::make_shared;

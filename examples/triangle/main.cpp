@@ -1,13 +1,11 @@
 // https://github.com/dominiksalvet/cpurast
 
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <stdexcept>
-#include <memory>
 #include "cpurast.hpp" // cpurast core
 #include "cpurast_sdl.hpp" // cpurast SDL canvas
 #include "color_shader.hpp"
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 // timer stuff
 using std::chrono::nanoseconds;

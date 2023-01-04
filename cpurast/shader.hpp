@@ -2,9 +2,8 @@
 
 #pragma once
 
+#include "util.hpp"
 #include <vector>
-#include "position.hpp"
-#include "color.hpp"
 
 using std::vector;
 

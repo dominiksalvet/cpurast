@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "color.hpp"
+#include "util.hpp"
 #include <vector>
 
 namespace cr

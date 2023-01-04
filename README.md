@@ -119,8 +119,6 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Interpolation - check corner cases
-* Triangle rasterization should all lines be less than right_x?
 * Fix triangle rendering one-off
 * Add some 3D examples
 * Perspective correct interpolation
