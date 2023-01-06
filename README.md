@@ -125,9 +125,8 @@ The most important sources, in chronological order:
 * Improve clipping for lines, triangles
 * Add support for texturing
 * Add support for textures with transparency
-* Add support for drawing arrays of primitives
+* Add support for a 3D model format
 * Add support for backface culling
 * Add support for shadows
-* Add support for reflections
-* Add support for some model formats
+* Add support for drawing arrays of primitives
 * Add demonstration images to readme
