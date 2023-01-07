@@ -17,7 +17,10 @@ namespace cr
         this->canvas = &canvas;
     }
     
-    void context::resize_framebuf(unsigned new_width, unsigned new_height) {
+    void context::resize_framebuf(unsigned new_width, unsigned new_height)
+    {
+        assert(new_width > 0 && new_height > 0);
+
         framebuf.resize(new_width, new_height);
     }
 

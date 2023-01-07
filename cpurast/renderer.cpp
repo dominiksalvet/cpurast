@@ -19,8 +19,8 @@ namespace cr
         }
 
         // compute framebuffer coordinates
-        const unsigned x = get_framebuf_x(pos.x);
-        const unsigned y = get_framebuf_y(pos.y);
+        const unsigned x = get_framebuf_x(pos.x, vp.width);
+        const unsigned y = get_framebuf_y(pos.y, vp.height);
 
         rast.fill_point(x, y, pos.z, &vertex_attribs[0]);
     }
@@ -37,10 +37,10 @@ namespace cr
         }
 
         // compute endpoint framebuffer coordinates
-        const int x1 = get_framebuf_x(pos1.x);
-        const int x2 = get_framebuf_x(pos2.x);
-        const int y1 = get_framebuf_y(pos1.y);
-        const int y2 = get_framebuf_y(pos2.y);
+        const int x1 = get_framebuf_x(pos1.x, vp.width);
+        const int x2 = get_framebuf_x(pos2.x, vp.width);
+        const int y1 = get_framebuf_y(pos1.y, vp.height);
+        const int y2 = get_framebuf_y(pos2.y, vp.height);
 
         rast.fill_line(x1, y1, pos1.z, &vertex_attribs[0],
                        x2, y2, pos2.z, &vertex_attribs[1]);
@@ -59,40 +59,41 @@ namespace cr
         }
 
         // compute endpoint framebuffer coordinates
-        const int x1 = get_framebuf_x(pos1.x);
-        const int x2 = get_framebuf_x(pos2.x);
-        const int x3 = get_framebuf_x(pos3.x);
-        const int y1 = get_framebuf_y(pos1.y);
-        const int y2 = get_framebuf_y(pos2.y);
-        const int y3 = get_framebuf_y(pos3.y);
+        // using higher viewport size due to special triangle rasterization function
+        const int x1 = get_framebuf_x(pos1.x, vp.width + 1);
+        const int x2 = get_framebuf_x(pos2.x, vp.width + 1);
+        const int x3 = get_framebuf_x(pos3.x, vp.width + 1);
+        const int y1 = get_framebuf_y(pos1.y, vp.height + 1);
+        const int y2 = get_framebuf_y(pos2.y, vp.height + 1);
+        const int y3 = get_framebuf_y(pos3.y, vp.height + 1);
 
         rast.fill_triangle(x1, y1, pos1.z, &vertex_attribs[0],
                            x2, y2, pos2.z, &vertex_attribs[1],
                            x3, y3, pos3.z, &vertex_attribs[2]);
     }
 
-    unsigned renderer::get_framebuf_x(float x) const
+    unsigned renderer::get_framebuf_x(float x, unsigned vp_width) const
     {
         assert(x >= -1.f && x <= 1.f);
 
-        unsigned rel_x = ((x + 1) * vp.width) / 2;
+        unsigned rel_x = ((x + 1) * vp_width) / 2;
 
         // last position interval is closed from both sides
-        if (rel_x == vp.width) {
+        if (rel_x == vp_width) {
             rel_x--;
         }
 
         return vp.x + rel_x;
     }
 
-    unsigned renderer::get_framebuf_y(float y) const
+    unsigned renderer::get_framebuf_y(float y, unsigned vp_height) const
     {
         assert(y >= -1.f && y <= 1.f);
 
-        unsigned rel_y = ((y + 1) * vp.height) / 2;
+        unsigned rel_y = ((y + 1) * vp_height) / 2;
 
         // last position interval is closed from both sides
-        if (rel_y == vp.height) {
+        if (rel_y == vp_height) {
             rel_y--;
         }
 

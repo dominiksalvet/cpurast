@@ -119,7 +119,6 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Fix triangle rendering one-off
 * Add some 3D examples
 * Perspective correct interpolation
 * Improve clipping for lines, triangles

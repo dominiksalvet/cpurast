@@ -27,14 +27,13 @@ namespace cr
 
     private:
         // transform normalized coordinates [-1, 1] to framebuffer coordinates
-        unsigned get_framebuf_x(float x) const;
-        unsigned get_framebuf_y(float y) const;
+        unsigned get_framebuf_x(float x, unsigned vp_width) const;
+        unsigned get_framebuf_y(float y, unsigned vp_height) const;
 
         const vertex_shader* vs;
         vector<float> vertex_attribs[3]; // vertex shader output attributes
 
         viewport vp; // current viewport properties
-
         rasterizer rast; // graphics rasterizer
     };
 }
