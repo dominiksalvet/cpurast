@@ -1,5 +1,7 @@
 # CPU Rasterizer
 
+![Colored triangle example](img/triangle.png)
+
 The cpurast is a software rasterizer written from scratch. Basically, it is a very simple and limited imitation of a graphics library (such as OpenGL), yet it performs all graphical computations on the processor. This approach is slower than utilizing a graphics processor but more flexible since it has no additional driver and hardware requirements. Furthermore, some concepts like packing and transferring data to the graphics processor are entirely omitted. Hence, the final use should be easier. Yet surprisingly, cpurast comes with some advanced [features](#features).
 
 This project was created during my master's studies. I chose this assignment because I wanted to get an idea of what could be inside a real graphics processor so that it supports the functions of graphics libraries. When I started, I had just a little experience with computer graphics, so I had to study a lot. Feel free to take a look at the [used sources](#used-sources) from which I have gained my knowledge.
@@ -119,7 +121,7 @@ The most important sources, in chronological order:
 
 ## Todo
 
-* Add some 3D examples
+* Recycle some examples into 3D examples
 * Perspective correct interpolation
 * Improve clipping for lines, triangles
 * Add support for texturing
@@ -128,4 +130,4 @@ The most important sources, in chronological order:
 * Add support for backface culling
 * Add support for shadows
 * Add support for drawing arrays of primitives
-* Add demonstration images to readme
+* Add demonstration screenshots to readme
