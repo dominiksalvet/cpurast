@@ -1,6 +1,8 @@
 # CPU Rasterizer
 
-![Colored triangle example](img/triangle.png)
+<p align="center">
+  <img height="400" src="img/triangle.png" alt="Colored triangle example">
+</p>
 
 The cpurast is a software rasterizer written from scratch. Basically, it is a very simple and limited imitation of a graphics library (such as OpenGL), yet it performs all graphical computations on the processor. This approach is slower than utilizing a graphics processor but more flexible since it has no additional driver and hardware requirements. Furthermore, some concepts like packing and transferring data to the graphics processor are entirely omitted. Hence, the final use should be easier. Yet surprisingly, cpurast comes with some advanced [features](#features).
 
